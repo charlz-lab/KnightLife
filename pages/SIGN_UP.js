@@ -1,8 +1,8 @@
-const SETTINGS = () => {
+const SIGN_UP = () => {
   // insert code here
   return (
     <View style={styles.container}>
-      <Text>Settings page</Text>
+      <Text>Sign up page</Text>
       <StatusBar style="auto" />
     </View>
   )
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 })
-export default SETTINGS
+export default SIGN_UP
