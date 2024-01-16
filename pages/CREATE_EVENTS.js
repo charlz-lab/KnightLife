@@ -1,3 +1,6 @@
+import React from "react"
+import { StyleSheet, Text, View, StatusBar } from "react-native"
+
 const CREATE_EVENT = () => {
   // insert code here
   return (
