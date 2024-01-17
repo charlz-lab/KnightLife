@@ -5,7 +5,7 @@ const PROFILE = () => {
   // insert code here
   return (
     <View style={styles.container}>
-      <Text>Profile page</Text>
+      <Text>Testing push</Text>
       <StatusBar style="auto" />
     </View>
   )
