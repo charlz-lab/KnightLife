@@ -6,27 +6,51 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import HOME from "./pages/HOME"
 import PROFILE from "./pages/PROFILE"
+import { EDIT_PROFILE } from "./pages/PROFILE";
 import SEARCH from "./pages/SEARCH"
 import CALENDAR from "./pages/CALENDAR"
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Stack = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 var isCreator = true;
 
+// navigation for nav bar
+function NavBar() {
+  return (
+    <Tab.Navigator>
+      {isCreator ? (
+        <>
+          <Tab.Screen name="Calendar" component={CALENDAR} />
+          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
+          <Stack.Screen name="Profile" component={PROFILE} />
+        </>
+      ) : (
+        <>
+          <Tab.Screen name="Home" component={HOME} />
+          <Tab.Screen name="Search" component={SEARCH} />
+          <Tab.Screen name="Calendar" component={CALENDAR} />
+          <Tab.Screen name="Profile" component={PROFILE} />
+        </>
+      )}
+    </Tab.Navigator>
+  );
+}
+
+// navigation outside of nav bar
 export default function App() {
-  return (<NavigationContainer><Stack.Navigator>
-    {isCreator ? <>
-    <Stack.Screen name="Calendar" component={CALENDAR} />
-    <Stack.Screen name="Create_Events" component={CREATE_EVENTS} />
-    <Stack.Screen name="Profile" component={PROFILE} />
-    </> : <>
-    <Stack.Screen name="Home" component={HOME} />
-    <Stack.Screen name="Search" component={SEARCH} />
-    <Stack.Screen name="Calendar" component={CALENDAR} />
-    <Stack.Screen name="Profile" component={PROFILE} />
-      </>}
-   
-    </Stack.Navigator></NavigationContainer>);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
+        <Stack.Screen
+          name="EDIT_PROFILE"
+          component={EDIT_PROFILE}
+        ></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
