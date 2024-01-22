@@ -1,21 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, Image } from 'react-native';
+import Card from '../knightlife/components/EventCard'
+import Home from './pages/HOME';
+import * as Font from 'expo-font';
 export default function App() {
+
   return (
-    <View style={styles.container}>
-      <Text>Hey, KnighLife Team!</Text>
-      <StatusBar style="auto" />
+    <View styles={styles.container}>
+      <Home />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    paddingTop: 40
+  }
+})
+
+
