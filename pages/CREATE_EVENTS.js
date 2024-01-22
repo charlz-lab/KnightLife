@@ -57,7 +57,12 @@ const UserProfileForm = () => {
       // Do something with the entered information
       Alert.alert(
         'Event Created',
-        `Name: ${name}\nLocation: ${input2}\nDate: ${input3}\nTime: ${input4}\nDescription: ${input5}\nExternal Links: ${input6}`
+        `Name: ${name}
+        \nLocation: ${input2}
+        \nDate: ${input3}
+        \nTime: ${input4}
+        \nDescription: ${input5}
+        \nExternal Links: ${input6}`
       );
     }
   };
