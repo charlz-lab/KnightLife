@@ -15,6 +15,7 @@ const BookmarkButton = ({ active, style }) => {
                     },
                     style,
                 ]} >
+            {/*changes png when active*/}
             <Icon icon={active ? 'BookmarkFilled' : 'Bookmark'} size={24} />
         </View >
     );
