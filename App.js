@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,22 +10,6 @@ import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-=======
-import { StatusBar } from "expo-status-bar"
-import React from "react"
-import { StyleSheet, Text, View, TouchableHighlight, Image } from "react-native"
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import * as Font from "expo-font"
-import Card from "../knightlife/components/EventCard"
-import HOME from "./pages/HOME"
-import PROFILE from "./pages/PROFILE"
-import { EDIT_PROFILE } from "./pages/PROFILE"
-import SEARCH from "./pages/SEARCH"
-import SAVED_EVENTS from "./pages/SAVED_EVENTS"
-import CREATE_EVENTS from "./pages/CREATE_EVENTS"
->>>>>>> bdbad27a8f8b226228690ff1bb016ffb7d7137b3
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()

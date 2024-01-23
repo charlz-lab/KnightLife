@@ -46,8 +46,5 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 })
-<<<<<<< HEAD
-export default HOME;
-=======
+
 export default HOME
->>>>>>> bdbad27a8f8b226228690ff1bb016ffb7d7137b3
