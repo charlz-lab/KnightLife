@@ -1,3 +1,9 @@
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import Card from '../knightlife/components/EventCard'
+import Home from './pages/HOME';
+import * as Font from 'expo-font';
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -40,6 +46,7 @@ function NavBar() {
 
 // navigation outside of nav bar
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -52,7 +59,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
