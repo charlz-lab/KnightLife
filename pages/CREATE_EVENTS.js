@@ -1,4 +1,7 @@
-const CREATE_EVENT = () => {
+import React from "react"
+import { StyleSheet, Text, View, StatusBar } from "react-native"
+
+const CREATE_EVENTS = () => {
   // insert code here
   return (
     <View style={styles.container}>
@@ -15,4 +18,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 })
-export default CREATE_EVENT
+export default CREATE_EVENTS
