@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
+
 })
-export default HOME
+export default Home;
