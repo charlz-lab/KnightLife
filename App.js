@@ -3,10 +3,9 @@ import React from "react"
 import { StyleSheet, Text, View, TouchableHighlight, Image } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import * as Font from 'expo-font';
-import Card from '../knightlife/components/EventCard'
+import * as Font from "expo-font"
+import Card from "../knightlife/components/EventCard"
 import HOME from "./pages/HOME"
 import PROFILE from "./pages/PROFILE"
 import { EDIT_PROFILE } from "./pages/PROFILE"
@@ -16,7 +15,7 @@ import CREATE_EVENTS from "./pages/CREATE_EVENTS"
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
-var isCreator = true
+var isCreator = false
 
 // header component
 const HeaderHomeToggle = () => {
@@ -56,7 +55,6 @@ function NavBar() {
 
 // navigation outside of nav bar
 export default function App() {
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
