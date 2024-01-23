@@ -1,7 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-const EventPage = () => {
+const EVENT = () => {
+  // insert code here
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Beginner Chess Workshop</Text>

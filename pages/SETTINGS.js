@@ -1,11 +1,11 @@
 import React from "react"
 import { StyleSheet, Text, View, StatusBar } from "react-native"
 
-const SIGN_UP = () => {
+const SETTINGS = () => {
   // insert code here
   return (
     <View style={styles.container}>
-      <Text>Sign up page</Text>
+      <Text>Settings page</Text>
       <StatusBar style="auto" />
     </View>
   )
@@ -18,4 +18,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 })
-export default SIGN_UP
+export default SETTINGS
+

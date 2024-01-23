@@ -1,15 +1,15 @@
-import React from "react"
-import { StyleSheet, Text, View, StatusBar } from "react-native"
+import React from "react";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 
-const SIGN_UP = () => {
+const SAVED_EVENTS = () => {
   // insert code here
   return (
     <View style={styles.container}>
-      <Text>Sign up page</Text>
+      <Text>Saved events</Text>
       <StatusBar style="auto" />
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,5 +17,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-})
-export default SIGN_UP
+});
+export default SAVED_EVENTS;
