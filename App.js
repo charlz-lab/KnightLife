@@ -1,10 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import Card from '../knightlife/components/EventCard'
-import Home from './pages/HOME';
-import * as Font from 'expo-font';
-import { StatusBar } from "expo-status-bar";
+
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
