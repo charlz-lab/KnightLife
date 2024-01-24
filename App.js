@@ -18,6 +18,7 @@ import { EDIT_PROFILE } from "./pages/PROFILE";
 import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
+import Settings from "./pages/Settings Folder/SETTINGS";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,7 @@ function NavBar() {
         <>
           <Tab.Screen name="Home" component={HOME} />
           <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen name="Settings" component={Settings} />
         </>
       )}
     </Tab.Navigator>
