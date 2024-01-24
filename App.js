@@ -40,7 +40,11 @@ const HeaderHomeToggle = () => {
 // navigation for nav bar
 function NavBar() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {isCreator ? (
         <>
           <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
@@ -61,7 +65,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
-        <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
+        <Stack.Screen
+          name="NavBar"
+          component={NavBar}
+          options={{ headerStyle: styles.header }}
+        ></Stack.Screen>
         <Stack.Screen
           name="HOME"
           component={HOME}
@@ -74,6 +82,7 @@ export default function App() {
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
+          options={{ title: "" }}
         ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
