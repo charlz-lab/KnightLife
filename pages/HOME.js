@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar"
 import React from "react"
+import {useFonts} from "expo-font"
+import appStyles from "../styles"
 import {
   StyleSheet,
   Text,
@@ -7,17 +9,21 @@ import {
   SafeAreaView,
   View,
   Button,
+  TouchableOpacity,
 } from "react-native"
 
 const HOME = () => {
   // insert code here
+  /*"touchableOpacity" is more customizable than "button"*/
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       {/* Filter section */}
       <View style={styles.filters}>
-        <Text>Followed Accounts</Text>
-        <Button title="Filter" />
+        <Text style={appStyles.fonts.ibmMedium}>Followed Accounts</Text>
+        <TouchableOpacity style={appStyles.buttons.borders}>
+        <Text>Filter</Text>
+      </TouchableOpacity>
       </View>
       {/* List of event cards */}
       {/* Navbar */}
@@ -44,6 +50,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 30,
     paddingVertical: 10,
-  },
+  }
 })
 export default HOME

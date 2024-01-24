@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TouchableHighlight, Image } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import * as Font from "expo-font"
 import Card from "../knightlife/components/EventCard"
 import HOME from "./pages/HOME"
 import PROFILE from "./pages/PROFILE"
@@ -12,6 +11,8 @@ import { EDIT_PROFILE } from "./pages/PROFILE"
 import SEARCH from "./pages/SEARCH"
 import SAVED_EVENTS from "./pages/SAVED_EVENTS"
 import CREATE_EVENTS from "./pages/CREATE_EVENTS"
+import appStyles from "./styles"
+import {useFonts} from "expo-font"
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -19,10 +20,11 @@ var isCreator = false
 
 // header component
 const HeaderHomeToggle = () => {
+  
   return (
     <View style={styles.toggle}>
       <TouchableHighlight style={[styles.highlighted, styles.options]}>
-        <Text>Following</Text>
+        <Text style = {styles.ibm_medium_font}>Following</Text>
       </TouchableHighlight>
       <TouchableHighlight style={styles.options}>
         <Text>Discover</Text>
@@ -34,19 +36,84 @@ const HeaderHomeToggle = () => {
 // navigation for nav bar
 function NavBar() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarStyle:{backgroundColor: appStyles.colors.mainBackground}
+    }}>
       {isCreator ? (
         <>
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
-          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-bs-calendar.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
+          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-br-add.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
+          <Tab.Screen name="Profile" component={PROFILE} options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-bs-profile.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
         </>
       ) : (
         <>
-          <Tab.Screen name="Home" component={HOME} />
-          <Tab.Screen name="Search" component={SEARCH} />
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen name="Home" component={HOME} options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-ss-home.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
+          <Tab.Screen name="Search" component={SEARCH}  options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-br-search.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
+          <Tab.Screen name="Saved Events" component={SAVED_EVENTS}  options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-bs-calendar.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
+          <Tab.Screen name="Profile" component={PROFILE}  options={{
+            title:"",
+            tabBarIcon:({color,size})=>{
+            return (
+              <Image
+        source={require("/assets/icons/fi-bs-profile.png")}
+        style={{ width: size, height: size }}
+      />
+            )
+          }}}/>
         </>
       )}
     </Tab.Navigator>
@@ -55,6 +122,15 @@ function NavBar() {
 
 // navigation outside of nav bar
 export default function App() {
+  const [fontsLoaded] = useFonts({
+  "IBMPlexSans-Medium": require("./assets/fonts/IBMPlexSans-Medium.ttf"),
+  "IBMPlexSans-Regular": require("./assets/fonts/IBMPlexSans-Regular.ttf"),
+});
+if(!fontsLoaded){
+  return <Text>
+    Loading...
+  </Text>
+}
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
@@ -104,5 +180,5 @@ const styles = StyleSheet.create({
   },
   highlighted: {
     backgroundColor: "#FFC60A",
-  },
+  }
 })

@@ -1,11 +1,12 @@
 import React from "react"
 import { StyleSheet, Text, View, StatusBar } from "react-native"
+import appStyles from "../styles"
 
 const SEARCH = () => {
   // insert code here
   return (
     <View style={styles.container}>
-      <Text>Search page</Text>
+      <Text style={appStyles.fonts.prompt}>Search page</Text>
       <StatusBar style="auto" />
     </View>
   )
