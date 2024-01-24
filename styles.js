@@ -1,11 +1,15 @@
 const appStyles = {
     colors: {
-        mainBackground:"#232323"
+        mainBackground:"#232323",
+        foreground:"#222222 ",
+        background:"#FFFFFF",
+        accent1:"#080808",
+        accent2:"#FFC60A"
     },
     buttons:{
         borders:{
             borderRadius:20,
-            borderWidth:2,
+            borderWidth:1,
             padding:10,
             backgroundColor:"#FFC60A"
         }

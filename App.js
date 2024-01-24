@@ -14,9 +14,9 @@ import CREATE_EVENTS from "./pages/CREATE_EVENTS"
 import appStyles from "./styles"
 import {useFonts} from "expo-font"
 
-const Tab = createBottomTabNavigator()
-const Stack = createNativeStackNavigator()
-var isCreator = false
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+var isCreator = false;
 
 // header component
 const HeaderHomeToggle = () => {
@@ -30,8 +30,8 @@ const HeaderHomeToggle = () => {
         <Text>Discover</Text>
       </TouchableHighlight>
     </View>
-  )
-}
+  );
+};
 
 // navigation for nav bar
 function NavBar() {
@@ -41,83 +41,20 @@ function NavBar() {
     }}>
       {isCreator ? (
         <>
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-bs-calendar.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
-          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-br-add.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
-          <Tab.Screen name="Profile" component={PROFILE} options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-bs-profile.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
+          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
+          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
+          <Tab.Screen name="Profile" component={PROFILE} />
         </>
       ) : (
         <>
-          <Tab.Screen name="Home" component={HOME} options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-ss-home.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
-          <Tab.Screen name="Search" component={SEARCH}  options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-br-search.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS}  options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-bs-calendar.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
-          <Tab.Screen name="Profile" component={PROFILE}  options={{
-            title:"",
-            tabBarIcon:({color,size})=>{
-            return (
-              <Image
-        source={require("/assets/icons/fi-bs-profile.png")}
-        style={{ width: size, height: size }}
-      />
-            )
-          }}}/>
+          <Tab.Screen name="Home" component={HOME} />
+          <Tab.Screen name="Search" component={SEARCH} />
+          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
+          <Tab.Screen name="Profile" component={PROFILE} />
         </>
       )}
     </Tab.Navigator>
-  )
+  );
 }
 
 // navigation outside of nav bar
@@ -146,10 +83,11 @@ if(!fontsLoaded){
         <Stack.Screen name="SEARCH" component={SEARCH} />
         <Stack.Screen
           name="EDIT_PROFILE"
-          component={EDIT_PROFILE}></Stack.Screen>
+          component={EDIT_PROFILE}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -180,5 +118,5 @@ const styles = StyleSheet.create({
   },
   highlighted: {
     backgroundColor: "#FFC60A",
-  }
+  },
 })
