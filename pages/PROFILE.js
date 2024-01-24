@@ -8,10 +8,12 @@ import {
   Pressable,
   TextInput,
   Alert,
+  FlatList,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import EventCard from "../components/EventCard";
 import DropDownPicker from "react-native-dropdown-picker";
+import events from "../components/EventList";
 
 // jane doe's profile
 let defaultProfile = {
@@ -138,6 +140,16 @@ const PROFILE = ({ navigation, route }) => {
         ) : (
           <Text>Saved Events</Text>
         )}
+        {/* display event cards */}
+        <FlatList
+          data={events}
+          renderItem={({ item }) => {
+            return <EventCard info={item} />;
+          }}
+          keyExtractor={(event) => event.id.toString()}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: 20 }}
+        />
         {/* navigate to edit profile */}
         <Pressable onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
           <Text>Edit</Text>
