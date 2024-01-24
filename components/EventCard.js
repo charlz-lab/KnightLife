@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
         right: 20,
         top: 0,
         bottom: 0,
-
         backgroundColor: 'black',
 
     }
