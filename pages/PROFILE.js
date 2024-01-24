@@ -42,6 +42,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           text: "Save",
           onPress: () => {
             navigation.navigate("Profile", { profile: profile });
+            navigation.navigate("Profile", { profile: profile });
           },
         },
       ]
@@ -101,6 +102,12 @@ const PROFILE = ({ navigation, route }) => {
     { label: "Attended", value: "attended" },
     { label: "Saved", value: "saved" },
   ]);
+
+  useEffect(() => {
+    if (route.params?.profile) {
+      setProfile(route.params.profile);
+    }
+  }, [route.params?.profile]);
 
   useEffect(() => {
     if (route.params?.profile) {
