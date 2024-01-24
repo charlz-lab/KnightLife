@@ -8,7 +8,8 @@ import {
   View,
   Button,
 } from "react-native"
-
+import EventCard from '../components/EventCard'
+import EventList from '../components/EventList'
 const HOME = () => {
   // insert code here
   return (
@@ -20,6 +21,15 @@ const HOME = () => {
         <Button title="Filter" />
       </View>
       {/* List of event cards */}
+      <FlatList
+        data={<EventList/>}
+        renderItem={({ item }) => {
+          return <EventCard info={item} />;
+        }}
+        keyExtractor={(event) => event.id.toString()}
+        showsVerticalScrollIndicator={false}
+        style={{ paddingTop: 20 }}
+      />
       {/* Navbar */}
     </SafeAreaView>
   )
