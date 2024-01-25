@@ -1,19 +1,39 @@
+<<<<<<< HEAD
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+=======
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Image,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as Font from "expo-font";
+import Card from "../knightlife/components/EventCard";
+>>>>>>> b4abaa3d9dc22e8e1e8112509eb1d1e570ec423e
 import HOME from "./pages/HOME";
 import PROFILE from "./pages/PROFILE";
 import { EDIT_PROFILE } from "./pages/PROFILE";
 import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
+<<<<<<< HEAD
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+=======
+>>>>>>> b4abaa3d9dc22e8e1e8112509eb1d1e570ec423e
 
-const Tab = createBottomTabNavigator()
-const Stack = createNativeStackNavigator()
-var isCreator = false
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+var isCreator = false;
 
 // header component
 const HeaderHomeToggle = () => {
@@ -26,29 +46,30 @@ const HeaderHomeToggle = () => {
         <Text>Discover</Text>
       </TouchableHighlight>
     </View>
-  )
-}
+  );
+};
 
 // navigation for nav bar
 function NavBar() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {isCreator ? (
         <>
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
           <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
           <Tab.Screen name="Profile" component={PROFILE} />
         </>
       ) : (
         <>
           <Tab.Screen name="Home" component={HOME} />
-          <Tab.Screen name="Search" component={SEARCH} />
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
           <Tab.Screen name="Profile" component={PROFILE} />
         </>
       )}
     </Tab.Navigator>
-  )
+  );
 }
 
 // navigation outside of nav bar
@@ -56,7 +77,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
-        <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
+        <Stack.Screen
+          name="NavBar"
+          component={NavBar}
+          options={{ headerStyle: styles.header }}
+        ></Stack.Screen>
         <Stack.Screen
           name="HOME"
           component={HOME}
@@ -68,10 +93,12 @@ export default function App() {
         <Stack.Screen name="SEARCH" component={SEARCH} />
         <Stack.Screen
           name="EDIT_PROFILE"
-          component={EDIT_PROFILE}></Stack.Screen>
+          component={EDIT_PROFILE}
+          options={{ title: "" }}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -103,4 +130,4 @@ const styles = StyleSheet.create({
   highlighted: {
     backgroundColor: "#FFC60A",
   },
-})
+});

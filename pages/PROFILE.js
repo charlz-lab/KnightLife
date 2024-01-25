@@ -8,7 +8,12 @@ import {
   Pressable,
   TextInput,
   Alert,
+  FlatList,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import EventCard from "../components/EventCard";
+import DropDownPicker from "react-native-dropdown-picker";
+import events from "../components/EventList";
 
 // jane doe's profile
 let defaultProfile = {
@@ -23,10 +28,6 @@ let defaultProfile = {
 export const EDIT_PROFILE = ({ navigation, route }) => {
   let [profile, setProfile] = useState(route.params);
 
-  useEffect(() => {
-    navigation.setParams({ profile });
-  }, [profile]);
-
   const saveAlert = () =>
     Alert.alert(
       "Save Changes",
@@ -40,7 +41,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         {
           text: "Save",
           onPress: () => {
-            navigation.navigate("Profile", profile);
+            navigation.navigate("Profile", { profile: profile });
           },
         },
       ]
@@ -92,17 +93,21 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
 
 // profile
 const PROFILE = ({ navigation, route }) => {
-  let [profile, setProfile] = useState(defaultProfile);
+  const [profile, setProfile] = useState(route.params || defaultProfile);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("upcoming");
+  const [items, setItems] = useState([
+    { label: "Upcoming", value: "upcoming" },
+    { label: "Attended", value: "attended" },
+    { label: "Saved", value: "saved" },
+  ]);
 
-  let [isUpcoming, setState] = useState(true);
+  useEffect(() => {
+    if (route.params?.profile) {
+      setProfile(route.params.profile);
+    }
+  }, [route.params?.profile]);
 
-  // useEffect(() => {
-  //   navigation.setParams({ profile });
-  // }, [profile]);
-
-  // if (profile !== route.params) {
-  //   setProfile(route.params);
-  // }
   return (
     <>
       <View style={styles.container}>
@@ -117,31 +122,35 @@ const PROFILE = ({ navigation, route }) => {
         <Text>
           {profile.year} - {profile.major}
         </Text>
-        {/* Upcoming / attended tabs */}
-        <Pressable
-          onPress={() => {
-            setState(true);
-          }}
-        >
-          <Text>Upcoming</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            setState(false);
-          }}
-        >
-          <Text>Attended</Text>
-        </Pressable>
-        {/* display upcoming or attended events */}
-        {isUpcoming ? (
-          <>
-            <Text>Upcoming events</Text>
-          </>
+        {/* Upcoming / attended / saved dropdown*/}
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          containerStyle={{ width: 200 }}
+        />
+        {/* display events based on dropdown */}
+        {value === "upcoming" ? (
+          <Text>Upcoming Events</Text>
+        ) : value === "attended" ? (
+          <Text>Attended Events</Text>
         ) : (
-          <>
-            <Text>Attended Events</Text>
-          </>
+          <Text>Saved Events</Text>
         )}
+        {/* display event cards */}
+        <FlatList
+          data={events}
+          renderItem={({ item }) => {
+            return <EventCard info={item} />;
+          }}
+          keyExtractor={(event) => event.id.toString()}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: 20 }}
+        />
+        {/* navigate to edit profile */}
         <Pressable onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
           <Text>Edit</Text>
         </Pressable>
