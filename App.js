@@ -15,7 +15,7 @@ import appStyles from "./styles"
 import {useFonts} from "expo-font"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-var isCreator = false;
+var isCreator = true;
 
 // header component
 const HeaderHomeToggle = () => {
@@ -43,16 +43,65 @@ function NavBar() {
     >
       {isCreator ? (
         <>
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
-          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} 
+          options={{
+            title: '',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <Image
+                  style={{ width: size, height: size }}
+                  source={{
+                    uri:require("./assets/icons/fi-br-add.png")
+                  }}
+                />
+              );
+            },
+          }}/>
+          <Tab.Screen name="Profile" component={PROFILE} 
+          options={{
+            title: '',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <Image
+                  style={{ width: size, height: size }}
+                  source={{
+                    uri:require("./assets/icons/fi-bs-profile.png")
+                  }}
+                />
+              );
+            },
+          }}/>
         </>
       ) : (
         <>
-          <Tab.Screen name="Home" component={HOME} />
-          <Tab.Screen name="Search" component={SEARCH} />
-          <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen name="Home" component={HOME}  
+          options={{
+            title: '',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <Image
+                  style={{ width: size, height: size }}
+                  source={{
+                    uri:require("./assets/icons/fi-ss-home.png")
+                  }}
+                />
+              );
+            },
+          }}/>
+          <Tab.Screen name="Profile" component={PROFILE} 
+          options={{
+            title: '',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <Image
+                  style={{ width: size, height: size }}
+                  source={{
+                    uri:require("./assets/icons/fi-bs-profile.png")
+                  }}
+                />
+              );
+            },
+          }}/>
         </>
       )}
     </Tab.Navigator>
