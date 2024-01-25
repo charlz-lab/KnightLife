@@ -35,9 +35,12 @@ const HeaderHomeToggle = () => {
 // navigation for nav bar
 function NavBar() {
   return (
-    <Tab.Navigator screenOptions={{
-      tabBarStyle:{backgroundColor: appStyles.colors.mainBackground}
-    }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle:{backgroundColor: appStyles.colors.mainBackground}
+      }}
+    >
       {isCreator ? (
         <>
           <Tab.Screen name="Saved Events" component={SAVED_EVENTS} />
