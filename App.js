@@ -13,7 +13,6 @@ import SAVED_EVENTS from "./pages/SAVED_EVENTS"
 import CREATE_EVENTS from "./pages/CREATE_EVENTS"
 import appStyles from "./styles"
 import {useFonts} from "expo-font"
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 var isCreator = false;
@@ -71,7 +70,11 @@ if(!fontsLoaded){
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
-        <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
+        <Stack.Screen
+          name="NavBar"
+          component={NavBar}
+          options={{ headerStyle: styles.header }}
+        ></Stack.Screen>
         <Stack.Screen
           name="HOME"
           component={HOME}
@@ -84,6 +87,7 @@ if(!fontsLoaded){
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
+          options={{ title: "" }}
         ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
