@@ -1,7 +1,7 @@
-import { StatusBar } from "expo-status-bar"
-import React from "react"
-import {useFonts} from "expo-font"
-import appStyles from "../styles"
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { useFonts } from "expo-font";
+import appStyles from "../styles";
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,7 @@ import {
   View,
   Button,
   TouchableOpacity,
-} from "react-native"
+} from "react-native";
 
 const HOME = () => {
   // insert code here
@@ -20,16 +20,16 @@ const HOME = () => {
       {/* Header */}
       {/* Filter section */}
       <View style={styles.filters}>
-        <Text style={appStyles.fonts.ibmMedium}>Followed Accounts</Text>
+        <Text style={appStyles.fonts.paragraph}>Followed Accounts</Text>
         <TouchableOpacity style={appStyles.buttons.borders}>
-        <Text>Filter</Text>
-      </TouchableOpacity>
+          <Text>Filter</Text>
+        </TouchableOpacity>
       </View>
       {/* List of event cards */}
       {/* Navbar */}
     </SafeAreaView>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 30,
     paddingVertical: 10,
-  }
-})
-export default HOME
+  },
+});
+export default HOME;

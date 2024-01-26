@@ -21,7 +21,7 @@ import appStyles from "./styles";
 import { useFonts } from "expo-font";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-var isCreator = true;
+var isCreator = false;
 
 // header component
 const HeaderHomeToggle = () => {

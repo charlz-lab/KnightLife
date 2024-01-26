@@ -15,14 +15,17 @@ const appStyles = {
     },
   },
   fonts: {
+    // paragraph text
     paragraph: {
       fontFamily: "IBMPlexSans-Medium",
       fontSize: 15,
     },
+    // sub headings
     subHeading: {
       fontFamily: "IBMPlexSans-Regular",
       fontSize: 15,
     },
+    // header
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
