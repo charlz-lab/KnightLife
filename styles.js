@@ -25,7 +25,7 @@ const appStyles = {
       fontFamily: "IBMPlexSans-Regular",
       fontSize: 15,
     },
-    // header
+    // heading
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
