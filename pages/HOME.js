@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default HOME
+export default HOME;

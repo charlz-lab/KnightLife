@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-//import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-=======
-import { StatusBar } from "expo-status-bar";
+
 import React from "react";
 import {
   StyleSheet,
@@ -19,17 +12,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as Font from "expo-font";
 import Card from "../knightlife/components/EventCard";
->>>>>>> b4abaa3d9dc22e8e1e8112509eb1d1e570ec423e
 import HOME from "./pages/HOME";
 import PROFILE from "./pages/PROFILE";
 import { EDIT_PROFILE } from "./pages/PROFILE";
 import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
-<<<<<<< HEAD
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-=======
->>>>>>> b4abaa3d9dc22e8e1e8112509eb1d1e570ec423e
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
