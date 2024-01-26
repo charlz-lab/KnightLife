@@ -28,7 +28,7 @@ const HeaderHomeToggle = () => {
   return (
     <View style={styles.toggle}>
       <TouchableHighlight style={[styles.highlighted, styles.options]}>
-        <Text>Following</Text>
+        <Text style={styles.ibm_medium_font}>Following</Text>
       </TouchableHighlight>
       <TouchableHighlight style={styles.options}>
         <Text>Discover</Text>
@@ -43,17 +43,82 @@ function NavBar() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarStyle: { backgroundColor: appStyles.colors.mainBackground },
       }}
     >
       {isCreator ? (
         <>
-          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen
+            name="Create_Events"
+            component={CREATE_EVENTS}
+            options={{
+              title: "",
+              tabBarIcon: ({ size, focused, color }) => {
+                return (
+                  <Image
+                    style={{ width: size, height: size }}
+                    source={{
+                      uri: require("./assets/icons/fi-br-add.png"),
+                    }}
+                  />
+                );
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={PROFILE}
+            options={{
+              title: "",
+              tabBarIcon: ({ size, focused, color }) => {
+                return (
+                  <Image
+                    style={{ width: size, height: size }}
+                    source={{
+                      uri: require("./assets/icons/fi-bs-profile.png"),
+                    }}
+                  />
+                );
+              },
+            }}
+          />
         </>
       ) : (
         <>
-          <Tab.Screen name="Home" component={HOME} />
-          <Tab.Screen name="Profile" component={PROFILE} />
+          <Tab.Screen
+            name="Home"
+            component={HOME}
+            options={{
+              title: "",
+              tabBarIcon: ({ size, focused, color }) => {
+                return (
+                  <Image
+                    style={{ width: size, height: size }}
+                    source={{
+                      uri: require("./assets/icons/fi-ss-home.png"),
+                    }}
+                  />
+                );
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={PROFILE}
+            options={{
+              title: "",
+              tabBarIcon: ({ size, focused, color }) => {
+                return (
+                  <Image
+                    style={{ width: size, height: size }}
+                    source={{
+                      uri: require("./assets/icons/fi-bs-profile.png"),
+                    }}
+                  />
+                );
+              },
+            }}
+          />
         </>
       )}
     </Tab.Navigator>
@@ -62,6 +127,13 @@ function NavBar() {
 
 // navigation outside of nav bar
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "IBMPlexSans-Medium": require("./assets/fonts/IBMPlexSans-Medium.ttf"),
+    "IBMPlexSans-Regular": require("./assets/fonts/IBMPlexSans-Regular.ttf"),
+  });
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>

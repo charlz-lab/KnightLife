@@ -1,5 +1,7 @@
-import { StatusBar } from "expo-status-bar"
-import React, { useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { useFonts } from "expo-font";
+import appStyles from "../styles";
 import {
   StyleSheet,
   Text,
@@ -7,7 +9,8 @@ import {
   SafeAreaView,
   View,
   Button, FlatList
-} from "react-native"
+  TouchableOpacity,
+} from "react-native";
 
 import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
@@ -18,13 +21,16 @@ const HOME = ({ navigation }) => {
     setEvents((prevEvents) => [...prevEvents, newEvent]);
   };
   // insert code here
+  /*"touchableOpacity" is more customizable than "button"*/
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       {/* Filter section */}
       <View style={styles.filters}>
-        <Text>Followed Accounts</Text>
-        <Button title="Filter" />
+        <Text style={appStyles.fonts.paragraph}>Followed Accounts</Text>
+        <TouchableOpacity style={appStyles.buttons.borders}>
+          <Text>Filter</Text>
+        </TouchableOpacity>
       </View>
       {/* List of event cards */}
       <View>
@@ -55,6 +61,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
-})
-
+});
 export default HOME;
