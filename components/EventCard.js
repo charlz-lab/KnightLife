@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
 import BookmarkButton from './BookmarkButton';
 import * as Font from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 
-const EventCard = ({ info, navigation }) => {
+
+const EventCard = ({ event, navigation }) => {
+
     //loadAsync google fonts
     const [fontLoaded, setFontLoaded] = useState(false);
-
+    const handlePress = () => {
+        // Navigate to Event Details page with event data
+        navigation.navigate('EventPage', { event });
+    };
     useEffect(() => {
         async function loadFont() {
             await Font.loadAsync({
@@ -24,50 +30,47 @@ const EventCard = ({ info, navigation }) => {
     if (!fontLoaded) {
         return <Text>Loading...</Text>;
     }
-    const goToEventPage = () => {
-        navigation.navigate("EventsPage", { id: id, name: name });
-    };
+
     //building card w props
-    const { name, creator, location, membersGoing, image } = info
+
     return (
+        <TouchableOpacity onPress={handlePress}>
+            <View style={styles.container}>
+                <View style={[styles.cardContainer, styles.shadow]}>
+                    <ImageBackground source={event.image} imageStyle={{ borderRadius: 14, width: 290 }} style={styles.imageBanner} >
+                        <View style={styles.buttonContainer}>
+                            <BookmarkButton style={styles.bookmark} />
+                        </View>
+                    </ImageBackground>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.title}  >{event.name}</Text>
+                        <Text style={styles.creator}>Hosted By: {event.creator}</Text>
+                        {/*adding the location pin icon using ionicons*/}
+                        <View style={styles.locationContainer}>
+                            <Icon
+                                name="location-sharp"
+                                type='ionicon'
+                                size={13}
+                                color="#676464"
+                                style={styles.locationIcon}
+                            />
+                            <Text style={styles.locationText}>{event.location}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text style={styles.membersGoing}>{event.membersGoing} Members Going </Text>
+                            <Icon
 
-        <View style={styles.container}>
-
-            <View style={[styles.cardContainer, styles.shadow]}>
-
-                <ImageBackground source={image} imageStyle={{ borderRadius: 14 }} style={styles.imageBanner} >
-                    <View style={styles.buttonContainer}>
-                        <BookmarkButton style={styles.bookmark} />
-                    </View>
-                </ImageBackground>
-                <View style={styles.textContainer}>
-                    <Text style={styles.title} onPress={goToEventPage} >{name}</Text>
-                    <Text style={styles.creator}>Hosted By: {creator}</Text>
-                    {/*adding the location pin icon using ionicons*/}
-                    <View style={styles.locationContainer}>
-                        <Icon
-                            name="location-sharp"
-                            type='ionicon'
-                            size={13}
-                            color="#676464"
-                            style={styles.locationIcon}
-                        />
-                        <Text style={styles.locationText}>{location}</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <Text style={styles.membersGoing}>{membersGoing} Members Going </Text>
-                        <Icon
-
-                            name="alert-circle-outline"
-                            type='ionicon'
-                            size={17}
-                            color="#676464"
-                            style={{ justifyContent: "space-between" }}
-                        />
+                                name="alert-circle-outline"
+                                type='ionicon'
+                                size={17}
+                                color="#676464"
+                                style={{ justifyContent: "space-between" }}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
-        </View >
+            </View >
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

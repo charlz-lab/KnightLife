@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import events from '../components/EventList';
+import { Icon } from 'react-native-elements';
+import { useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const EventPage = () => {
+const EventPage = ({ route }) => {
+  const { event } = route.params;
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Beginner Chess Workshop</Text>
-      <Text style={styles.subheading}>UCF Chess' Club</Text>
-      <Text style={styles.location}>UCF Downtown, Orlando</Text>
-      <Text style={styles.paragraph}>
-      Come learn the basic rules and fundamentals of the game of chess. No experience necessary, experienced players are also welcome!
-      </Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View >
+        <Text>{event.name}</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -19,27 +21,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  subheading: {
-    fontSize: 18,
-    color: 'gray',
-  },
-  location: {
-    fontSize: 16,
-    color: 'green',
-  },
-  paragraph: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'black',
-    marginBottom: 24,
-  },
+
 });
 
 export default EventPage;

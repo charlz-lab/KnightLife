@@ -11,14 +11,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as Font from "expo-font";
-import Card from "../knightlife/components/EventCard";
 import HOME from "./pages/HOME";
 import PROFILE from "./pages/PROFILE";
 import { EDIT_PROFILE } from "./pages/PROFILE";
 import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
-
+import EventList from "./components/EventList";
+import EventPage from "./pages/EVENT";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 var isCreator = false;
@@ -78,7 +78,10 @@ export default function App() {
             headerTitle: () => <HeaderHomeToggle />,
           }}
         />
+        <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen name="EventPage" component={EventPage} />
         <Stack.Screen name="SEARCH" component={SEARCH} />
+
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}

@@ -1,15 +1,22 @@
 import { StatusBar } from "expo-status-bar"
-import React from "react"
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   ScrollView,
   SafeAreaView,
   View,
-  Button,
+  Button, FlatList
 } from "react-native"
 
-const HOME = () => {
+import EventCard from "../components/EventCard"
+import EventList from "../components/EventList"
+const HOME = ({ navigation }) => {
+  const [events, setEvents] = useState([])
+  const addEvent = (newEvent) => {
+    // Update the events state with the new event
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
+  };
   // insert code here
   return (
     <SafeAreaView style={styles.container}>
@@ -20,8 +27,11 @@ const HOME = () => {
         <Button title="Filter" />
       </View>
       {/* List of event cards */}
-      {/* Navbar */}
-    </SafeAreaView>
+      <View>
+        <EventList events={events} navigation={navigation} />
+      </View>
+
+    </SafeAreaView >
   )
 }
 const styles = StyleSheet.create({
