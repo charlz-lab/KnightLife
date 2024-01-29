@@ -7,7 +7,7 @@ import appStyles from "./styles"
 import { useFonts } from "expo-font"
 import NavBar from "./components/NavBar"
 import Header from "./components/Header"
-import HOME from "./pages/HOME"
+
 const Stack = createNativeStackNavigator()
 
 // navigation outside of nav bar
@@ -21,7 +21,7 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="NavBar"
           component={NavBar}

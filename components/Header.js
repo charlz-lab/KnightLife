@@ -1,9 +1,10 @@
 import React from "react"
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text } from "react-native"
+import { SafeAreaView, StyleSheet, Pressable, Text } from "react-native"
 import { SearchBar } from "@rneui/base"
 import appStyles from "../styles"
 
-const Header = () => {
+const Header = ({ route }) => {
+  console.log(route)
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar
@@ -19,9 +20,9 @@ const Header = () => {
           borderRadius: 100,
         }}
       />
-      <TouchableOpacity style={{ flex: 0.5 }}>
+      <Pressable style={{ flex: 0.5 }}>
         <Text>Filter</Text>
-      </TouchableOpacity>
+      </Pressable>
     </SafeAreaView>
   )
 }
