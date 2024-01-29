@@ -1,39 +1,37 @@
+// SettingsScreen.js
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Privacy from './PRIVACY';
 
-const Settings = ({ navigation }) => {
-  const navigateToPage = (page) => {
-    navigation.navigate(page);
+const Settings = () => {
+  const navigation = useNavigation();
+
+  const navigateToPrivacy = () => {
+    navigation.navigate('Privacy');
+  };
+
+  const navigateToAddSwitchAccounts = () => {
+    navigation.navigate('AddSwitchAccounts');
+  };
+
+  const navigateToAccessibility = () => {
+    navigation.navigate('Accessibility');
+  };
+
+  const navigateToEditAccount = () => {
+    navigation.navigate('EditAccount');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Settings</Text>
-      <View style={styles.buttonContainer}>
-        <Button title="Privacy" onPress={() => navigateToPage('Privacy')} />
-        <Button title="Add/Switch Accounts" onPress={() => navigateToPage('AddSwitchAccounts')} />
-        <Button title="Accessibility" onPress={() => navigateToPage('Accessibility')} />
-        <Button title="Edit Account" onPress={() => navigateToPage('EditAccount')} />
-      </View>
+    <View>
+      <Text>Settings Screen</Text>
+      <Button title="Privacy" onPress={navigateToPrivacy} />
+      <Button title="Add/Switch Accounts" onPress={navigateToAddSwitchAccounts} />
+      <Button title="Accessibility" onPress={navigateToAccessibility} />
+      <Button title="Edit Account" onPress={navigateToEditAccount} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  buttonContainer: {
-    marginTop: 16,
-  },
-});
 
 export default Settings;

@@ -19,6 +19,12 @@ import SEARCH from "./pages/SEARCH";
 import SAVED_EVENTS from "./pages/SAVED_EVENTS";
 import CREATE_EVENTS from "./pages/CREATE_EVENTS";
 import Settings from "./pages/Settings Folder/SETTINGS";
+import Privacy from "./pages/Settings Folder/PRIVACY";
+import AddSwitchAccounts from "./pages/Settings Folder/ADD_SWITCH_ACCOUNTS";
+import Accessibility from "./pages/Settings Folder/ACCESSIBILITY"
+import EditAccount from "./pages/Settings Folder/EDIT_ACCOUNT"
+import CreateAccount from "./pages/Settings Folder/CREATEACCOUNT"
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -51,7 +57,6 @@ function NavBar() {
         <>
           <Tab.Screen name="Home" component={HOME} />
           <Tab.Screen name="Profile" component={PROFILE} />
-          <Tab.Screen name="Settings" component={Settings} />
         </>
       )}
     </Tab.Navigator>
@@ -63,6 +68,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
+
         <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
         <Stack.Screen
           name="HOME"
@@ -72,11 +78,20 @@ export default function App() {
             headerTitle: () => <HeaderHomeToggle />,
           }}
         />
+
         <Stack.Screen name="SEARCH" component={SEARCH} />
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
         ></Stack.Screen>
+
+        <Stack.Screen name="Privacy" component={Privacy} />
+        <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
+        <Stack.Screen name="Accessibility" component={Accessibility} />
+        <Stack.Screen name="EditAccount" component={EditAccount} />
+        <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        <Stack.Screen name="Settings" component={Settings} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
