@@ -112,18 +112,11 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="NavBar"
           component={NavBar}
-          options={{ headerStyle: styles.header }}></Stack.Screen>
-        <Stack.Screen
-          name="HOME"
-          component={HOME}
-          options={{
-            headerStyle: styles.header,
-          }}
-        />
+          options={{ headerStyle: styles.header, title: "" }}></Stack.Screen>
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
@@ -133,18 +126,9 @@ export default function App() {
   )
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   header: {
     flexDirection: "row",
-    backgroundColor: "#FFC60A",
-    paddingVertical: 15,
+    backgroundColor: appStyles.colors.accent2,
     paddingHorizontal: 30,
-    height: "100%",
-    width: "100%",
   },
 })
