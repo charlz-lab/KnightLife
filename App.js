@@ -14,20 +14,6 @@ const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 var isCreator = false
 
-// header component
-const HeaderHomeToggle = () => {
-  return (
-    <View style={styles.toggle}>
-      <TouchableHighlight style={[styles.highlighted, styles.options]}>
-        <Text style={styles.ibm_medium_font}>Following</Text>
-      </TouchableHighlight>
-      <TouchableHighlight style={styles.options}>
-        <Text>Discover</Text>
-      </TouchableHighlight>
-    </View>
-  )
-}
-
 // navigation for nav bar
 function NavBar() {
   return (
@@ -136,7 +122,6 @@ export default function App() {
           component={HOME}
           options={{
             headerStyle: styles.header,
-            headerTitle: () => <HeaderHomeToggle />,
           }}
         />
         <Stack.Screen
