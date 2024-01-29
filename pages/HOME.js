@@ -6,10 +6,12 @@ import {
   ScrollView,
   SafeAreaView,
   View,
-  TouchableOpacity,
+  Pressable,
+  Image,
 } from "react-native"
 import { SearchBar } from "@rneui/themed"
 import appStyles from "../styles"
+import filterIcon from "../assets/icons/fi-filter.png"
 
 const HOME = () => {
   return (
@@ -29,9 +31,9 @@ const HOME = () => {
           }}
         />
         {/* note: "touchableOpacity" is more customizable than "button" */}
-        <TouchableOpacity style={{ flex: 0.5 }}>
-          <Text>Filter</Text>
-        </TouchableOpacity>
+        <Pressable style={{ flex: 0.5, alignItems: "center" }}>
+          <Image source={filterIcon} style={{ height: 24, width: 24 }} />
+        </Pressable>
       </View>
       {/* List of event cards */}
       <StatusBar style="auto" />
