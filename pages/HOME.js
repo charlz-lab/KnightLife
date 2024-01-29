@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
+
 import { useFonts } from "expo-font";
 import appStyles from "../styles";
 import {
@@ -8,8 +9,8 @@ import {
   ScrollView,
   SafeAreaView,
   View,
-  Button, FlatList
-  TouchableOpacity,
+  Button,
+  TouchableOpacity
 } from "react-native";
 
 import EventCard from "../components/EventCard"

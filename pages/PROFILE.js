@@ -148,15 +148,7 @@ const PROFILE = ({ navigation, route }) => {
           <Text>Saved Events</Text>
         )}
         {/* display event cards */}
-        <FlatList
-          data={events}
-          renderItem={({ item }) => {
-            return <EventCard info={item} />;
-          }}
-          keyExtractor={(event) => event.id.toString()}
-          showsVerticalScrollIndicator={false}
-          style={{ paddingTop: 20 }}
-        />
+
         {/* navigate to edit profile */}
         <Pressable onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
           <Text>Edit</Text>

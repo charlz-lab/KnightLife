@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as Font from "expo-font";
+import { useFonts } from "expo-font";
 import HOME from "./pages/HOME";
 import PROFILE from "./pages/PROFILE";
 import { EDIT_PROFILE } from "./pages/PROFILE";
@@ -22,6 +23,8 @@ import EventPage from "./pages/EVENT";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 var isCreator = false;
+import appStyles from "./styles";
+
 
 // header component
 const HeaderHomeToggle = () => {
@@ -151,7 +154,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="EventsList" component={EventList} />
-        <Stack.Screen name="EventPage" component={EventPage} />
+        <Stack.Screen name="EventPage" component={EventPage} options={{ headerShown: false }} />
         <Stack.Screen name="SEARCH" component={SEARCH} />
 
         <Stack.Screen

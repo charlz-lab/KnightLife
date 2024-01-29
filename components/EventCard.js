@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
+import Ionicon from 'react-native-vector-icons/FontAwesome';
 import BookmarkButton from './BookmarkButton';
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 
 
-const EventCard = ({ event, navigation }) => {
-
-    //loadAsync google fonts
-    const [fontLoaded, setFontLoaded] = useState(false);
+const EventCard = ({ event, navigation, onBookmarkToggle }) => {
     const handlePress = () => {
         // Navigate to Event Details page with event data
         navigation.navigate('EventPage', { event });
     };
+    const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
+
+    const handleBookmarkToggle = () => {
+        setIsBookmarked(!isBookmarked);
+        onBookmarkToggle(event.id, !isBookmarked); // Notify parent component about the bookmark toggle
+    };
+    //loadAsync google fonts
+    const [fontLoaded, setFontLoaded] = useState(false);
+
     useEffect(() => {
         async function loadFont() {
             await Font.loadAsync({
                 'IBMPlexSans-Regular': require('../assets/fonts/IBMPlexSans-Regular.ttf'),
                 'IBMPlexSans-Medium': require('../assets/fonts/IBMPlexSans-Medium.ttf'),
+                'Prompt-Bold': require('../assets/fonts/Prompt-Bold.ttf')
             });
 
             setFontLoaded(true);
@@ -39,7 +47,9 @@ const EventCard = ({ event, navigation }) => {
                 <View style={[styles.cardContainer, styles.shadow]}>
                     <ImageBackground source={event.image} imageStyle={{ borderRadius: 14, width: 290 }} style={styles.imageBanner} >
                         <View style={styles.buttonContainer}>
-                            <BookmarkButton style={styles.bookmark} />
+                            <TouchableOpacity onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
+                                <Ionicon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={20} color="#FFC60A" style={styles.bookmark} />
+                            </TouchableOpacity>
                         </View>
                     </ImageBackground>
                     <View style={styles.textContainer}>
@@ -77,7 +87,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         backgroundColor: 'white',
-        position: "relative"
+
     },
     //card container style
     cardContainer: {
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         width: '90%',
         marginVertical: 10,
-        position: "relative"
+
     },
     //style the drop shadow
     shadow: {
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     //style of all text in card
     textContainer: {
         paddingHorizontal: 10,
-        flex: 1
+
     },
     //container for image and button
     imageContainer: {
@@ -115,9 +125,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
 
     },
-    bookmark: {
-        position: 'absolute'
+    bookmarkButton: {
+        paddingTop: 10,
     },
+
     title: {
 
         fontSize: 20,
