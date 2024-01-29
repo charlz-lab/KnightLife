@@ -1,7 +1,7 @@
 const appStyles = {
   colors: {
     mainBackground: "#232323",
-    foreground: "#222222",
+    foreground: "#222222 ",
     background: "#FFFFFF",
     accent1: "#080808",
     accent2: "#FFC60A",
@@ -63,5 +63,5 @@ const appStyles = {
     backgroundColor: "white",
     padding: 5,
   },
-}
-export default appStyles
+};
+export default appStyles;

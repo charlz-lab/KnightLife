@@ -1,39 +1,32 @@
-import React from "react"
 import { StatusBar } from "expo-status-bar"
+import React from "react"
+import { useFonts } from "expo-font"
+import appStyles from "../styles"
 import {
   StyleSheet,
   Text,
   ScrollView,
   SafeAreaView,
   View,
+  Button,
   TouchableOpacity,
 } from "react-native"
-import { SearchBar } from "@rneui/themed"
-import appStyles from "../styles"
 
 const HOME = () => {
+  // insert code here
+  /*"touchableOpacity" is more customizable than "button"*/
   return (
     <SafeAreaView style={styles.container}>
-      {/* Filter & search section */}
+      {/* Header */}
+      {/* Filter section */}
       <View style={styles.filters}>
-        <SearchBar
-          platform="ios"
-          containerStyle={{
-            borderRadius: 100,
-            borderWidth: 0,
-            flex: 3,
-          }}
-          inputContainerStyle={{
-            borderWidth: 0,
-            borderRadius: 100,
-          }}
-        />
-        {/* note: "touchableOpacity" is more customizable than "button" */}
-        <TouchableOpacity style={{ flex: 0.5 }}>
+        <Text style={appStyles.fonts.paragraph}>Followed Accounts</Text>
+        <TouchableOpacity style={appStyles.buttons.borders}>
           <Text>Filter</Text>
         </TouchableOpacity>
       </View>
       {/* List of event cards */}
+      {/* Navbar */}
       <StatusBar style="auto" />
     </SafeAreaView>
   )
@@ -43,16 +36,20 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     flexDirection: "column",
-    backgroundColor: appStyles.colors.background,
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
+  },
+  header: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#FFC60A",
   },
   filters: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    gap: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 30,
     paddingVertical: 10,
   },
 })
