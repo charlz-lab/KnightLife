@@ -7,6 +7,8 @@ import appStyles from "./styles"
 import { useFonts } from "expo-font"
 import NavBar from "./components/NavBar"
 const Stack = createNativeStackNavigator()
+import EventList from "./components/EventList";
+import EventPage from "./pages/EVENT";
 
 // navigation outside of nav bar
 export default function App() {
@@ -23,7 +25,20 @@ export default function App() {
         <Stack.Screen
           name="NavBar"
           component={NavBar}
-          options={{ headerStyle: styles.header, title: "" }}></Stack.Screen>
+          options={{ headerStyle: styles.header }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="HOME"
+          component={HOME}
+          options={{
+            headerStyle: styles.header,
+            headerTitle: () => <HeaderHomeToggle />,
+          }}
+        />
+        <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen name="EventPage" component={EventPage} options={{ headerShown: false }} />
+        <Stack.Screen name="SEARCH" component={SEARCH} />
+
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}

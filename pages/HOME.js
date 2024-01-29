@@ -9,10 +9,17 @@ import {
   SafeAreaView,
   View,
   Button,
-  TouchableOpacity,
-} from "react-native"
+  TouchableOpacity
+} from "react-native";
 
-const HOME = () => {
+import EventCard from "../components/EventCard"
+import EventList from "../components/EventList"
+const HOME = ({ navigation }) => {
+  const [events, setEvents] = useState([])
+  const addEvent = (newEvent) => {
+    // Update the events state with the new event
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
+  };
   // insert code here
   /*"touchableOpacity" is more customizable than "button"*/
   return (
@@ -26,9 +33,11 @@ const HOME = () => {
         </TouchableOpacity>
       </View>
       {/* List of event cards */}
-      {/* Navbar */}
-      <StatusBar style="auto" />
-    </SafeAreaView>
+      <View>
+        <EventList events={events} navigation={navigation} />
+      </View>
+
+    </SafeAreaView >
   )
 }
 const styles = StyleSheet.create({
