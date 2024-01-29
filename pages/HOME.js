@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar"
-import React from "react"
+import React, { useState } from "react"
 import { useFonts } from "expo-font"
 import appStyles from "../styles"
 import {
