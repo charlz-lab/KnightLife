@@ -6,6 +6,8 @@ import { EDIT_PROFILE } from "./pages/PROFILE"
 import appStyles from "./styles"
 import { useFonts } from "expo-font"
 import NavBar from "./components/NavBar"
+import Header from "./components/Header"
+import HOME from "./pages/HOME"
 const Stack = createNativeStackNavigator()
 
 // navigation outside of nav bar
@@ -19,11 +21,14 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen
           name="NavBar"
           component={NavBar}
-          options={{ headerStyle: styles.header, title: "" }}></Stack.Screen>
+          options={{
+            headerTitle: () => <Header />,
+            headerStyle: styles.header,
+          }}></Stack.Screen>
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
