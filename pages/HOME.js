@@ -10,10 +10,19 @@ import {
   Image,
 } from "react-native"
 import { SearchBar } from "@rneui/themed"
+import Modal from "react-native-modal"
+import FilterModal from "../components/FilterModal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
 
 const HOME = () => {
+  const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false)
+
+  const openFilterCard = () => {
+    setIsFilterModalOpen(!isFilterModalOpen)
+    console.log("Open filter")
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Filter & search section */}
@@ -30,12 +39,46 @@ const HOME = () => {
             borderRadius: 100,
           }}
         />
-        {/* note: "touchableOpacity" is more customizable than "button" */}
-        <Pressable style={{ flex: 0.5, alignItems: "center" }}>
+        {/* note: "pressable" is more customizable than "button" */}
+        <Pressable
+          onPress={openFilterCard}
+          style={{ flex: 0.5, alignItems: "center" }}>
           <Image source={filterIcon} style={{ height: 24, width: 24 }} />
         </Pressable>
       </View>
       {/* List of event cards */}
+      {/* Filter modal */}
+      {/* <FilterModal isVisible={isFilterModalOpen} /> */}
+      <Modal
+        style={styles.filterModal}
+        // isVisible={isFilterModalOpen}
+        isVisible={true}
+        onBackdropPress={() => setIsFilterModalOpen(false)}
+        onSwipeComplete={() => setIsFilterModalOpen(false)}
+        swipeDirection="down">
+        <View>
+          <View style={styles.verticalLine}>
+            <View style={styles.verticalLine}>
+              <Image source={filterIcon} style={{ height: 24, width: 24 }} />
+              <Text>Filter</Text>
+            </View>
+            <Pressable>
+              <Text>Close</Text>
+            </Pressable>
+          </View>
+          <View>
+            <View style={styles.verticalLine}>
+              <Text>Campus Location</Text>
+              <Pressable>
+                <Text>Clear</Text>
+              </Pressable>
+            </View>
+            <View>
+              <Text>Main Campus</Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <StatusBar style="auto" />
     </SafeAreaView>
   )
@@ -48,6 +91,10 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
   },
+  verticalLine: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   filters: {
     flexDirection: "row",
     alignItems: "center",
@@ -56,6 +103,17 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
+  },
+  filterModal: {
+    backgroundColor: appStyles.colors.background,
+    borderRadius: 25,
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 0,
+    maxHeight: "60%",
+    width: "100%",
+    margin: 0,
+    justifyContent: "flex-start",
+    padding: 30,
   },
 })
 export default HOME
