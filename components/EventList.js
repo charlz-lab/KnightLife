@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar"
 import React, { useState } from "react"
 import {
     StyleSheet,
@@ -8,7 +7,6 @@ import {
 } from "react-native"
 
 import EventCard from "../components/EventCard"
-import { useNavigation } from "@react-navigation/native"
 
 
 const EventList = ({ events, navigation }) => {
@@ -55,10 +53,7 @@ const EventList = ({ events, navigation }) => {
         );
         setEventData(updatedData);
     };
-    {/*function to render the event cards*/ }
-    const renderItem = ({ item }) => (
-        <EventCard event={item} onBookmarkToggle={handleBookmarkToggle} />
-    );
+
     return (
         <SafeAreaView style={styles.container}>
 

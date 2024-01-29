@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const EventCard = ({ event, navigation, onBookmarkToggle }) => {
     const handlePress = () => {
-        // Navigate to Event Details page with event data
+        // navigates to the event details page with event data
         navigation.navigate('EventPage', { event });
     };
     const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
@@ -42,11 +42,14 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
     //building card w props
 
     return (
+
         <TouchableOpacity onPress={handlePress}>
+            {/* event card info */}
             <View style={styles.container}>
                 <View style={[styles.cardContainer, styles.shadow]}>
                     <ImageBackground source={event.image} imageStyle={{ borderRadius: 14, width: 290 }} style={styles.imageBanner} >
                         <View style={styles.buttonContainer}>
+                            {/* bookmark toggle saved events, using ionicons */}
                             <TouchableOpacity onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
                                 <Ionicon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={20} color="#FFC60A" style={styles.bookmark} />
                             </TouchableOpacity>

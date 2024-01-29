@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import events from '../components/EventList';
+
 import { Card, Icon } from 'react-native-elements';
-import { useRoute } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import appStyles from '../styles';
 import Modal from 'react-native-modal';
 
@@ -23,6 +22,7 @@ const EventPage = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={event.image} style={styles.image} />
+      {/* close page button*/}
       <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
         <Icon
           name="close"
@@ -32,6 +32,7 @@ const EventPage = ({ route, navigation }) => {
           style={styles.close}
         />
       </TouchableOpacity>
+      {/* report button  */}
       <TouchableOpacity onPress={toggleModal} style={styles.reportButton}>
         <Icon
           name="alert-circle-outline"
@@ -45,7 +46,7 @@ const EventPage = ({ route, navigation }) => {
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{event.name}</Text>
         <Text style={styles.creator}>{event.creator}</Text>
-        {/* Add more details or components as needed */}
+        {/* location pin icon*/}
         <View style={styles.locationContainer}>
           <Icon
             name="location-sharp"
@@ -58,10 +59,12 @@ const EventPage = ({ route, navigation }) => {
 
         </View>
         <Text style={styles.membersGoing}>{event.membersGoing} Members Going </Text>
+        {/* description card */}
         <View>
           <Card width="225" borderRadius={12} style={[styles.shadow, styles.card]}><Text>{event.description}</Text></Card>
         </View>
       </View>
+      {/* modal for report button */}
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal} style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
