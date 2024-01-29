@@ -1,19 +1,19 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react"
 import {
   StyleSheet,
   Text,
-  View,
+  SafeAreaView,
   StatusBar,
   Image,
   Pressable,
   TextInput,
   Alert,
   FlatList,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import EventCard from "../components/EventCard";
-import DropDownPicker from "react-native-dropdown-picker";
-import events from "../components/EventList";
+} from "react-native"
+import { Picker } from "@react-native-picker/picker"
+import EventCard from "../components/EventCard"
+import DropDownPicker from "react-native-dropdown-picker"
+import events from "../components/EventList"
 
 // jane doe's profile
 let defaultProfile = {
@@ -22,11 +22,11 @@ let defaultProfile = {
   location: "UCF Downtown, Orlando",
   year: "Senior",
   major: "Marine Biology",
-};
+}
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
-  let [profile, setProfile] = useState(route.params);
+  let [profile, setProfile] = useState(route.params)
 
   const saveAlert = () =>
     Alert.alert(
@@ -41,14 +41,14 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         {
           text: "Save",
           onPress: () => {
-            navigation.navigate("Profile", { profile: profile });
-            navigation.navigate("Profile", { profile: profile });
+            navigation.navigate("Profile", { profile: profile })
+            navigation.navigate("Profile", { profile: profile })
           },
         },
       ]
-    );
+    )
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image
         source={require("../images/janeDoeProfile.png")}
         style={{ width: 100, height: 100 }}
@@ -83,41 +83,40 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       </Pressable>
       <Pressable
         onPress={() => {
-          navigation.navigate("Profile");
-        }}
-      >
+          navigation.navigate("Profile")
+        }}>
         <Text>Cancel</Text>
       </Pressable>
-    </View>
-  );
-};
+    </SafeAreaView>
+  )
+}
 
 // profile
 const PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultProfile);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("upcoming");
+  const [profile, setProfile] = useState(route.params || defaultProfile)
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState("upcoming")
   const [items, setItems] = useState([
     { label: "Upcoming", value: "upcoming" },
     { label: "Attended", value: "attended" },
     { label: "Saved", value: "saved" },
-  ]);
+  ])
 
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
+      setProfile(route.params.profile)
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
+      setProfile(route.params.profile)
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   return (
     <>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         {/* Profile info */}
         <Image
           source={require("../images/janeDoeProfile.png")}
@@ -151,7 +150,7 @@ const PROFILE = ({ navigation, route }) => {
         <FlatList
           data={events}
           renderItem={({ item }) => {
-            return <EventCard info={item} />;
+            return <EventCard info={item} />
           }}
           keyExtractor={(event) => event.id.toString()}
           showsVerticalScrollIndicator={false}
@@ -161,12 +160,12 @@ const PROFILE = ({ navigation, route }) => {
         <Pressable onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
           <Text>Edit</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
 
       <StatusBar style="auto" />
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -175,5 +174,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-});
-export default PROFILE;
+})
+export default PROFILE

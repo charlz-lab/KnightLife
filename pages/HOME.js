@@ -1,7 +1,7 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { useFonts } from "expo-font";
-import appStyles from "../styles";
+import { StatusBar } from "expo-status-bar"
+import React from "react"
+import { useFonts } from "expo-font"
+import appStyles from "../styles"
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,7 @@ import {
   View,
   Button,
   TouchableOpacity,
-} from "react-native";
+} from "react-native"
 
 const HOME = () => {
   // insert code here
@@ -27,9 +27,10 @@ const HOME = () => {
       </View>
       {/* List of event cards */}
       {/* Navbar */}
+      <StatusBar style="auto" />
     </SafeAreaView>
-  );
-};
+  )
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -51,5 +52,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
-});
-export default HOME;
+})
+export default HOME
