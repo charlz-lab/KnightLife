@@ -48,7 +48,7 @@ const appStyles = {
   },
   profileCard: {
     backgroundColor: "white",
-    width: "90%",
+    width: "85%",
     borderRadius: 12,
     paddingVertical: 17,
     paddingHorizontal: 22,
@@ -63,5 +63,5 @@ const appStyles = {
     backgroundColor: "white",
     padding: 5,
   },
-}
-export default appStyles
+};
+export default appStyles;
