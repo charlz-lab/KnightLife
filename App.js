@@ -8,11 +8,18 @@ import { useFonts } from "expo-font";
 import NavBar from "./components/NavBar";
 import Header from "./components/Header";
 import Settings from "./pages/settings_folder/SETTINGS";
+import Privacy from "./pages/settings_folder/PRIVACY";
+import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS"
+import Accessibility from "./pages/settings_folder/ACCESSIBILITY"
+import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT"
+import CreateAccount from "./pages/settings_folder/CREATEACCOUNT"
 
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
 import HOME from "./pages/HOME";
+
+
 
 // navigation outside of nav bar
 export default function App() {
@@ -51,6 +58,13 @@ export default function App() {
           component={Settings}
           options={{ title: "" }}
         ></Stack.Screen>
+
+    <Stack.Screen name="Privacy" component={Privacy} />
+    <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
+    <Stack.Screen name="Accessibility" component={Accessibility} />
+    <Stack.Screen name="EditAccount" component={EditAccount} />
+    <Stack.Screen name="CreateAccount" component={CreateAccount} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
