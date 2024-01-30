@@ -1,5 +1,6 @@
 import React from "react"
 import { StatusBar } from "expo-status-bar"
+import { useFonts } from "expo-font"
 import {
   StyleSheet,
   Text,
@@ -14,13 +15,19 @@ import Modal from "react-native-modal"
 import FilterModal from "../components/FilterModal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
+import EventCard from "../components/EventCard"
+import EventList from "../components/EventList"
 
-const HOME = () => {
+const HOME = ({ navigation }) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false)
-
   const openFilterCard = () => {
     setIsFilterModalOpen(!isFilterModalOpen)
     console.log("Open filter")
+  }
+  const [events, setEvents] = React.useState([])
+  const addEvent = (newEvent) => {
+    // Update the events state with the new event
+    setEvents((prevEvents) => [...prevEvents, newEvent])
   }
 
   return (
@@ -52,7 +59,7 @@ const HOME = () => {
       <Modal
         style={styles.filterModal}
         // isVisible={isFilterModalOpen}
-        isVisible={true}
+        isVisible={isFilterModalOpen}
         onBackdropPress={() => setIsFilterModalOpen(false)}
         onSwipeComplete={() => setIsFilterModalOpen(false)}
         swipeDirection="down">
@@ -80,6 +87,9 @@ const HOME = () => {
         </View>
       </Modal>
       <StatusBar style="auto" />
+      <View>
+        <EventList events={events} navigation={navigation} />
+      </View>
     </SafeAreaView>
   )
 }

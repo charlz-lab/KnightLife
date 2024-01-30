@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { StyleSheet, Text } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -9,6 +9,9 @@ import NavBar from "./components/NavBar"
 import Header from "./components/Header"
 
 const Stack = createNativeStackNavigator()
+import EventList from "./components/EventList"
+import EventPage from "./pages/EVENT"
+import HOME from "./pages/HOME"
 
 // navigation outside of nav bar
 export default function App() {
@@ -29,6 +32,12 @@ export default function App() {
             headerTitle: () => <Header />,
             headerStyle: styles.header,
           }}></Stack.Screen>
+        <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen
+          name="EventPage"
+          component={EventPage}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
