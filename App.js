@@ -24,12 +24,13 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen
           name="NavBar"
           component={NavBar}
           options={{
-            headerTitle: () => <Header />,
+            // headerTitle: () => <Header />,
+            title: "",
             headerStyle: styles.header,
           }}></Stack.Screen>
         <Stack.Screen name="EventsList" component={EventList} />
