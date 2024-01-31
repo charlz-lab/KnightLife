@@ -74,6 +74,7 @@ const HOME = ({ navigation }) => {
         hideModalContentWhileAnimating={true}
         style={styles.modal}>
         <View style={styles.modalCard}>
+          {/* modal header section */}
           <View style={appStyles.layout.horizontal}>
             <View style={appStyles.layout.horizontal}>
               <Image source={filterIcon} style={{ height: 24, width: 24 }} />
@@ -83,14 +84,15 @@ const HOME = ({ navigation }) => {
               <Text>Close</Text>
             </Pressable>
           </View>
+          {/* list of options */}
           <ScrollView>
             <FilterSection
               title="Campus Location"
-              options={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
+              tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
             />
             <FilterSection
               title="Event Category"
-              options={[
+              tags={[
                 "Academic",
                 "Arts",
                 "Career",

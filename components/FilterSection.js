@@ -4,9 +4,13 @@ import appStyles from "../styles"
 import Tag from "./Tag"
 
 const FilterSection = (props) => {
-  // render each option passed through props
-  const optionList = props.options.map((option, index) => (
-    <Tag name={option} key={index} />
+  // clear all filter tags
+  const [isTagForcedDisabled, setTagForceDisabled] = React.useState(false)
+  const clearList = () => setTagForceDisabled(true)
+
+  // render each tags passed through props
+  const tagsList = props.tags.map((tag, index) => (
+    <Tag name={tag} key={index} forceDisabled={isTagForcedDisabled} />
   ))
 
   return (
@@ -18,12 +22,12 @@ const FilterSection = (props) => {
           { width: "100%", marginBottom: 8 },
         ]}>
         <Text style={appStyles.fonts.heading2}>{props.title}</Text>
-        <Pressable>
+        <Pressable onPress={clearList}>
           <Text style={appStyles.fonts.actionText}>Clear</Text>
         </Pressable>
       </View>
-      {/* filter section list of options */}
-      <View style={styles.listContainer}>{optionList}</View>
+      {/* filter section list of tags */}
+      <View style={styles.listContainer}>{tagsList}</View>
     </View>
   )
 }

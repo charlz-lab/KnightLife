@@ -12,7 +12,9 @@ const Tag = (props) => {
         style={[
           appStyles.fonts.paragraph,
           styles.tag,
-          isTagEnabled ? styles.enabled : styles.disabled,
+          isTagEnabled && !props.forceDisabled
+            ? styles.enabled
+            : styles.disabled,
         ]}>
         {props.name}
       </Text>
