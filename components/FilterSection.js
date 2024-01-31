@@ -8,11 +8,6 @@ const FilterSection = (props) => {
   const [isTagEnabled, setTagEnabled] = React.useState(false)
   const clearList = () => setTagEnabled(false)
 
-  // render each tags passed through props
-  // const tagsList = props.tags.map((tag, index) => (
-  //   <Tag name={tag} key={index} forceDisabled={isTagForcedDisabled} />
-  // ))
-
   return (
     <View style={styles.listContainer}>
       {/* filter section header */}
@@ -26,15 +21,13 @@ const FilterSection = (props) => {
           <Text style={appStyles.fonts.actionText}>Clear</Text>
         </Pressable>
       </View>
+
       {/* filter section list of tags */}
       <View style={styles.listContainer}>
-        {/* {tagsList} */}
+        {/* render each tag passed through props */}
         <FlatList
           data={props.tags}
-          renderItem={({ item }) => {
-            console.log(item)
-            return <Tag name={item} enabled={isTagEnabled} />
-          }}
+          renderItem={({ item }) => <Tag name={item} enabled={isTagEnabled} />}
           contentContainerStyle={styles.listContainer}
         />
       </View>

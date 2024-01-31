@@ -10,13 +10,13 @@ import {
   Pressable,
   Image,
 } from "react-native"
-import { SearchBar } from "@rneui/themed"
 import Modal from "react-native-modal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
 import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
 import FilterSection from "../components/FilterSection"
+import SearchBar from "../components/SearchBar"
 
 const HOME = ({ navigation }) => {
   // list events
@@ -32,6 +32,11 @@ const HOME = ({ navigation }) => {
     setModalVisible(!isModalVisible)
   }
 
+  const handleSearch = (searchText) => {
+    // Implement your search logic using searchText
+    console.log("Search Text:", searchText)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Filter & search section */}
@@ -40,18 +45,7 @@ const HOME = ({ navigation }) => {
           appStyles.layout.horizontal,
           { paddingHorizontal: 10, width: "100%" },
         ]}>
-        <SearchBar
-          platform="ios"
-          containerStyle={{
-            borderRadius: 100,
-            borderWidth: 0,
-            flex: 3,
-          }}
-          inputContainerStyle={{
-            borderWidth: 0,
-            borderRadius: 100,
-          }}
-        />
+        <SearchBar onSearch={handleSearch} />
         {/* note: "pressable" is more customizable than "button" */}
         <Pressable
           onPress={toggleModal}
