@@ -16,7 +16,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import appStyles from "../styles";
 import EventList from "../components/EventList";
 
-let isCreator = false;
+let isCreator = true;
 
 // jane doe's profile
 let defaultProfile = {
@@ -328,7 +328,9 @@ const CREATOR_PROFILE = ({ navigation, route }) => {
             <Text style={appStyles.fonts.heading}>{profile.name}</Text>
             <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
             <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
-            <Text style={appStyles.fonts.paragraph}>{profile.bio}</Text>
+            <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
+              {profile.bio}
+            </Text>
             {/* style events and followers */}
             <View
               style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}
