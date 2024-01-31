@@ -30,8 +30,9 @@ const appStyles = {
     },
     // sub headings
     subHeading: {
-      fontFamily: "IBMPlexSans-Regular",
+      fontFamily: "IBMPlexSans-Bold",
       fontSize: 16,
+      textTransform: "uppercase",
     },
     // heading
     heading: {

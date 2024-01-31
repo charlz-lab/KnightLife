@@ -57,6 +57,9 @@ const HOME = ({ navigation }) => {
         </Pressable>
       </View>
       {/* List of event cards */}
+      <View>
+        <EventList events={events} navigation={navigation} />
+      </View>
       {/* Filter modal */}
       <Modal
         isVisible={isModalVisible}
@@ -70,9 +73,9 @@ const HOME = ({ navigation }) => {
         style={styles.modal}>
         <View style={styles.modalCard}>
           <View style={styles.vertical}>
-            <View style={[styles.vertical, appStyles.fonts.heading]}>
+            <View style={styles.vertical}>
               <Image source={filterIcon} style={{ height: 24, width: 24 }} />
-              <Text>Filter</Text>
+              <Text style={appStyles.fonts.subHeading}>Filter</Text>
             </View>
             <Pressable onPress={toggleModal}>
               <Text>Close</Text>
@@ -81,9 +84,6 @@ const HOME = ({ navigation }) => {
         </View>
       </Modal>
       <StatusBar style="auto" />
-      <View>
-        <EventList events={events} navigation={navigation} />
-      </View>
     </SafeAreaView>
   )
 }
