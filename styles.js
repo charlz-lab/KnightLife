@@ -5,6 +5,8 @@ const appStyles = {
     background: "#FFFFFF",
     accent1: "#080808",
     accent2: "#FFC60A",
+    lightAccent: "#FDF5E6",
+    inactive: "#E2E2E2",
   },
   buttons: {
     yellow: {
@@ -26,17 +28,37 @@ const appStyles = {
     // paragraph text
     paragraph: {
       fontFamily: "IBMPlexSans-Medium",
-      fontSize: 15,
+      fontSize: 16,
     },
     // sub headings
     subHeading: {
-      fontFamily: "IBMPlexSans-Regular",
-      fontSize: 15,
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 16,
+      textTransform: "uppercase",
     },
     // heading
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
+    },
+    // heading 2
+    heading2: {
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 16,
+    },
+    // action text
+    actionText: {
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 14,
+      color: "#676464",
+    },
+  },
+  layout: {
+    horizontal: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 10,
     },
   },
   // drop shadow
@@ -63,5 +85,5 @@ const appStyles = {
     backgroundColor: "white",
     padding: 5,
   },
-};
-export default appStyles;
+}
+export default appStyles
