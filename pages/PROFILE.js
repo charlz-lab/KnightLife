@@ -15,6 +15,8 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 import appStyles from "../styles";
 import EventList from "../components/EventList";
+import AttendingEventList from "../components/AttendingEventList";
+import SavedEventList from "../components/SavedEventList";
 
 let isCreator = false;
 
@@ -266,7 +268,19 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
           </View>
 
           {/* display event cards */}
-          <EventList events={events} navigation={navigation}></EventList>
+          {selection === "upcoming" ? (
+            <EventList events={events} navigation={navigation}></EventList>
+          ) : selection === "saved" ? (
+            <SavedEventList
+              events={events}
+              navigation={navigation}
+            ></SavedEventList>
+          ) : (
+            <AttendingEventList
+              events={events}
+              navigation={navigation}
+            ></AttendingEventList>
+          )}
           {/* navigate to edit profile */}
         </View>
       </ScrollView>
