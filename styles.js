@@ -26,12 +26,12 @@ const appStyles = {
     // paragraph text
     paragraph: {
       fontFamily: "IBMPlexSans-Medium",
-      fontSize: 15,
+      fontSize: 16,
     },
     // sub headings
     subHeading: {
       fontFamily: "IBMPlexSans-Regular",
-      fontSize: 15,
+      fontSize: 16,
     },
     // heading
     heading: {
@@ -63,5 +63,5 @@ const appStyles = {
     backgroundColor: "white",
     padding: 5,
   },
-};
-export default appStyles;
+}
+export default appStyles
