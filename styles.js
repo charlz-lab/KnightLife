@@ -23,6 +23,13 @@ const appStyles = {
       width: "25%",
       alignItems: "center",
     },
+    white: {
+      borderRadius: 20,
+      padding: 10,
+      backgroundColor: "white",
+      width: "25%",
+      alignItems: "center",
+    },
   },
   fonts: {
     // paragraph text
@@ -78,6 +85,14 @@ const appStyles = {
     alignItems: "center",
     marginVertical: 20,
   },
+  toggleContainer: {
+    flexDirection: "row",
+    columnGap: 15,
+    padding: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginBottom: 10,
+  },
   textInput: {
     borderRadius: 12,
     height: 35,
@@ -85,5 +100,5 @@ const appStyles = {
     backgroundColor: "white",
     padding: 5,
   },
-}
-export default appStyles
+};
+export default appStyles;
