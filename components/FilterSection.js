@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     flexDirection: "row",
     flexWrap: "wrap",
+    width: "100%",
   },
   tag: {
     paddingVertical: 10,
