@@ -20,6 +20,7 @@ const EventList = ({ events, navigation }) => {
             membersGoing: '14',
             dateTime: "Jan 10, 3:00PM",
             isBookmarked: true,
+            isAttending: true,
             image: require('../assets/pexels-anete-lusina-5247994.jpg'),
             id: '1',
         },
@@ -31,20 +32,11 @@ const EventList = ({ events, navigation }) => {
             membersGoing: '17',
             dateTime: "Jan 12, 2:00PM",
             isBookmarked: false,
+            isAttending: true,
             image: require('../assets/pexels-lars-mai-4815483.jpg'),
             id: '2',
         },
-        {
-            name: 'Game Knights: Arcade Monsters',
-            creator: 'Gaming Knights',
-            location: 'Oviedo, FL',
-            description: 'Gear up for a night of pixelated glory and joystick jousting as Gaming Knights Club takes over Arcade Monsters! Join us for an unforgettable gaming experience where medieval meets modern in an epic clash of controllers and camaraderie.',
-            membersGoing: '23',
-            dateTime: "Jan 16, 6:30PM",
-            isBookmarked: false,
-            image: require('../assets/pexels-cottonbro-studio-4835419.jpg'),
-            id: '3',
-        }]
+    ]
     const [eventData, setEventData] = useState(events);
     {/*toggle the bookmarked events*/ }
     const handleBookmarkToggle = (eventId, isBookmarked) => {

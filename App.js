@@ -13,6 +13,8 @@ const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
 import HOME from "./pages/HOME";
+import SavedEventList from "./components/SavedEventList";
+import AttendingEventList from "./components/AttendingEventList";
 
 // navigation outside of nav bar
 export default function App() {
@@ -36,6 +38,8 @@ export default function App() {
           }}
         ></Stack.Screen>
         <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen name="SavedEventList" component={SavedEventList} />
+        <Stack.Screen name="AttendingEventList" component={AttendingEventList} />
         <Stack.Screen
           name="EventPage"
           component={EventPage}

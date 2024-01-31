@@ -17,7 +17,8 @@ import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
 import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
-
+import SavedEventList from "../components/SavedEventList"
+import AttendingEventList from "../components/AttendingEventList"
 const HOME = ({ navigation }) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false)
   const openFilterCard = () => {
