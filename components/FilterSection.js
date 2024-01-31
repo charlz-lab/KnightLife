@@ -1,17 +1,17 @@
 import React from "react"
-import { View, Text, Pressable, StyleSheet } from "react-native"
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import appStyles from "../styles"
 import Tag from "./Tag"
 
 const FilterSection = (props) => {
   // clear all filter tags
-  const [isTagForcedDisabled, setTagForceDisabled] = React.useState(false)
-  const clearList = () => setTagForceDisabled(true)
+  const [isTagEnabled, setTagEnabled] = React.useState(false)
+  const clearList = () => setTagEnabled(false)
 
   // render each tags passed through props
-  const tagsList = props.tags.map((tag, index) => (
-    <Tag name={tag} key={index} forceDisabled={isTagForcedDisabled} />
-  ))
+  // const tagsList = props.tags.map((tag, index) => (
+  //   <Tag name={tag} key={index} forceDisabled={isTagForcedDisabled} />
+  // ))
 
   return (
     <View style={styles.listContainer}>
@@ -27,7 +27,17 @@ const FilterSection = (props) => {
         </Pressable>
       </View>
       {/* filter section list of tags */}
-      <View style={styles.listContainer}>{tagsList}</View>
+      <View style={styles.listContainer}>
+        {/* {tagsList} */}
+        <FlatList
+          data={props.tags}
+          renderItem={({ item }) => {
+            console.log(item)
+            return <Tag name={item} enabled={isTagEnabled} />
+          }}
+          contentContainerStyle={styles.listContainer}
+        />
+      </View>
     </View>
   )
 }

@@ -5,17 +5,17 @@ import CREATE_EVENTS from "../pages/CREATE_EVENTS"
 import HOME from "../pages/HOME"
 import PROFILE from "../pages/PROFILE"
 import appStyles from "../styles"
-import { StyleSheet, View, Platform } from "react-native";
+import { StyleSheet, View, Platform } from "react-native"
 
 const Tab = createBottomTabNavigator()
-let isCreator = true
+let isCreator = false
 
 function NavBar() {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: appStyles.colors.mainBackground }
+        tabBarStyle: { backgroundColor: appStyles.colors.mainBackground },
       }}>
       {isCreator ? (
         <>
@@ -25,22 +25,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
-                if(focused){
+                if (focused) {
                   return (
-                    <View style = {styles.tabSelected}><Image
-                    style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-br-addYellow.png")
-                    }
-                  /></View>
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-br-addYellow.png")}
+                      />
+                    </View>
                   )
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-br-add.png")
-                    }
+                    source={require("../assets/icons/fi-br-add.png")}
                   />
                 )
               },
@@ -52,22 +50,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
-                if(focused){
+                if (focused) {
                   return (
-                    <View style = {styles.tabSelected}><Image
-                    style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-bs-profileYellow.png")
-                    }
-                  /></View>
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-bs-profileYellow.png")}
+                      />
+                    </View>
                   )
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-bs-profile.png")
-                    }
+                    source={require("../assets/icons/fi-bs-profile.png")}
                   />
                 )
               },
@@ -82,22 +78,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
-                if(focused){
+                if (focused) {
                   return (
-                    <View style = {styles.tabSelected}><Image
-                    style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-ss-homeYellow.png")
-                    }
-                  /></View>
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-ss-homeYellow.png")}
+                      />
+                    </View>
                   )
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-ss-home.png")
-                    }
+                    source={require("../assets/icons/fi-ss-home.png")}
                   />
                 )
               },
@@ -109,22 +103,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
-                if(focused){
+                if (focused) {
                   return (
-                    <View style = {styles.tabSelected}><Image
-                    style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-bs-profileYellow.png")
-                    }
-                  /></View>
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-bs-profileYellow.png")}
+                      />
+                    </View>
                   )
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={
-                      require("../assets/icons/fi-bs-profile.png")
-                    }
+                    source={require("../assets/icons/fi-bs-profile.png")}
                   />
                 )
               },
@@ -141,17 +133,17 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.mainBackground,
     ...Platform.select({
       ios: {
-        shadowColor: 'rgba(0,0,0, .7)',
-        shadowOffset: { height:5, width:5 },
+        shadowColor: "rgba(0,0,0, .7)",
+        shadowOffset: { height: 5, width: 5 },
         shadowOpacity: 5,
         shadowRadius: 5,
       },
       android: {
         elevation: 5,
-        shadowColor: 'rgba(0,0,0, .7)',
+        shadowColor: "rgba(0,0,0, .7)",
       },
     }),
   },
-});
+})
 
 export default NavBar

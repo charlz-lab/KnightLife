@@ -3,7 +3,7 @@ import { Text, Pressable, StyleSheet } from "react-native"
 import appStyles from "../styles"
 
 const Tag = (props) => {
-  const [isTagEnabled, setTagEnabled] = React.useState(false)
+  const [isTagEnabled, setTagEnabled] = React.useState(props.enabled)
   const toggleTag = () => setTagEnabled(!isTagEnabled)
 
   return (
@@ -12,9 +12,7 @@ const Tag = (props) => {
         style={[
           appStyles.fonts.paragraph,
           styles.tag,
-          isTagEnabled && !props.forceDisabled
-            ? styles.enabled
-            : styles.disabled,
+          isTagEnabled ? styles.enabled : styles.disabled,
         ]}>
         {props.name}
       </Text>
