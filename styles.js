@@ -5,6 +5,7 @@ const appStyles = {
     background: "#FFFFFF",
     accent1: "#080808",
     accent2: "#FFC60A",
+    lightAccent: "#FDF5E6",
     inactive: "#E2E2E2",
   },
   buttons: {

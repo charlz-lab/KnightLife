@@ -1,18 +1,17 @@
 import React from "react"
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import appStyles from "../styles"
+import Tag from "./Tag"
 
 const FilterSection = (props) => {
+  // render each option passed through props
   const optionList = props.options.map((option, index) => (
-    <Pressable id={index}>
-      <Text style={[appStyles.fonts.paragraph, styles.tag, styles.disabled]}>
-        {option}
-      </Text>
-    </Pressable>
+    <Tag name={option} key={index} />
   ))
 
   return (
     <View style={styles.listContainer}>
+      {/* filter section header */}
       <View
         style={[
           appStyles.layout.horizontal,
@@ -23,6 +22,7 @@ const FilterSection = (props) => {
           <Text style={appStyles.fonts.actionText}>Clear</Text>
         </Pressable>
       </View>
+      {/* filter section list of options */}
       <View style={styles.listContainer}>{optionList}</View>
     </View>
   )
@@ -35,16 +35,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
-  },
-  tag: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderWidth: 2,
-    borderRadius: 22,
-    textAlign: "center",
-  },
-  disabled: {
-    borderColor: appStyles.colors.inactive,
   },
 })
 
