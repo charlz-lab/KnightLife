@@ -12,12 +12,11 @@ import {
 } from "react-native"
 import { SearchBar } from "@rneui/themed"
 import Modal from "react-native-modal"
-// import Animated, { Easing } from "react-native-reanimated"
-// import FilterModal from "../components/FilterModal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
 import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
+import FilterSection from "../components/FilterSection"
 
 const HOME = ({ navigation }) => {
   // list events
@@ -36,7 +35,11 @@ const HOME = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Filter & search section */}
-      <View style={styles.topLine}>
+      <View
+        style={[
+          appStyles.layout.horizontal,
+          { paddingHorizontal: 10, width: "100%" },
+        ]}>
         <SearchBar
           platform="ios"
           containerStyle={{
@@ -63,17 +66,16 @@ const HOME = ({ navigation }) => {
       {/* Filter modal */}
       <Modal
         isVisible={isModalVisible}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        animationInTiming={500}
-        animationOutTiming={500}
-        backdropTransitionInTiming={500}
-        backdropTransitionOutTiming={500}
+        animationInTiming={300}
+        animationOutTiming={300}
+        backdropTransitionInTiming={400}
+        backdropTransitionOutTiming={400}
         onBackdropPress={toggleModal}
+        hideModalContentWhileAnimating={true}
         style={styles.modal}>
         <View style={styles.modalCard}>
-          <View style={styles.vertical}>
-            <View style={styles.vertical}>
+          <View style={appStyles.layout.horizontal}>
+            <View style={appStyles.layout.horizontal}>
               <Image source={filterIcon} style={{ height: 24, width: 24 }} />
               <Text style={appStyles.fonts.subHeading}>Filter</Text>
             </View>
@@ -81,6 +83,26 @@ const HOME = ({ navigation }) => {
               <Text>Close</Text>
             </Pressable>
           </View>
+          <ScrollView>
+            <FilterSection
+              title="Campus Location"
+              options={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
+            />
+            <FilterSection
+              title="Event Category"
+              options={[
+                "Academic",
+                "Arts",
+                "Career",
+                "Entertainment",
+                "Recreation",
+                "Social",
+                "Sports",
+                "Volunteer",
+                "Other",
+              ]}
+            />
+          </ScrollView>
         </View>
       </Modal>
       <StatusBar style="auto" />
@@ -95,20 +117,6 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
   },
-  vertical: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 10,
-  },
-  topLine: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    gap: 10,
-    paddingHorizontal: 10,
-  },
   modal: {
     margin: 0,
     padding: 0,
@@ -121,6 +129,8 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
     width: "100%",
+    maxHeight: "70%",
+    gap: 30,
   },
 })
 export default HOME

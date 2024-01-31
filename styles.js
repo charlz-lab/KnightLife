@@ -5,6 +5,7 @@ const appStyles = {
     background: "#FFFFFF",
     accent1: "#080808",
     accent2: "#FFC60A",
+    inactive: "#E2E2E2",
   },
   buttons: {
     yellow: {
@@ -38,6 +39,25 @@ const appStyles = {
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
+    },
+    // heading 2
+    heading2: {
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 16,
+    },
+    // action text
+    actionText: {
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 14,
+      color: "#676464",
+    },
+  },
+  layout: {
+    horizontal: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 10,
     },
   },
   // drop shadow
