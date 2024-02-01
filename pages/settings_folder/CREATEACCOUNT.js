@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import appStyles from '../../styles';
 
 const CreateAccount = () => {
   const [username, setUsername] = useState('');
@@ -18,22 +19,23 @@ const CreateAccount = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Account</Text>
+      <Text style={appStyles.fonts.heading}>Add Account</Text>
+
       <TextInput
-        style={styles.input}
+        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="Enter username"
         value={username}
         onChangeText={(text) => setUsername(text)}
       />
       <TextInput
-        style={styles.input}
+        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="Enter password"
         secureTextEntry
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <TouchableOpacity style={styles.createButton} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}>Create Account</Text>
+      <TouchableOpacity style={appStyles.buttons.yellow} onPress={handleCreateAccount}>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,21 +45,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'top',
+    padding: 16,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  margin: {
+    marginTop: 15,
+    marginBottom: 15,
   },
-  input: {
-    width: '80%',
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderRadius: 8,
-  },
+
+
   createButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -65,9 +61,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2ecc71', // Create Account button color
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#000',
+    fontSize: 15,
+    fontFamily: "IBMPlexSans-Medium",
   },
 });
 

@@ -15,6 +15,9 @@ const appStyles = {
       alignItems: "center",
     },
     black: {
+      marginTop: 20,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
       borderRadius: 20,
       padding: 10,
       backgroundColor: "black",
@@ -46,6 +49,11 @@ const appStyles = {
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
+  shawdowInput: {
+    shadowColor: "#000000",
+    shadowOpacity: 0.40,
+    shadowRadius: 3,
+  },
   profileCard: {
     backgroundColor: "white",
     width: "85%",
@@ -57,10 +65,13 @@ const appStyles = {
     marginVertical: 20,
   },
   textInput: {
+    alignItems: "center",
     borderRadius: 12,
     height: 35,
     width: "70%",
     backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     padding: 5,
   },
 };
