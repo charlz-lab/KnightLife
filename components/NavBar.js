@@ -5,6 +5,8 @@ import CREATE_EVENTS from "../pages/CREATE_EVENTS"
 import HOME from "../pages/HOME"
 import PROFILE from "../pages/PROFILE"
 import appStyles from "../styles"
+import { StyleSheet, View, Platform } from "react-native"
+
 const Tab = createBottomTabNavigator()
 let isCreator = false
 
@@ -23,12 +25,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
+                if (focused) {
+                  return (
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-br-addYellow.png")}
+                      />
+                    </View>
+                  )
+                }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={{
-                      uri: require("../assets/icons/fi-br-add.png"),
-                    }}
+                    source={require("../assets/icons/fi-br-add.png")}
                   />
                 )
               },
@@ -40,12 +50,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
+                if (focused) {
+                  return (
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-bs-profileYellow.png")}
+                      />
+                    </View>
+                  )
+                }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={{
-                      uri: require("../assets/icons/fi-bs-profile.png"),
-                    }}
+                    source={require("../assets/icons/fi-bs-profile.png")}
                   />
                 )
               },
@@ -60,12 +78,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
+                if (focused) {
+                  return (
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-ss-homeYellow.png")}
+                      />
+                    </View>
+                  )
+                }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={{
-                      uri: require("../assets/icons/fi-ss-home.png"),
-                    }}
+                    source={require("../assets/icons/fi-ss-home.png")}
                   />
                 )
               },
@@ -77,12 +103,20 @@ function NavBar() {
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
+                if (focused) {
+                  return (
+                    <View style={styles.tabSelected}>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={require("../assets/icons/fi-bs-profileYellow.png")}
+                      />
+                    </View>
+                  )
+                }
                 return (
                   <Image
                     style={{ width: size, height: size }}
-                    source={{
-                      uri: require("../assets/icons/fi-bs-profile.png"),
-                    }}
+                    source={require("../assets/icons/fi-bs-profile.png")}
                   />
                 )
               },
@@ -93,4 +127,23 @@ function NavBar() {
     </Tab.Navigator>
   )
 }
+
+const styles = StyleSheet.create({
+  tabSelected: {
+    backgroundColor: appStyles.colors.mainBackground,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .7)",
+        shadowOffset: { height: 5, width: 5 },
+        shadowOpacity: 5,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 5,
+        shadowColor: "rgba(0,0,0, .7)",
+      },
+    }),
+  },
+})
+
 export default NavBar
