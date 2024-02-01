@@ -1,9 +1,7 @@
-// SettingsScreen.js
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Privacy from './PRIVACY';
-
+import appStyles from '../../styles';
 const Settings = () => {
   const navigation = useNavigation();
 
@@ -23,15 +21,41 @@ const Settings = () => {
     navigation.navigate('EditAccount');
   };
 
+  const signOut = () => {
+    // login page
+  };
+
   return (
-    <View>
-      <Text>Settings Screen</Text>
-      <Button title="Privacy" onPress={navigateToPrivacy} />
-      <Button title="Add/Switch Accounts" onPress={navigateToAddSwitchAccounts} />
-      <Button title="Accessibility" onPress={navigateToAccessibility} />
-      <Button title="Edit Account" onPress={navigateToEditAccount} />
+    <View style={styles.container}>
+      <Text style={appStyles.fonts.heading}>Settings Screen</Text>
+      <TouchableOpacity style={[appStyles.profileCard, appStyles.shawdowInput]} onPress={navigateToPrivacy}>
+        <Text>Privacy</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[appStyles.profileCard, appStyles.shawdowInput]} onPress={navigateToAddSwitchAccounts}>
+        <Text>Add/Switch Accounts</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[appStyles.profileCard, appStyles.shawdowInput]} onPress={navigateToAccessibility}>
+        <Text>Accessibility</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[appStyles.profileCard, appStyles.shawdowInput]} onPress={navigateToEditAccount}>
+        <Text>Edit Account</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[appStyles.buttons.yellow]} onPress={signOut}>
+        <Text>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+ 
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'colum',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+});
 
 export default Settings;
+
+

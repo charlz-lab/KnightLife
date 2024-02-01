@@ -1,6 +1,7 @@
 // EditAccount.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import appStyles from '../../styles';
 
 const EditAccount = () => {
   const [newUsername, setNewUsername] = useState('');
@@ -8,36 +9,37 @@ const EditAccount = () => {
   const [newPassword, setNewPassword] = useState('');
 
   const handleSaveChanges = () => {
-    // Implement logic to save the changes (e.g., update user data in the backend)
     console.log('New Username:', newUsername);
     console.log('New Email:', newEmail);
     console.log('New Password:', newPassword);
-    // You can add API calls or other logic to update the user's data
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Edit Account</Text>
+      <Text style={appStyles.fonts.heading}>Edit Account</Text>
       <TextInput
-        style={styles.input}
+        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="New Username"
+        placeholderTextColor="gray"
         value={newUsername}
         onChangeText={(text) => setNewUsername(text)}
       />
       <TextInput
-        style={styles.input}
+        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="New Email"
+        placeholderTextColor="gray"
         value={newEmail}
         onChangeText={(text) => setNewEmail(text)}
       />
       <TextInput
-        style={styles.input}
-        placeholder="New Password"
+        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
+        placeholder ="New Password"
+        placeholderTextColor="gray"
         secureTextEntry
         value={newPassword}
         onChangeText={(text) => setNewPassword(text)}
       />
-      <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
+      <TouchableOpacity style={appStyles.buttons.yellow} onPress={handleSaveChanges}>
         <Text style={styles.buttonText}>Save Changes</Text>
       </TouchableOpacity>
     </View>
@@ -50,10 +52,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'top',
     padding: 16,
-    
   },
-  title: {
-    fontSize: 24,
+  margin: {
+    marginTop: 20,
     marginBottom: 20,
   },
   input: {
@@ -65,16 +66,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 8,
   },
-  saveButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    backgroundColor: '#2ecc71', // Save Changes button color
-  },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#000',
+    fontFamily: "IBMPlexSans-Medium",
+    fontSize: 15,
   },
 });
 

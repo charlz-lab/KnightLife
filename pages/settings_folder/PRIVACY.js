@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import appStyles from '../../styles';
 
 const Privacy = () => {
   const [isPublic, setIsPublic] = useState(false);
@@ -10,25 +11,25 @@ const Privacy = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Account Privacy:</Text>
+      <Text style={[appStyles.fonts.heading, styles.margin]}>Account Privacy:</Text>
       <TouchableOpacity
         style={[
-          styles.toggleButton,
+          appStyles.buttons.yellow,
           {
-            backgroundColor: isPublic ? '#2ecc71' : '#f1c40f',
+            backgroundColor: isPublic ? '#FFC60A' : '#E2E2E2',
             borderColor: isPublic ? '#27ae60' : '#d4ac0d',
           },
         ]}
         onPress={togglePrivacy}
       >
-        <Text style={[styles.buttonText, { color: isPublic ? '#fff' : '#333' }]}>
+        <Text style={[appStyles.fonts.paragraph, { color: isPublic ? '#fff' : '#333' }]}>
           {isPublic ? 'Public' : 'Private'}
         </Text>
       </TouchableOpacity>
       
-      <Text style={styles.privacyText}>
+      <Text style={[appStyles.fonts.paragraph, styles.margin2]}>
         Your account is set to {isPublic ? 'public' : 'private'}.{'\n'}
-        {isPublic ? 'Anyone can see your profile.' : 'Only approved followers can see your profile.'}
+        {isPublic ? 'Anyone can see your profile and events.' : 'Only the followers that you approve will be able to see your profile and events.'}
       </Text>
     </View>
   );
@@ -41,22 +42,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
   },
-  label: {
-    fontSize: 16,
+  margin: {
+    marginBottom: 15,
   },
-  toggleButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  privacyText: {
-    marginTop: 20,
-    textAlign: 'center',
+  margin2: {
+    marginTop: 15,
+    alignContent: 'center'
   },
 });
 

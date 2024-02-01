@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import appStyles from '../styles';
 
 // Define a functional component named UserProfileForm
 const UserProfileForm = () => {
@@ -71,12 +72,12 @@ const UserProfileForm = () => {
   return (
     
     <View style={styles.container}>
-      <Text style={styles.heading}>Create an event</Text>
+      <Text style={appStyles.fonts.heading}>Create an event</Text>
 
 
       {/* Name */}
       <TextInput
-        style={styles.input}
+        style={[appStyles.profileCard, appStyles.shawdowInput, styles.margin]}
         placeholder="Name"
         onChangeText={handleNameChange}
         value={name}
@@ -84,7 +85,7 @@ const UserProfileForm = () => {
       />
       {/* TextInput for bio input */}
       <TextInput
-        style={styles.input}
+        style={[appStyles.profileCard, appStyles.shawdowInput, styles.margin]}
         placeholder="Location"
         onChangeText={handleInput2Change}
         value={input2}
@@ -92,7 +93,7 @@ const UserProfileForm = () => {
       />
       {/* TextInput for description input */}
       <TextInput
-        style={styles.input}
+        style={[appStyles.profileCard, appStyles.shawdowInput, styles.margin]}
         placeholder="Date"
         onChangeText={handleInput3Change}
         value={input3}
@@ -100,28 +101,23 @@ const UserProfileForm = () => {
       />
       {/* Additional TextInput boxes */}
       <TextInput
-        style={styles.input}
+        style={[appStyles.profileCard, appStyles.shawdowInput, styles.margin]}
         placeholder="Time"
         onChangeText={handleInput4Change}
         value={input4}
         multiline={true}
       />
       <TextInput
-        style={styles.input}
+        style={[appStyles.profileCard, appStyles.shawdowInput, styles.margin]}
         placeholder="Description"
         onChangeText={handleInput5Change}
         value={input5}
         multiline={true}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="External links"
-        onChangeText={handleInput6Change}
-        value={input6}
-        multiline={true}
-      />
-     {/* Button to trigger an action with the entered information */}
-     <Button title="Submit" onPress={handleButtonPress} />
+
+     <TouchableOpacity style={[appStyles.buttons.yellow]} onPress={handleButtonPress}>
+        <Text>Submit</Text>
+      </TouchableOpacity>
       
       
     </View>
@@ -136,12 +132,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingTop: 25,
-    marginBottom: 2,
+  margin: {
+    marginTop: 10,
+    marginBottom: 10,
   },
+
   input: {
     height: 40,
     borderColor: 'gray',
