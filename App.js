@@ -6,6 +6,7 @@ import { EDIT_PROFILE } from "./pages/PROFILE"
 import appStyles from "./styles"
 import { useFonts } from "expo-font"
 import NavBar from "./components/NavBar"
+import SplashScreen from "./components/SplashScreen"
 import Header from "./components/Header"
 import Settings from "./pages/settings_folder/SETTINGS"
 import Privacy from "./pages/settings_folder/PRIVACY"
@@ -13,6 +14,8 @@ import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS"
 import Accessibility from "./pages/settings_folder/ACCESSIBILITY"
 import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT"
 import CreateAccount from "./pages/settings_folder/CREATEACCOUNT"
+import LoginScreen from "./components/LoginScreen"
+import RegisterScreen from "./components/RegisterScreen"
 
 const Stack = createNativeStackNavigator()
 import EventList from "./components/EventList"
@@ -20,6 +23,34 @@ import EventPage from "./pages/EVENT"
 import HOME from "./pages/HOME"
 import SavedEventList from "./components/SavedEventList";
 import AttendingEventList from "./components/AttendingEventList";
+
+const Auth = () => {
+  // Stack Navigator for Login and Sign up Screen
+  return (
+    <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterScreen"
+        component={RegisterScreen}
+        options={{
+          title: 'Register', //Set Header Title
+          headerStyle: {
+            backgroundColor: '#307ecc', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 
 // navigation outside of nav bar
 export default function App() {
@@ -33,7 +64,18 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: true }}>
+      <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen}
+          // Hiding header for Splash Screen
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Auth"
+          component={Auth}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="NavBar"
           component={NavBar}
