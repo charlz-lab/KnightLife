@@ -232,8 +232,20 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <TouchableOpacity
               style={
                 selection === "upcoming"
-                  ? appStyles.buttons.yellow
-                  : appStyles.buttons.white
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
               }
               onPress={() => setSelection("upcoming")}
             >
@@ -244,8 +256,20 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <TouchableOpacity
               style={
                 selection === "saved"
-                  ? appStyles.buttons.yellow
-                  : appStyles.buttons.white
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
               }
               onPress={() => setSelection("saved")}
             >
@@ -256,8 +280,20 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <TouchableOpacity
               style={
                 selection === "attended"
-                  ? appStyles.buttons.yellow
-                  : appStyles.buttons.white
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
               }
               onPress={() => setSelection("attended")}
             >
