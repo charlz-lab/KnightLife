@@ -6,7 +6,7 @@ import HOME from "../pages/HOME"
 import PROFILE from "../pages/PROFILE"
 import appStyles from "../styles"
 const Tab = createBottomTabNavigator()
-let isCreator = true
+let isCreator = false
 
 function NavBar() {
   return (
