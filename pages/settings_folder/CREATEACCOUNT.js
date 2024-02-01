@@ -24,12 +24,14 @@ const CreateAccount = () => {
       <TextInput
         style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="Enter username"
+        placeholderTextColor="gray"
         value={username}
         onChangeText={(text) => setUsername(text)}
       />
       <TextInput
         style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="Enter password"
+        placeholderTextColor="gray"
         secureTextEntry
         value={password}
         onChangeText={(text) => setPassword(text)}

@@ -20,18 +20,21 @@ const EditAccount = () => {
       <TextInput
         style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="New Username"
+        placeholderTextColor="gray"
         value={newUsername}
         onChangeText={(text) => setNewUsername(text)}
       />
       <TextInput
         style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
         placeholder="New Email"
+        placeholderTextColor="gray"
         value={newEmail}
         onChangeText={(text) => setNewEmail(text)}
       />
       <TextInput
         style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
-        placeholder="New Password"
+        placeholder ="New Password"
+        placeholderTextColor="gray"
         secureTextEntry
         value={newPassword}
         onChangeText={(text) => setNewPassword(text)}

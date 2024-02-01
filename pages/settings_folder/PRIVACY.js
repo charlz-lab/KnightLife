@@ -27,7 +27,7 @@ const Privacy = () => {
         </Text>
       </TouchableOpacity>
       
-      <Text style={[appStyles.fonts.paragraph, styles.margin]}>
+      <Text style={[appStyles.fonts.paragraph, styles.margin2]}>
         Your account is set to {isPublic ? 'public' : 'private'}.{'\n'}
         {isPublic ? 'Anyone can see your profile and events.' : 'Only the followers that you approve will be able to see your profile and events.'}
       </Text>
@@ -43,8 +43,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   margin: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 15,
+  },
+  margin2: {
+    marginTop: 15,
+    alignContent: 'center'
   },
 });
 

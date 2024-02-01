@@ -13,7 +13,7 @@ const Accessibility = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={appStyles.fonts.heading}>Accessibility Screen</Text>
+      <Text style={[appStyles.fonts.heading, styles.margin]}>Accessibility Screen</Text>
       <TouchableOpacity
         style={[
           styles.darkModeButton,
@@ -41,9 +41,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  margin: {
+    marginBottom: 15,
   },
   darkModeButton: {
     padding: 10,

@@ -54,10 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
   },
-  title: {
-    fontSize: 20,
-    marginBottom: 15,
-  },
 });
 
 export default Settings;

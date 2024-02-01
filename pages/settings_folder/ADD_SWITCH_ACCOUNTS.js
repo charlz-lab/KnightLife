@@ -37,7 +37,6 @@ const AddSwitchAccounts = ({ navigation }) => {
         ))}
 
       <TouchableOpacity style={appStyles.buttons.black} onPress={navigateToCreateAccount}>
-        
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
     </View>

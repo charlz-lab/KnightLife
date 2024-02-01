@@ -11,7 +11,7 @@ const appStyles = {
       borderRadius: 20,
       padding: 10,
       backgroundColor: "#FFC60A",
-      width: "25%",
+      width: "70%",
       alignItems: "center",
     },
     black: {
@@ -21,7 +21,7 @@ const appStyles = {
       borderRadius: 20,
       padding: 10,
       backgroundColor: "black",
-      width: "25%",
+      width: "70%",
       alignItems: "center",
     },
   },
@@ -51,7 +51,7 @@ const appStyles = {
   },
   shawdowInput: {
     shadowColor: "#000000",
-    shadowOpacity: 0.40,
+    shadowOpacity: 0.08,
     shadowRadius: 3,
   },
   profileCard: {
