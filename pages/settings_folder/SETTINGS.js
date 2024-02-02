@@ -21,8 +21,8 @@ const Settings = () => {
     navigation.navigate('EditAccount');
   };
 
-  const signOut = () => {
-    // login page
+  const navigateToLoginScreen = () => {
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -40,7 +40,7 @@ const Settings = () => {
       <TouchableOpacity style={[appStyles.profileCard, appStyles.shawdowInput]} onPress={navigateToEditAccount}>
         <Text>Edit Account</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[appStyles.buttons.yellow]} onPress={signOut}>
+      <TouchableOpacity style={[appStyles.buttons.yellow]} onPress={navigateToLoginScreen}>
         <Text>Sign Out</Text>
       </TouchableOpacity>
     </View>
