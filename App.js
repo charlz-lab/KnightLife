@@ -38,7 +38,16 @@ const Auth = () => {
       <Stack.Screen
         name="AccountType"
         component={AccountType}
-        options={{headerShown: false}}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
       />
       <Stack.Screen
         name="RegisterScreenPersonal"

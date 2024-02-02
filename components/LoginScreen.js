@@ -113,7 +113,7 @@ const LoginScreen = ({navigation}) => {
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
             <Text
-              style={appStyles.fonts.paragraphLogin}
+              style={appStyles.fonts.heading2}
               onPress={() => navigation.navigate("AccountType")}>
               New Here ? Register
             </Text>
