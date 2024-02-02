@@ -33,6 +33,17 @@ const appStyles = {
       width: "25%",
       alignItems: "center",
     },
+    yellowLogin:{
+      borderRadius: 20,
+      padding: 10,
+      backgroundColor: "#FFC60A",
+      width: "70%",
+      alignItems: "center",
+      marginLeft: 35,
+      marginRight: 35,
+      marginTop: 20,
+      marginBottom: 20,
+    }
   },
   fonts: {
     // paragraph text
@@ -46,10 +57,21 @@ const appStyles = {
       fontSize: 16,
       textTransform: "uppercase",
     },
+    subHeadingTwo: {
+      fontFamily: "IBMPlexSans-Bold",
+      fontSize: 16,
+      textTransform: "uppercase",
+      marginBottom: 30,
+    },
     // heading
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
+    },
+    headingTwo: {
+      fontFamily: "Prompt-Bold",
+      fontSize: 40,
+      marginBottom:75
     },
     // heading 2
     heading2: {
@@ -69,6 +91,11 @@ const appStyles = {
       justifyContent: "space-between",
       alignItems: "center",
       gap: 10,
+    },
+    section: {
+      width:"100%",
+      justifyContent:"center",
+      alignItems:"center"
     },
   },
   // drop shadow

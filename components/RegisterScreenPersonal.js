@@ -10,9 +10,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import appStyles from '../styles';
 
-
-const RegisterScreen = (props) => {
+const RegisterScreenPersonal = (props) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAge, setUserAge] = useState('');
@@ -53,7 +53,7 @@ const RegisterScreen = (props) => {
       return;
     }
     //Show Loader
-    
+
     var dataToSend = {
       name: userName,
       email: userEmail,
@@ -76,31 +76,33 @@ const RegisterScreen = (props) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: appStyles.colors.background,
           justifyContent: 'center',
         }}>
         <Image
-          source={require('../images/janeDoeProfile.png')}
+          source={require('../assets/icons/Group_33596.png')}
           style={{
-            height: 150,
+            height: 100,
             resizeMode: 'contain',
             alignSelf: 'center'
           }}
         />
-        <Text style={styles.successTextStyle}>
+      <View style={appStyles.layout.section}>
+        <Text style={appStyles.fonts.subHeadingTwo}>
           Registration Successful
         </Text>
         <TouchableOpacity
-          style={styles.buttonStyle}
+          style={appStyles.buttons.yellow}
           activeOpacity={0.5}
           onPress={() => props.navigation.navigate('LoginScreen')}>
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
+        </View>
       </View>
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#307ecc'}}>
+    <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -109,9 +111,9 @@ const RegisterScreen = (props) => {
         }}>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={require('../images/janeDoeProfile.png')}
+            source={require('../assets/icons/Group_33596.png')}
             style={{
-              width: '50%',
+              width: '110%',
               height: 100,
               resizeMode: 'contain',
               margin: 30,
@@ -208,18 +210,20 @@ const RegisterScreen = (props) => {
               {errortext}
             </Text>
           ) : null}
+          <View style={appStyles.layout.section}>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={appStyles.buttons.yellowLogin}
             activeOpacity={0.5}
             onPress={handleSubmitButton}>
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
   );
 };
-export default RegisterScreen;
+export default RegisterScreenPersonal;
 
 const styles = StyleSheet.create({
   SectionStyle: {
@@ -250,7 +254,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: 'black',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,

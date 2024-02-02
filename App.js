@@ -15,7 +15,9 @@ import Accessibility from "./pages/settings_folder/ACCESSIBILITY"
 import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT"
 import CreateAccount from "./pages/settings_folder/CREATEACCOUNT"
 import LoginScreen from "./components/LoginScreen"
-import RegisterScreen from "./components/RegisterScreen"
+import RegisterScreenPersonal from "./components/RegisterScreenPersonal"
+import RegisterScreenCreator from "./components/RegisterScreenCreator"
+import AccountType from "./components/AccountType"
 
 const Stack = createNativeStackNavigator()
 import EventList from "./components/EventList"
@@ -34,14 +36,33 @@ const Auth = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="RegisterScreen"
-        component={RegisterScreen}
+        name="AccountType"
+        component={AccountType}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterScreenPersonal"
+        component={RegisterScreenPersonal}
         options={{
-          title: 'Register', //Set Header Title
+          title: '',
           headerStyle: {
-            backgroundColor: '#307ecc', //Set Header color
+            backgroundColor: appStyles.colors.accent2, //Set Header color
           },
-          headerTintColor: '#fff', //Set Header text color
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+       <Stack.Screen
+        name="RegisterScreenCreator"
+        component={RegisterScreenCreator}
+        options={{
+          title: '', //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },

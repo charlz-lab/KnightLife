@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
+import appStyles from '../styles';
 
 const LoginScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
@@ -54,9 +55,9 @@ const LoginScreen = ({navigation}) => {
           <KeyboardAvoidingView enabled>
             <View style={{alignItems: 'center'}}>
               <Image
-                source={require('../images/janeDoeProfile.png')}
+                source={require('../assets/icons/Group_33596.png')}
                 style={{
-                  width: '50%',
+                  width: '100%',
                   height: 100,
                   resizeMode: 'contain',
                   margin: 30,
@@ -104,17 +105,19 @@ const LoginScreen = ({navigation}) => {
                 {errortext}
               </Text>
             ) : null}
+            <View style={appStyles.layout.section}>
             <TouchableOpacity
-              style={styles.buttonStyle}
+              style={appStyles.buttons.yellowLogin}
               activeOpacity={0.5}
               onPress={handleSubmitPress}>
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
             <Text
-              style={styles.registerTextStyle}
-              onPress={() => navigation.navigate("RegisterScreen")}>
+              style={appStyles.fonts.paragraphLogin}
+              onPress={() => navigation.navigate("AccountType")}>
               New Here ? Register
             </Text>
+            </View>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: '#FFFFFF',
     alignContent: 'center',
   },
   SectionStyle: {
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: 'black',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
