@@ -28,6 +28,7 @@ let defaultProfile = {
   year: "Senior",
   major: "Marine Biology",
   pic: require("../images/janeDoeProfile.png"),
+  isCreator: false,
 };
 
 // creator profile
@@ -58,7 +59,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         {
           text: "Save",
           onPress: () => {
-            navigation.navigate("Profile", { profile: profile });
+            isCreator
+              ? navigation.navigate("Creator Profile", { profile: profile })
+              : navigation.navigate("Personal Profile", { profile: profile });
           },
         },
       ]
@@ -188,11 +191,13 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   useEffect(() => {
     if (route.params?.profile) {
       setProfile(route.params.profile);
+      console.log("profile changed");
     }
   }, [route.params?.profile]);
 
   return (
     <>
+      {console.log(profile.isCreator)}
       <ScrollView>
         <View style={styles.profileContainer}>
           <View style={[appStyles.profileCard, appStyles.shadow]}>
@@ -325,7 +330,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   );
 };
 
-const CREATOR_PROFILE = ({ navigation, route }) => {
+export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator);
   const [events, setEvents] = useState([]);
   const [selection, setSelection] = useState("upcoming");
@@ -445,24 +450,6 @@ const CREATOR_PROFILE = ({ navigation, route }) => {
   );
 };
 
-const PROFILE = ({ navigation }) => {
-  return (
-    <>
-      {isCreator ? (
-        <CREATOR_PROFILE
-          navigation={navigation}
-          route={defaultCreator}
-        ></CREATOR_PROFILE>
-      ) : (
-        <PERSONAL_PROFILE
-          route={defaultProfile}
-          navigation={navigation}
-        ></PERSONAL_PROFILE>
-      )}
-    </>
-  );
-};
-
 const styles = StyleSheet.create({
   editContainer: {
     flex: 1,
@@ -480,4 +467,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default PROFILE;
