@@ -12,13 +12,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import appStyles from "../styles";
 import EventList from "../components/EventList";
 import AttendingEventList from "../components/AttendingEventList";
 import SavedEventList from "../components/SavedEventList";
-
-let isCreator = false;
 
 // jane doe's profile
 let defaultProfile = {
@@ -40,6 +37,7 @@ let defaultCreator = {
   eventsNum: 14,
   followersNum: 1746,
   pic: require("../images/chessClubPic.png"),
+  isCreator: true,
 };
 
 // edit profile page
@@ -59,7 +57,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         {
           text: "Save",
           onPress: () => {
-            isCreator
+            profile.isCreator
               ? navigation.navigate("Creator Profile", { profile: profile })
               : navigation.navigate("Personal Profile", { profile: profile });
           },
@@ -117,7 +115,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               appStyles.shadow,
             ]}
           />
-          {isCreator ? (
+          {profile.isCreator ? (
             <>
               <Text style={appStyles.fonts.subHeading}>Bio:</Text>
               <TextInput
@@ -169,7 +167,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
             onPress={() => {
-              navigation.navigate("Profile");
+              profile.isCreator
+                ? navigation.navigate("Creator Profile")
+                : navigation.navigate("Personal Profile");
             }}
           >
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
@@ -188,6 +188,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [events, setEvents] = useState([]);
   const [selection, setSelection] = useState("upcoming");
 
+  // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
       setProfile(route.params.profile);
@@ -197,7 +198,6 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
 
   return (
     <>
-      {console.log(profile.isCreator)}
       <ScrollView>
         <View style={styles.profileContainer}>
           <View style={[appStyles.profileCard, appStyles.shadow]}>
@@ -322,7 +322,6 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               navigation={navigation}
             ></AttendingEventList>
           )}
-          {/* navigate to edit profile */}
         </View>
       </ScrollView>
       <StatusBar style="auto" />
@@ -335,6 +334,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [events, setEvents] = useState([]);
   const [selection, setSelection] = useState("upcoming");
 
+  // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
       setProfile(route.params.profile);
@@ -442,7 +442,15 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
         </View>
 
         {/* display event cards */}
-        <EventList events={events} navigation={navigation}></EventList>
+        {selection === "upcoming" ? (
+          <EventList events={events} navigation={navigation}></EventList>
+        ) : (
+          // replace with past
+          <SavedEventList
+            events={events}
+            navigation={navigation}
+          ></SavedEventList>
+        )}
         {/* navigate to edit profile */}
       </View>
       <StatusBar style="auto" />

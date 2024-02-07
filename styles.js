@@ -10,10 +10,12 @@ const appStyles = {
   },
   buttons: {
     yellow: {
+      marginTop: 20,
       borderRadius: 20,
-      padding: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
       backgroundColor: "#FFC60A",
-      width: "70%",
+      width: "25%",
       alignItems: "center",
     },
     black: {
@@ -23,7 +25,7 @@ const appStyles = {
       borderRadius: 20,
       padding: 10,
       backgroundColor: "black",
-      width: "70%",
+      width: "25%",
       alignItems: "center",
     },
     white: {
@@ -33,7 +35,7 @@ const appStyles = {
       width: "25%",
       alignItems: "center",
     },
-    yellowLogin:{
+    yellowLogin: {
       borderRadius: 20,
       padding: 10,
       backgroundColor: "#FFC60A",
@@ -43,7 +45,7 @@ const appStyles = {
       marginRight: 35,
       marginTop: 20,
       marginBottom: 20,
-    }
+    },
   },
   fonts: {
     // paragraph text
@@ -71,7 +73,7 @@ const appStyles = {
     headingTwo: {
       fontFamily: "Prompt-Bold",
       fontSize: 40,
-      marginBottom:75
+      marginBottom: 75,
     },
     // heading 2
     heading2: {
@@ -93,9 +95,9 @@ const appStyles = {
       gap: 10,
     },
     section: {
-      width:"100%",
-      justifyContent:"center",
-      alignItems:"center"
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
     },
   },
   // drop shadow
