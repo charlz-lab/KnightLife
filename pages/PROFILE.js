@@ -10,8 +10,8 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import appStyles from "../styles";
 import EventList from "../components/EventList";
 import AttendingEventList from "../components/AttendingEventList";
@@ -198,131 +198,132 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
 
   return (
     <>
-      <View style={styles.profileContainer}>
-        <View style={[appStyles.profileCard, appStyles.shadow]}>
-          <View
-            style={{
-              flexDirection: "row-reverse",
-              alignSelf: "flex-end",
-              columnGap: 10,
-            }}
-          >
-            <Pressable onPress={() => navigation.navigate("Settings")}>
-              <Image
-                source={require("../assets/icons/fi-br-settings.png")}
-                style={{ width: 21, height: 21 }}
-              ></Image>
-            </Pressable>
-            <Pressable
-              onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
+      <ScrollView>
+        <View style={styles.profileContainer}>
+          <View style={[appStyles.profileCard, appStyles.shadow]}>
+            <View
+              style={{
+                flexDirection: "row-reverse",
+                alignSelf: "flex-end",
+                columnGap: 10,
+              }}
             >
-              <Image
-                source={require("../assets/icons/fi-br-edit.png")}
-                style={{ width: 20, height: 20 }}
-              ></Image>
-            </Pressable>
+              <Pressable onPress={() => navigation.navigate("Settings")}>
+                <Image
+                  source={require("../assets/icons/fi-br-settings.png")}
+                  style={{ width: 21, height: 21 }}
+                ></Image>
+              </Pressable>
+              <Pressable
+                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
+              >
+                <Image
+                  source={require("../assets/icons/fi-br-edit.png")}
+                  style={{ width: 20, height: 20 }}
+                ></Image>
+              </Pressable>
+            </View>
+            {/* Profile info */}
+            <Image source={profile.pic} style={{ width: 125, height: 125 }} />
+            <Text style={appStyles.fonts.heading}>{profile.name}</Text>
+            <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
+            <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
+            <Text style={appStyles.fonts.paragraph}>
+              {profile.year} - {profile.major}
+            </Text>
           </View>
-          {/* Profile info */}
-          <Image source={profile.pic} style={{ width: 125, height: 125 }} />
-          <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
-          <Text style={appStyles.fonts.paragraph}>
-            {profile.year} - {profile.major}
-          </Text>
-        </View>
-        {/* Upcoming / attended / saved toggle*/}
-        <View style={[appStyles.toggleContainer, appStyles.shadow]}>
-          <TouchableOpacity
-            style={
-              selection === "upcoming"
-                ? {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "#FFC60A",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-                : {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-            }
-            onPress={() => setSelection("upcoming")}
-          >
-            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-              Upcoming
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              selection === "saved"
-                ? {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "#FFC60A",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-                : {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-            }
-            onPress={() => setSelection("saved")}
-          >
-            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-              Saved
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              selection === "attended"
-                ? {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "#FFC60A",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-                : {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-                    width: "25%",
-                    alignItems: "center",
-                  }
-            }
-            onPress={() => setSelection("attended")}
-          >
-            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-              Attended
-            </Text>
-          </TouchableOpacity>
-        </View>
+          {/* Upcoming / attended / saved toggle*/}
+          <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+            <TouchableOpacity
+              style={
+                selection === "upcoming"
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+              }
+              onPress={() => setSelection("upcoming")}
+            >
+              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+                Upcoming
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selection === "saved"
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+              }
+              onPress={() => setSelection("saved")}
+            >
+              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+                Saved
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selection === "attended"
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "25%",
+                      alignItems: "center",
+                    }
+              }
+              onPress={() => setSelection("attended")}
+            >
+              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+                Attended
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* display event cards */}
-        {selection === "upcoming" ? (
-          <EventList events={events} navigation={navigation}></EventList>
-        ) : selection === "saved" ? (
-          <SavedEventList
-            events={events}
-            navigation={navigation}
-          ></SavedEventList>
-        ) : (
-          <AttendingEventList
-            events={events}
-            navigation={navigation}
-          ></AttendingEventList>
-        )}
-      </View>
-
+          {/* display event cards */}
+          {selection === "upcoming" ? (
+            <EventList events={events} navigation={navigation}></EventList>
+          ) : selection === "saved" ? (
+            <SavedEventList
+              events={events}
+              navigation={navigation}
+            ></SavedEventList>
+          ) : (
+            <AttendingEventList
+              events={events}
+              navigation={navigation}
+            ></AttendingEventList>
+          )}
+        </View>
+      </ScrollView>
       <StatusBar style="auto" />
     </>
   );
