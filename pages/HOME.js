@@ -30,6 +30,12 @@ const HOME = ({ navigation }) => {
   // enable filter modal
   const [isModalVisible, setModalVisible] = React.useState(false)
   const toggleModal = () => {
+    console.log(process.env.EXPO_PUBLIC_SERVER_URL)
+    fetch(process.env.EXPO_PUBLIC_SERVER_URL + "/index.php/user/list?limit=20",{
+      method:"GET"
+        }).then((response)=>response.json()).then((responsejson)=>{
+          console.log(responsejson)
+        })
     setModalVisible(!isModalVisible)
   }
 
