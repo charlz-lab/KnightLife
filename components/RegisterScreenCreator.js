@@ -81,20 +81,39 @@ const RegisterScreenCreator = (props) => {
           backgroundColor: appStyles.colors.background,
           justifyContent: "center",
           flexDirection: "column",
-          rowGap: 20,
+          rowGap: 30,
         }}
       >
-        <Text style={[appStyles.fonts.headingTwo, { textAlign: "center" }]}>
-          Customize {"\n"} your Profile
+        <Text
+          style={[
+            appStyles.fonts.headingTwo,
+            { textAlign: "center", marginTop: -40 },
+          ]}
+        >
+          Customize your {"\n"} Profile
         </Text>
-        <Image
-          source={require("../images/profilePic_placeholder.png")}
-          style={{
-            height: 100,
-            resizeMode: "contain",
-            alignSelf: "center",
-          }}
-        />
+        <View>
+          <Image
+            source={require("../images/profilePic_placeholder.png")}
+            style={{
+              height: 100,
+              resizeMode: "contain",
+              alignSelf: "center",
+            }}
+          />
+          <Text
+            style={[
+              appStyles.fonts.paragraph,
+              {
+                textAlign: "center",
+                marginTop: 5,
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            Add profile picture
+          </Text>
+        </View>
         <View>
           <View style={styles.SectionStyle}>
             <TextInput
@@ -150,7 +169,11 @@ const RegisterScreenCreator = (props) => {
             <Text style={styles.buttonTextStyle}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[appStyles.buttons.yellowLogin, appStyles.shadow]}
+            style={[
+              appStyles.buttons.yellowNoWidth,
+              appStyles.shadow,
+              { width: "35%" },
+            ]}
             activeOpacity={0.5}
             onPress={handleCreateProfileButton}
           >
@@ -167,6 +190,8 @@ const RegisterScreenCreator = (props) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignContent: "center",
+          flexDirection: "column",
+          rowGap: 60,
         }}
       >
         <View style={{ alignItems: "center", paddingTop: 40 }}>
@@ -219,30 +244,30 @@ const RegisterScreenCreator = (props) => {
                 blurOnSubmit={false}
               />
             </View>
-            {errortext != "" ? (
-              <Text style={styles.errorTextStyle}>{errortext}</Text>
-            ) : null}
-            <View
-              style={[
-                appStyles.layout.section,
-                { flexDirection: "row", columnGap: 15 },
-              ]}
+          </View>
+          {errortext != "" ? (
+            <Text style={styles.errorTextStyle}>{errortext}</Text>
+          ) : null}
+          <View
+            style={[
+              appStyles.layout.section,
+              { flexDirection: "row", columnGap: 15, marginTop: 30 },
+            ]}
+          >
+            <TouchableOpacity
+              style={[styles.goBack, appStyles.shadow]}
+              activeOpacity={0.5}
+              onPress={() => props.navigation.goBack()}
             >
-              <TouchableOpacity
-                style={[styles.goBack, appStyles.shadow]}
-                activeOpacity={0.5}
-                onPress={() => props.navigation.goBack()}
-              >
-                <Text style={styles.buttonTextStyle}>Go Back</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[appStyles.buttons.yellowLogin, appStyles.shadow]}
-                activeOpacity={0.5}
-                onPress={handleCreateAccButton}
-              >
-                <Text style={styles.buttonTextStyle}>Create Account</Text>
-              </TouchableOpacity>
-            </View>
+              <Text style={styles.buttonTextStyle}>Go Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.accBttn, appStyles.shadow]}
+              activeOpacity={0.5}
+              onPress={handleCreateAccButton}
+            >
+              <Text style={styles.buttonTextStyle}>Create Account</Text>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -277,6 +302,7 @@ const styles = StyleSheet.create({
     color: "black",
     paddingVertical: 10,
     fontSize: 16,
+    fontFamily: "IBMPlexSans-Medium",
   },
   inputStyle: {
     flex: 1,
@@ -305,6 +331,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#E2E2E2",
     width: "35%",
+    alignItems: "center",
+  },
+  accBttn: {
+    marginTop: 20,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#FFC60A",
+    width: "40%",
     alignItems: "center",
   },
 });

@@ -110,15 +110,29 @@ const LoginScreen = ({ navigation }) => {
                   activeOpacity={0.5}
                   onPress={handleSubmitPress}
                 >
-                  <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                  <Text
+                    style={[
+                      appStyles.fonts.paragraph,
+                      { color: "black", paddingVertical: 10 },
+                    ]}
+                  >
+                    Login
+                  </Text>
                 </TouchableOpacity>
                 <Text
-                  style={[appStyles.fonts.heading2, { color: "white" }]}
+                  style={[
+                    appStyles.fonts.paragraph,
+                    {
+                      color: "white",
+                      marginTop: 10,
+                      textDecorationLine: "underline",
+                    },
+                  ]}
                   onPress={() =>
                     navigation.navigate("Auth", { screen: "AccountType" })
                   }
                 >
-                  New Here ? Register
+                  New Here? Register
                 </Text>
               </View>
             </KeyboardAvoidingView>
