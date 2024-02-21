@@ -12,13 +12,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import appStyles from "../styles";
 import EventList from "../components/EventList";
 import AttendingEventList from "../components/AttendingEventList";
 import SavedEventList from "../components/SavedEventList";
-
-let isCreator = false;
 
 // jane doe's profile
 let defaultProfile = {
@@ -28,6 +25,7 @@ let defaultProfile = {
   year: "Senior",
   major: "Marine Biology",
   pic: require("../images/janeDoeProfile.png"),
+  isCreator: false,
 };
 
 // creator profile
@@ -39,6 +37,7 @@ let defaultCreator = {
   eventsNum: 14,
   followersNum: 1746,
   pic: require("../images/chessClubPic.png"),
+  isCreator: true,
 };
 
 // edit profile page
@@ -58,7 +57,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         {
           text: "Save",
           onPress: () => {
-            navigation.navigate("Profile", { profile: profile });
+            profile.isCreator
+              ? navigation.navigate("Creator Profile", { profile: profile })
+              : navigation.navigate("Personal Profile", { profile: profile });
           },
         },
       ]
@@ -67,7 +68,12 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
     <>
       <View style={styles.editContainer}>
         <View
-          style={{ flexDirection: "column", rowGap: 10, alignItems: "center" }}
+          style={{
+            flexDirection: "column",
+            rowGap: 5,
+            alignItems: "center",
+            marginTop: 25,
+          }}
         >
           <Image source={profile.pic} style={{ width: 125, height: 125 }} />
           <Text style={appStyles.fonts.paragraph}>Change photo</Text>
@@ -81,78 +87,70 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           }}
         >
           <Text style={appStyles.fonts.subHeading}>Profile Name:</Text>
-          <TextInput
-            value={profile.name}
-            onChangeText={(value) => setProfile({ ...profile, name: value })}
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.name}
+              onChangeText={(value) => setProfile({ ...profile, name: value })}
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+              placeholder="Profile Name"
+              placeholderTextColor={"black"}
+            />
+          </View>
           <Text style={appStyles.fonts.subHeading}>Username:</Text>
-          <TextInput
-            value={profile.username}
-            onChangeText={(value) =>
-              setProfile({ ...profile, username: value })
-            }
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.username}
+              onChangeText={(value) =>
+                setProfile({ ...profile, username: value })
+              }
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+            />
+          </View>
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
-          <TextInput
-            value={profile.location}
-            onChangeText={(value) =>
-              setProfile({ ...profile, location: value })
-            }
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
-          {isCreator ? (
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.location}
+              onChangeText={(value) =>
+                setProfile({ ...profile, location: value })
+              }
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+            />
+          </View>
+          {profile.isCreator ? (
             <>
               <Text style={appStyles.fonts.subHeading}>Bio:</Text>
-              <TextInput
-                value={profile.bio}
-                onChangeText={(value) => setProfile({ ...profile, bio: value })}
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.bio}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, bio: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
             </>
           ) : (
             <>
               <Text style={appStyles.fonts.subHeading}>Year:</Text>
-              <TextInput
-                value={profile.year}
-                onChangeText={(value) =>
-                  setProfile({ ...profile, year: value })
-                }
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.year}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, year: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
               <Text style={appStyles.fonts.subHeading}>Major:</Text>
-              <TextInput
-                value={profile.major}
-                onChangeText={(value) =>
-                  setProfile({ ...profile, major: value })
-                }
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.major}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, major: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
             </>
           )}
         </View>
@@ -166,7 +164,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
             onPress={() => {
-              navigation.navigate("Profile");
+              profile.isCreator
+                ? navigation.navigate("Creator Profile")
+                : navigation.navigate("Personal Profile");
             }}
           >
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
@@ -185,151 +185,152 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [events, setEvents] = useState([]);
   const [selection, setSelection] = useState("upcoming");
 
+  // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
       setProfile(route.params.profile);
+      console.log("profile changed");
     }
   }, [route.params?.profile]);
 
   return (
     <>
-      <ScrollView>
-        <View style={styles.profileContainer}>
-          <View style={[appStyles.profileCard, appStyles.shadow]}>
-            <View
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                columnGap: 10,
-              }}
+      <View style={styles.profileContainer}>
+        <View style={[appStyles.profileCard, appStyles.shadow]}>
+          <View
+            style={{
+              flexDirection: "row-reverse",
+              alignSelf: "flex-end",
+              columnGap: 10,
+            }}
+          >
+            <Pressable onPress={() => navigation.navigate("Settings")}>
+              <Image
+                source={require("../assets/icons/fi-br-settings.png")}
+                style={{ width: 21, height: 21 }}
+              ></Image>
+            </Pressable>
+            <Pressable
+              onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
             >
-              <Pressable onPress={() => navigation.navigate("Settings")}>
-                <Image
-                  source={require("../assets/icons/fi-br-settings.png")}
-                  style={{ width: 21, height: 21 }}
-                ></Image>
-              </Pressable>
-              <Pressable
-                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
-              >
-                <Image
-                  source={require("../assets/icons/fi-br-edit.png")}
-                  style={{ width: 20, height: 20 }}
-                ></Image>
-              </Pressable>
-            </View>
-            {/* Profile info */}
-            <Image source={profile.pic} style={{ width: 125, height: 125 }} />
-            <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-            <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
-            <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
-            <Text style={appStyles.fonts.paragraph}>
-              {profile.year} - {profile.major}
-            </Text>
+              <Image
+                source={require("../assets/icons/fi-br-edit.png")}
+                style={{ width: 20, height: 20 }}
+              ></Image>
+            </Pressable>
           </View>
-          {/* Upcoming / attended / saved toggle*/}
-          <View style={[appStyles.toggleContainer, appStyles.shadow]}>
-            <TouchableOpacity
-              style={
-                selection === "upcoming"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("upcoming")}
-            >
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Upcoming
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                selection === "saved"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("saved")}
-            >
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Saved
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                selection === "attended"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("attended")}
-            >
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Attended
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* display event cards */}
-          {selection === "upcoming" ? (
-            <EventList events={events} navigation={navigation}></EventList>
-          ) : selection === "saved" ? (
-            <SavedEventList
-              events={events}
-              navigation={navigation}
-            ></SavedEventList>
-          ) : (
-            <AttendingEventList
-              events={events}
-              navigation={navigation}
-            ></AttendingEventList>
-          )}
-          {/* navigate to edit profile */}
+          {/* Profile info */}
+          <Image source={profile.pic} style={{ width: 125, height: 125 }} />
+          <Text style={appStyles.fonts.heading}>{profile.name}</Text>
+          <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
+          <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
+          <Text style={appStyles.fonts.paragraph}>
+            {profile.year} - {profile.major}
+          </Text>
         </View>
-      </ScrollView>
+        {/* Upcoming / attended / saved toggle*/}
+        <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+          <TouchableOpacity
+            style={
+              selection === "upcoming"
+                ? {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+                : {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+            }
+            onPress={() => setSelection("upcoming")}
+          >
+            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+              Upcoming
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              selection === "saved"
+                ? {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+                : {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+            }
+            onPress={() => setSelection("saved")}
+          >
+            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+              Saved
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              selection === "attended"
+                ? {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+                : {
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
+            }
+            onPress={() => setSelection("attended")}
+          >
+            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+              Attended
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* display event cards */}
+        {selection === "upcoming" ? (
+          <EventList events={events} navigation={navigation}></EventList>
+        ) : selection === "saved" ? (
+          <SavedEventList
+            events={events}
+            navigation={navigation}
+          ></SavedEventList>
+        ) : (
+          <AttendingEventList
+            events={events}
+            navigation={navigation}
+          ></AttendingEventList>
+        )}
+      </View>
+
       <StatusBar style="auto" />
     </>
   );
 };
 
-const CREATOR_PROFILE = ({ navigation, route }) => {
+export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator);
   const [events, setEvents] = useState([]);
   const [selection, setSelection] = useState("upcoming");
 
+  // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
       setProfile(route.params.profile);
@@ -437,28 +438,18 @@ const CREATOR_PROFILE = ({ navigation, route }) => {
         </View>
 
         {/* display event cards */}
-        <EventList events={events} navigation={navigation}></EventList>
+        {selection === "upcoming" ? (
+          <EventList events={events} navigation={navigation}></EventList>
+        ) : (
+          // replace with past
+          <SavedEventList
+            events={events}
+            navigation={navigation}
+          ></SavedEventList>
+        )}
         {/* navigate to edit profile */}
       </View>
       <StatusBar style="auto" />
-    </>
-  );
-};
-
-const PROFILE = ({ navigation }) => {
-  return (
-    <>
-      {isCreator ? (
-        <CREATOR_PROFILE
-          navigation={navigation}
-          route={defaultCreator}
-        ></CREATOR_PROFILE>
-      ) : (
-        <PERSONAL_PROFILE
-          route={defaultProfile}
-          navigation={navigation}
-        ></PERSONAL_PROFILE>
-      )}
     </>
   );
 };
@@ -470,7 +461,6 @@ const styles = StyleSheet.create({
     rowGap: 45,
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
-    justifyContent: "center",
   },
   profileContainer: {
     flex: 1,
@@ -480,4 +470,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default PROFILE;

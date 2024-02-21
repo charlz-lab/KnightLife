@@ -10,10 +10,12 @@ const appStyles = {
   },
   buttons: {
     yellow: {
+      marginTop: 20,
       borderRadius: 20,
-      padding: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
       backgroundColor: "#FFC60A",
-      width: "70%",
+      width: "25%",
       alignItems: "center",
     },
     black: {
@@ -23,7 +25,7 @@ const appStyles = {
       borderRadius: 20,
       padding: 10,
       backgroundColor: "black",
-      width: "70%",
+      width: "25%",
       alignItems: "center",
     },
     white: {
@@ -33,17 +35,23 @@ const appStyles = {
       width: "25%",
       alignItems: "center",
     },
-    yellowLogin:{
-      borderRadius: 20,
-      padding: 10,
-      backgroundColor: "#FFC60A",
-      width: "70%",
-      alignItems: "center",
-      marginLeft: 35,
-      marginRight: 35,
+    yellowLogin: {
       marginTop: 20,
-      marginBottom: 20,
-    }
+      borderRadius: 30,
+      paddingVertical: 0,
+      paddingHorizontal: 0,
+      backgroundColor: "#FFC60A",
+      width: "80%",
+      alignItems: "center",
+    },
+    yellowNoWidth: {
+      marginTop: 20,
+      borderRadius: 30,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      backgroundColor: "#FFC60A",
+      alignItems: "center",
+    },
   },
   fonts: {
     // paragraph text
@@ -55,7 +63,6 @@ const appStyles = {
     subHeading: {
       fontFamily: "IBMPlexSans-Bold",
       fontSize: 16,
-      textTransform: "uppercase",
     },
     subHeadingTwo: {
       fontFamily: "IBMPlexSans-Bold",
@@ -71,7 +78,6 @@ const appStyles = {
     headingTwo: {
       fontFamily: "Prompt-Bold",
       fontSize: 40,
-      marginBottom:75
     },
     // heading 2
     heading2: {
@@ -93,9 +99,9 @@ const appStyles = {
       gap: 10,
     },
     section: {
-      width:"100%",
-      justifyContent:"center",
-      alignItems:"center"
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
     },
   },
   // drop shadow
@@ -129,14 +135,20 @@ const appStyles = {
     marginBottom: 10,
   },
   textInput: {
-    alignItems: "center",
-    borderRadius: 12,
-    height: 35,
-    width: "70%",
+    flex: 1,
+    color: "black",
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: "#dadae8",
     backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 5,
+  },
+  sectionStyle: {
+    flexDirection: "row",
+    height: 40,
+    marginLeft: 35,
+    marginRight: 35,
   },
 };
 export default appStyles;

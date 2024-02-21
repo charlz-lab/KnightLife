@@ -1,6 +1,6 @@
-import React from "react"
-import { StatusBar } from "expo-status-bar"
-import { useFonts } from "expo-font"
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import {
   StyleSheet,
   Text,
@@ -9,34 +9,45 @@ import {
   View,
   Pressable,
   Image,
-} from "react-native"
-import Modal from "react-native-modal"
-import appStyles from "../styles"
-import filterIcon from "../assets/icons/fi-filter.png"
-import EventCard from "../components/EventCard"
-import EventList from "../components/EventList"
-import FilterSection from "../components/FilterSection"
-import SearchBar from "../components/SearchBar"
-import SavedEventList from "../components/SavedEventList"
-import AttendingEventList from "../components/AttendingEventList"
+} from "react-native";
+import Modal from "react-native-modal";
+import appStyles from "../styles";
+import filterIcon from "../assets/icons/fi-filter.png";
+import EventCard from "../components/EventCard";
+import EventList from "../components/EventList";
+import FilterSection from "../components/FilterSection";
+import SearchBar from "../components/SearchBar";
+import SavedEventList from "../components/SavedEventList";
+import AttendingEventList from "../components/AttendingEventList";
 const HOME = ({ navigation }) => {
   // list events
-  const [events, setEvents] = React.useState([])
+  const [events, setEvents] = React.useState([]);
   const addEvent = (newEvent) => {
     // Update the events state with the new event
-    setEvents((prevEvents) => [...prevEvents, newEvent])
-  }
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
+  };
 
   // enable filter modal
-  const [isModalVisible, setModalVisible] = React.useState(false)
+  const [isModalVisible, setModalVisible] = React.useState(false);
   const toggleModal = () => {
-    setModalVisible(!isModalVisible)
-  }
+    console.log(process.env.EXPO_PUBLIC_SERVER_URL);
+    fetch(
+      process.env.EXPO_PUBLIC_SERVER_URL + "/index.php/user/list?limit=20",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((responsejson) => {
+        console.log(responsejson);
+      });
+    setModalVisible(!isModalVisible);
+  };
 
   const handleSearch = (searchText) => {
     // Implement your search logic using searchText
-    console.log("Search Text:", searchText)
-  }
+    console.log("Search Text:", searchText);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -45,12 +56,14 @@ const HOME = ({ navigation }) => {
         style={[
           appStyles.layout.horizontal,
           { paddingHorizontal: 10, width: "100%" },
-        ]}>
+        ]}
+      >
         <SearchBar onSearch={handleSearch} />
         {/* note: "pressable" is more customizable than "button" */}
         <Pressable
           onPress={toggleModal}
-          style={{ flex: 0.5, alignItems: "center" }}>
+          style={{ flex: 0.5, alignItems: "center" }}
+        >
           <Image source={filterIcon} style={{ height: 24, width: 24 }} />
         </Pressable>
       </View>
@@ -67,7 +80,8 @@ const HOME = ({ navigation }) => {
         backdropTransitionOutTiming={400}
         onBackdropPress={toggleModal}
         hideModalContentWhileAnimating={true}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={styles.modalCard}>
           {/* modal header section */}
           <View style={appStyles.layout.horizontal}>
@@ -80,32 +94,30 @@ const HOME = ({ navigation }) => {
             </Pressable>
           </View>
           {/* list of options */}
-          <ScrollView>
-            <FilterSection
-              title="Campus Location"
-              tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
-            />
-            <FilterSection
-              title="Event Category"
-              tags={[
-                "Academic",
-                "Arts",
-                "Career",
-                "Entertainment",
-                "Recreation",
-                "Social",
-                "Sports",
-                "Volunteer",
-                "Other",
-              ]}
-            />
-          </ScrollView>
+          <FilterSection
+            title="Campus Location"
+            tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
+          />
+          <FilterSection
+            title="Event Category"
+            tags={[
+              "Academic",
+              "Arts",
+              "Career",
+              "Entertainment",
+              "Recreation",
+              "Social",
+              "Sports",
+              "Volunteer",
+              "Other",
+            ]}
+          />
         </View>
       </Modal>
       <StatusBar style="auto" />
     </SafeAreaView>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -129,5 +141,5 @@ const styles = StyleSheet.create({
     maxHeight: "70%",
     gap: 30,
   },
-})
-export default HOME
+});
+export default HOME;

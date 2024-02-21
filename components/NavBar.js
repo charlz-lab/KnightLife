@@ -1,22 +1,30 @@
-import React from "react"
-import { Image } from "react-native-elements"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import CREATE_EVENTS from "../pages/CREATE_EVENTS"
-import HOME from "../pages/HOME"
-import PROFILE from "../pages/PROFILE"
-import appStyles from "../styles"
-import { StyleSheet, View, Platform } from "react-native"
+import React from "react";
+import { Image } from "react-native-elements";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CREATE_EVENTS from "../pages/CREATE_EVENTS";
+import HOME from "../pages/HOME";
+import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE";
+import appStyles from "../styles";
+import { StyleSheet, View, Platform } from "react-native";
 
+<<<<<<< HEAD
 const Tab = createBottomTabNavigator()
 let isCreator = true
+=======
+const Tab = createBottomTabNavigator();
+// let isCreator = false;
+>>>>>>> 103f21ba443751346f92e7a72cf2e9159f3c81e6
 
-function NavBar() {
+function NavBar({ route }) {
+  let isCreator = route.params.isCreator;
+  console.log(isCreator);
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: { backgroundColor: appStyles.colors.mainBackground },
-      }}>
+      }}
+    >
       {isCreator ? (
         <>
           <Tab.Screen
@@ -33,20 +41,20 @@ function NavBar() {
                         source={require("../assets/icons/fi-br-addYellow.png")}
                       />
                     </View>
-                  )
+                  );
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
                     source={require("../assets/icons/fi-br-add.png")}
                   />
-                )
+                );
               },
             }}
           />
           <Tab.Screen
-            name="Profile"
-            component={PROFILE}
+            name="Creator Profile"
+            component={CREATOR_PROFILE}
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
@@ -58,14 +66,14 @@ function NavBar() {
                         source={require("../assets/icons/fi-bs-profileYellow.png")}
                       />
                     </View>
-                  )
+                  );
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
                     source={require("../assets/icons/fi-bs-profile.png")}
                   />
-                )
+                );
               },
             }}
           />
@@ -86,20 +94,20 @@ function NavBar() {
                         source={require("../assets/icons/fi-ss-homeYellow.png")}
                       />
                     </View>
-                  )
+                  );
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
                     source={require("../assets/icons/fi-ss-home.png")}
                   />
-                )
+                );
               },
             }}
           />
           <Tab.Screen
-            name="Profile"
-            component={PROFILE}
+            name="Personal Profile"
+            component={PERSONAL_PROFILE}
             options={{
               title: "",
               tabBarIcon: ({ size, focused, color }) => {
@@ -111,21 +119,21 @@ function NavBar() {
                         source={require("../assets/icons/fi-bs-profileYellow.png")}
                       />
                     </View>
-                  )
+                  );
                 }
                 return (
                   <Image
                     style={{ width: size, height: size }}
                     source={require("../assets/icons/fi-bs-profile.png")}
                   />
-                )
+                );
               },
             }}
           />
         </>
       )}
     </Tab.Navigator>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -144,6 +152,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-})
+});
 
-export default NavBar
+export default NavBar;
