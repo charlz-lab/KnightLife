@@ -36,15 +36,13 @@ const appStyles = {
       alignItems: "center",
     },
     yellowLogin: {
-      borderRadius: 20,
-      padding: 10,
-      backgroundColor: "#FFC60A",
-      width: "70%",
-      alignItems: "center",
-      marginLeft: 35,
-      marginRight: 35,
       marginTop: 20,
-      marginBottom: 20,
+      borderRadius: 30,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      backgroundColor: "#FFC60A",
+      width: "40%",
+      alignItems: "center",
     },
   },
   fonts: {
@@ -73,7 +71,6 @@ const appStyles = {
     headingTwo: {
       fontFamily: "Prompt-Bold",
       fontSize: 40,
-      marginBottom: 75,
     },
     // heading 2
     heading2: {

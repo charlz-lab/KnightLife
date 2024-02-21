@@ -8,9 +8,11 @@ import appStyles from "../styles";
 import { StyleSheet, View, Platform } from "react-native";
 
 const Tab = createBottomTabNavigator();
-let isCreator = false;
+// let isCreator = false;
 
-function NavBar() {
+function NavBar({ route }) {
+  let isCreator = route.params.isCreator;
+  console.log(isCreator);
   return (
     <Tab.Navigator
       screenOptions={{
