@@ -8,6 +8,10 @@
     {
       "path": "assets/fonts/IBMPlexSans-Regular.ttf",
       "sha1": "8e18e19c963fd6b0895620010d1a4adbc2d2caf7"
+    },
+    {
+      "path": "assets/fonts/Prompt-Bold.ttf",
+      "sha1": "1f6da982f97fb51b13e31fb0ee60f1cb21b7846b"
     }
   ]
 }
