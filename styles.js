@@ -63,7 +63,6 @@ const appStyles = {
     subHeading: {
       fontFamily: "IBMPlexSans-Bold",
       fontSize: 16,
-      textTransform: "uppercase",
     },
     subHeadingTwo: {
       fontFamily: "IBMPlexSans-Bold",
@@ -136,14 +135,20 @@ const appStyles = {
     marginBottom: 10,
   },
   textInput: {
-    alignItems: "center",
-    borderRadius: 12,
-    height: 35,
-    width: "70%",
+    flex: 1,
+    color: "black",
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: "#dadae8",
     backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 5,
+  },
+  sectionStyle: {
+    flexDirection: "row",
+    height: 40,
+    marginLeft: 35,
+    marginRight: 35,
   },
 };
 export default appStyles;

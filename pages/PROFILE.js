@@ -68,7 +68,12 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
     <>
       <View style={styles.editContainer}>
         <View
-          style={{ flexDirection: "column", rowGap: 10, alignItems: "center" }}
+          style={{
+            flexDirection: "column",
+            rowGap: 5,
+            alignItems: "center",
+            marginTop: 25,
+          }}
         >
           <Image source={profile.pic} style={{ width: 125, height: 125 }} />
           <Text style={appStyles.fonts.paragraph}>Change photo</Text>
@@ -82,78 +87,70 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           }}
         >
           <Text style={appStyles.fonts.subHeading}>Profile Name:</Text>
-          <TextInput
-            value={profile.name}
-            onChangeText={(value) => setProfile({ ...profile, name: value })}
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.name}
+              onChangeText={(value) => setProfile({ ...profile, name: value })}
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+              placeholder="Profile Name"
+              placeholderTextColor={"black"}
+            />
+          </View>
           <Text style={appStyles.fonts.subHeading}>Username:</Text>
-          <TextInput
-            value={profile.username}
-            onChangeText={(value) =>
-              setProfile({ ...profile, username: value })
-            }
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.username}
+              onChangeText={(value) =>
+                setProfile({ ...profile, username: value })
+              }
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+            />
+          </View>
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
-          <TextInput
-            value={profile.location}
-            onChangeText={(value) =>
-              setProfile({ ...profile, location: value })
-            }
-            style={[
-              appStyles.fonts.paragraph,
-              appStyles.textInput,
-              appStyles.shadow,
-            ]}
-          />
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              value={profile.location}
+              onChangeText={(value) =>
+                setProfile({ ...profile, location: value })
+              }
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+            />
+          </View>
           {profile.isCreator ? (
             <>
               <Text style={appStyles.fonts.subHeading}>Bio:</Text>
-              <TextInput
-                value={profile.bio}
-                onChangeText={(value) => setProfile({ ...profile, bio: value })}
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.bio}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, bio: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
             </>
           ) : (
             <>
               <Text style={appStyles.fonts.subHeading}>Year:</Text>
-              <TextInput
-                value={profile.year}
-                onChangeText={(value) =>
-                  setProfile({ ...profile, year: value })
-                }
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.year}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, year: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
               <Text style={appStyles.fonts.subHeading}>Major:</Text>
-              <TextInput
-                value={profile.major}
-                onChangeText={(value) =>
-                  setProfile({ ...profile, major: value })
-                }
-                style={[
-                  appStyles.fonts.paragraph,
-                  appStyles.textInput,
-                  appStyles.shadow,
-                ]}
-              />
+              <View style={appStyles.sectionStyle}>
+                <TextInput
+                  value={profile.major}
+                  onChangeText={(value) =>
+                    setProfile({ ...profile, major: value })
+                  }
+                  style={[appStyles.fonts.paragraph, appStyles.textInput]}
+                />
+              </View>
             </>
           )}
         </View>
@@ -464,7 +461,6 @@ const styles = StyleSheet.create({
     rowGap: 45,
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
-    justifyContent: "center",
   },
   profileContainer: {
     flex: 1,
