@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ImageBackground,
 } from "react-native";
 import appStyles from "../styles";
 
@@ -44,81 +45,86 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.mainBody}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: "center",
-          alignContent: "center",
-        }}
+      <ImageBackground
+        source={require("../images/loginBackground.png")}
+        style={{ width: "100%", height: "100%" }}
       >
-        <View>
-          <KeyboardAvoidingView enabled>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={require("../assets/icons/Group_33596.png")}
-                style={{
-                  width: "100%",
-                  height: 100,
-                  resizeMode: "contain",
-                  margin: 30,
-                }}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current && passwordInputRef.current.focus()
-                }
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                placeholder="Enter Password" //12345
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-                secureTextEntry={true}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-              />
-            </View>
-            {errortext != "" ? (
-              <Text style={styles.errorTextStyle}>{errortext}</Text>
-            ) : null}
-            <View style={appStyles.layout.section}>
-              <TouchableOpacity
-                style={appStyles.buttons.yellowLogin}
-                activeOpacity={0.5}
-                onPress={handleSubmitPress}
-              >
-                <Text style={styles.buttonTextStyle}>LOGIN</Text>
-              </TouchableOpacity>
-              <Text
-                style={appStyles.fonts.heading2}
-                onPress={() =>
-                  navigation.navigate("Auth", { screen: "AccountType" })
-                }
-              >
-                New Here ? Register
-              </Text>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          <View>
+            <KeyboardAvoidingView enabled>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={require("../assets/icons/knightlife-logo-white.png")}
+                  style={{
+                    width: "90%",
+                    height: 100,
+                    resizeMode: "contain",
+                    margin: 30,
+                  }}
+                />
+              </View>
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+                  placeholder="Enter Email" //dummy@abc.com
+                  placeholderTextColor="black"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  onSubmitEditing={() =>
+                    passwordInputRef.current && passwordInputRef.current.focus()
+                  }
+                  underlineColorAndroid="#f000"
+                  blurOnSubmit={false}
+                />
+              </View>
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+                  placeholder="Enter Password" //12345
+                  placeholderTextColor="black"
+                  keyboardType="default"
+                  ref={passwordInputRef}
+                  onSubmitEditing={Keyboard.dismiss}
+                  blurOnSubmit={false}
+                  secureTextEntry={true}
+                  underlineColorAndroid="#f000"
+                  returnKeyType="next"
+                />
+              </View>
+              {errortext != "" ? (
+                <Text style={styles.errorTextStyle}>{errortext}</Text>
+              ) : null}
+              <View style={appStyles.layout.section}>
+                <TouchableOpacity
+                  style={appStyles.buttons.yellowLogin}
+                  activeOpacity={0.5}
+                  onPress={handleSubmitPress}
+                >
+                  <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                </TouchableOpacity>
+                <Text
+                  style={[appStyles.fonts.heading2, { color: "white" }]}
+                  onPress={() =>
+                    navigation.navigate("Auth", { screen: "AccountType" })
+                  }
+                >
+                  New Here ? Register
+                </Text>
+              </View>
+            </KeyboardAvoidingView>
+          </View>
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };
@@ -165,6 +171,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: "#dadae8",
+    backgroundColor: "white",
   },
   registerTextStyle: {
     color: "#FFFFFF",
