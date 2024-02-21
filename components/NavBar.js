@@ -82,7 +82,7 @@ function NavBar() {
                   return (
                     <View style={styles.tabSelected}>
                       <Image
-                        style={{ width: size, height: size }}
+                        style={{ width: size, height: size, marginTop: 5 }}
                         source={require("../assets/icons/fi-ss-homeYellow.png")}
                       />
                     </View>
