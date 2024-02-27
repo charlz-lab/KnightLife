@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { EDIT_PROFILE } from "./pages/PROFILE";
 import appStyles from "./styles";
 import { useFonts } from "expo-font";
+import * as Font from "expo-font";
 import NavBar from "./components/NavBar";
 import SplashScreen from "./components/SplashScreen";
 import Header from "./components/Header";
@@ -94,6 +95,7 @@ export default function App() {
       });
 
       setFontLoaded(true);
+      console.log("Is font loaded" + fontLoaded);
     }
 
     loadFont();
