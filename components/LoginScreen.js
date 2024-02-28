@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, createRef } from "react"
 import {
   StyleSheet,
   TextInput,
@@ -10,75 +10,72 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
-} from "react-native";
-import appStyles from "../styles";
-import supabase from "../lib/supabase";
-
+} from "react-native"
+import appStyles from "../styles"
+import supabase from "../lib/supabase"
 
 const LoginScreen = ({ navigation, route }) => {
-  const [headerShown, setHeaderShown] = useState(true);
+  const [headerShown, setHeaderShown] = useState(true)
 
   useEffect(() => {
     if (route.params && route.params.headerShown !== undefined) {
-      setHeaderShown(route.params.headerShown);
+      setHeaderShown(route.params.headerShown)
     }
-  }, [route.params]);
+  }, [route.params])
 
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState("");
+  const [userEmail, setUserEmail] = useState("")
+  const [userPassword, setUserPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [errortext, setErrortext] = useState("")
   const [users, setUsers] = useState([])
 
-  const passwordInputRef = createRef();
+  const passwordInputRef = createRef()
 
-  // const handleSubmitPress = () => {
-  //   setErrortext("");
-  //   if (!userEmail) {
-  //     alert("Please fill Email");
-  //     return;
-  //   }
-  //   if (!userPassword) {
-  //     alert("Please fill Password");
-  //     return;
-  //   }
-  //   let dataToSend = { email: userEmail, password: userPassword };
-  //   let formBody = [];
-  //   for (let key in dataToSend) {
-  //     let encodedKey = encodeURIComponent(key);
-  //     let encodedValue = encodeURIComponent(dataToSend[key]);
-  //     formBody.push(encodedKey + "=" + encodedValue);
-  //   }
-  //   formBody = formBody.join("&");
+  const handleSubmitPress = () => {
+    setErrortext("")
+    if (!userEmail) {
+      alert("Please fill Email")
+      return
+    }
+    if (!userPassword) {
+      alert("Please fill Password")
+      return
+    }
+    let dataToSend = { email: userEmail, password: userPassword }
+    let formBody = []
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key)
+      let encodedValue = encodeURIComponent(dataToSend[key])
+      formBody.push(encodedKey + "=" + encodedValue)
+    }
+    formBody = formBody.join("&")
 
-  //   navigation.replace("NavBar", { isCreator: true });
-  // };
-  const handleSubmitPress = async () => {
-    let { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .limit(20)
-
-    if (error) console.log('Error: ', error)
-    else setUsers(data)
-    console.log('Users: ', data)
-
+    navigation.replace("NavBar", { isCreator: true })
   }
+  // const handleSubmitPress = async () => {
+  //   let { data, error } = await supabase
+  //     .from('users')
+  //     .select('*')
+  //     .limit(20)
+
+  //   if (error) console.log('Error: ', error)
+  //   else setUsers(data)
+  //   console.log('Users: ', data)
+
+  // }
 
   return (
     <View style={styles.mainBody}>
       <ImageBackground
         source={require("../images/loginBackground.png")}
-        style={{ width: "100%", height: "100%" }}
-      >
+        style={{ width: "100%", height: "100%" }}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             flex: 1,
             justifyContent: "center",
             alignContent: "center",
-          }}
-        >
+          }}>
           <View>
             <KeyboardAvoidingView enabled>
               <View style={{ alignItems: "center" }}>
@@ -130,14 +127,12 @@ const LoginScreen = ({ navigation, route }) => {
                 <TouchableOpacity
                   style={appStyles.buttons.yellowLogin}
                   activeOpacity={0.5}
-                  onPress={handleSubmitPress}
-                >
+                  onPress={handleSubmitPress}>
                   <Text
                     style={[
                       appStyles.fonts.paragraph,
                       { color: "black", paddingVertical: 10 },
-                    ]}
-                  >
+                    ]}>
                     Login
                   </Text>
                 </TouchableOpacity>
@@ -152,8 +147,7 @@ const LoginScreen = ({ navigation, route }) => {
                   ]}
                   onPress={() =>
                     navigation.navigate("Auth", { screen: "AccountType" })
-                  }
-                >
+                  }>
                   Not Registered?
                 </Text>
               </View>
@@ -162,10 +156,10 @@ const LoginScreen = ({ navigation, route }) => {
         </ScrollView>
       </ImageBackground>
     </View>
-  );
-};
+  )
+}
 
-export default LoginScreen;
+export default LoginScreen
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -209,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: "#dadae8",
     backgroundColor: "white",
-    ...appStyles.fonts.paragraph
+    ...appStyles.fonts.paragraph,
   },
   registerTextStyle: {
     color: "#FFFFFF",
@@ -224,4 +218,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
   },
-});
+})

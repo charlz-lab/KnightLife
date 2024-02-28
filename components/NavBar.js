@@ -1,14 +1,14 @@
-import React, {useEffect} from "react";
-import { Image } from "react-native-elements";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CREATE_EVENTS from "../pages/CREATE_EVENTS";
-import HOME from "../pages/HOME";
-import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE";
-import appStyles from "../styles";
-import { StyleSheet, View, Platform } from "react-native";
+import React, { useEffect } from "react"
+import { Image } from "react-native-elements"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import CREATE_EVENTS from "../pages/CREATE_EVENTS"
+import HOME from "../pages/HOME"
+import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE"
+import appStyles from "../styles"
+import { StyleSheet, View, Platform } from "react-native"
 
-const Tab = createBottomTabNavigator();
-let isCreator = false;
+const Tab = createBottomTabNavigator()
+let isCreator = true
 
 function NavBar() {
   useEffect(() => {
@@ -16,8 +16,8 @@ function NavBar() {
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
-    };
-  }, []); // Empty dependency array ensures it runs only once
+    }
+  }, []) // Empty dependency array ensures it runs only once
 
   return (
     <Tab.Navigator
@@ -25,10 +25,9 @@ function NavBar() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: appStyles.colors.mainBackground,
-          height: 90 // Adjust the height as needed
+          height: 90, // Adjust the height as needed
         },
-      }}
-    >
+      }}>
       {isCreator ? (
         <>
           <Tab.Screen
@@ -93,7 +92,7 @@ function NavBar() {
         </>
       )}
     </Tab.Navigator>
-  );
+  )
 }
 
 const TabIcon = ({ focused, icon, selectedIcon }) => (
@@ -103,21 +102,21 @@ const TabIcon = ({ focused, icon, selectedIcon }) => (
       source={focused ? selectedIcon : icon}
     />
   </View>
-);
+)
 
 const styles = StyleSheet.create({
   tabIconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 28, //icon position
-    width: 50, 
-    height: 50, 
+    width: 50,
+    height: 50,
     borderRadius: 10, // Adjust border radius to create curved square shape
   },
   tabIcon: {
     width: 24,
     height: 24,
-    marginTop: 0, 
+    marginTop: 0,
   },
   tabIconFocused: {
     marginTop: 0, // Adjust margin top for the focused state if needed
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 5, width: 5 },
         shadowOpacity: 0.7,
         shadowRadius: 5,
-        
+
         secondShadow: {
           shadowColor: "#fff",
           shadowOffset: { height: -9, width: -5 },
@@ -144,6 +143,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-});
+})
 
-export default NavBar;
+export default NavBar
