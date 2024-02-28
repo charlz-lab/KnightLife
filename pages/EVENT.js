@@ -92,7 +92,7 @@ const EventPage = ({ route, navigation }) => {
             borderRadius={12}
             style={[styles.shadow, styles.card]}
           >
-            <Text style={{ fontFamily: "IBMPlexSans-Medium " }}>
+            <Text style={appStyles.fonts.paragraph}>
               {event.description}
             </Text>
           </Card>
