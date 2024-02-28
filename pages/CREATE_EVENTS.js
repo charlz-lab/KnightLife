@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
   View,
   ScrollView,
   Text,
+  Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
@@ -16,7 +17,10 @@ const CREATE_EVENTS = () => {
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [eventDescription, setEventDescription] = useState('');
-
+  const locationInputRef = createRef();
+  const dateInputRef = createRef();
+  const timeInputRef = createRef();
+  const descriptionInputRef = createRef();
   const handleSubmitPress = () => {
     // Check if all fields are filled out
     if (!eventName || !eventLocation || !eventDate || !eventTime || !eventDescription) {
@@ -39,6 +43,7 @@ const CREATE_EVENTS = () => {
           justifyContent: 'center',
           alignContent: 'center',
         }}>
+      <View>
         <KeyboardAvoidingView enabled>
           <Text style={styles.heading}>Create an Event</Text>
           <View style={styles.SectionStyle}>
@@ -49,6 +54,9 @@ const CREATE_EVENTS = () => {
               placeholderTextColor="#8b9cb5"
               autoCapitalize="words"
               returnKeyType="next"
+              onSubmitEditing={() =>
+                locationInputRef.current && locationInputRef.current.focus()
+              }
               blurOnSubmit={false}
             />
           </View>
@@ -60,6 +68,10 @@ const CREATE_EVENTS = () => {
               placeholderTextColor="#8b9cb5"
               autoCapitalize="words"
               returnKeyType="next"
+              ref={locationInputRef}
+              onSubmitEditing={() =>
+                dateInputRef.current && dateInputRef.current.focus()
+              }
               blurOnSubmit={false}
             />
           </View>
@@ -69,8 +81,11 @@ const CREATE_EVENTS = () => {
               onChangeText={(text) => setEventDate(text)}
               placeholder="Event Date"
               placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
               returnKeyType="next"
+              ref={dateInputRef}
+              onSubmitEditing={() =>
+                timeInputRef.current && timeInputRef.current.focus()
+              }
               blurOnSubmit={false}
             />
           </View>
@@ -80,8 +95,11 @@ const CREATE_EVENTS = () => {
               onChangeText={(text) => setEventTime(text)}
               placeholder="Event Time"
               placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
               returnKeyType="next"
+              ref={timeInputRef}
+              onSubmitEditing={() =>
+                descriptionInputRef.current && descriptionInputRef.current.focus()
+              }
               blurOnSubmit={false}
             />
           </View>
@@ -91,17 +109,22 @@ const CREATE_EVENTS = () => {
               onChangeText={(text) => setEventDescription(text)}
               placeholder="Event Description"
               placeholderTextColor="#8b9cb5"
-              multiline
-              returnKeyType="done"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={descriptionInputRef}
+              onSubmitEditing={Keyboard.dismiss}
             />
           </View>
+          <View>
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
             onPress={handleSubmitPress}>
             <Text style={styles.buttonTextStyle}>CREATE EVENT</Text>
           </TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>
+      </View>
       </ScrollView>
     </View>
   );

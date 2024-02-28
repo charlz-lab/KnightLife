@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
     }
     formBody = formBody.join("&");
 
-    navigation.replace("NavBar", { isCreator: false });
+    navigation.replace("NavBar", { isCreator: true });
   };
 
   return (
@@ -132,7 +132,7 @@ const LoginScreen = ({ navigation }) => {
                     navigation.navigate("Auth", { screen: "AccountType" })
                   }
                 >
-                  New Here? Register
+                  Not Registered?
                 </Text>
               </View>
             </KeyboardAvoidingView>
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: "#dadae8",
     backgroundColor: "white",
+    ... appStyles.fonts.paragraph
   },
   registerTextStyle: {
     color: "#FFFFFF",

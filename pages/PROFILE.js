@@ -21,9 +21,9 @@ import SavedEventList from "../components/SavedEventList";
 let defaultProfile = {
   name: "Jane Doe",
   username: "@janedoe",
-  location: "UCF Downtown, Orlando",
   year: "Senior",
   major: "Marine Biology",
+  location: "UCF Downtown, Orlando",
   pic: require("../images/janeDoeProfile.png"),
   isCreator: false,
 };
@@ -103,7 +103,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               onChangeText={(value) =>
                 setProfile({ ...profile, username: value })
               }
-              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+              style={[appStyles.fonts.regular, appStyles.textInput]}
             />
           </View>
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
@@ -113,7 +113,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               onChangeText={(value) =>
                 setProfile({ ...profile, location: value })
               }
-              style={[appStyles.fonts.paragraph, appStyles.textInput]}
+              style={[appStyles.fonts.regular, appStyles.textInput]}
             />
           </View>
           {profile.isCreator ? (
@@ -222,11 +222,11 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
           {/* Profile info */}
           <Image source={profile.pic} style={{ width: 125, height: 125 }} />
           <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
+          <Text style={appStyles.fonts.regular}>{profile.username}</Text>
           <Text style={appStyles.fonts.paragraph}>
             {profile.year} - {profile.major}
           </Text>
+          <Text style={appStyles.fonts.regular}>{profile.location}</Text>
         </View>
         {/* Upcoming / attended / saved toggle*/}
         <View style={[appStyles.toggleContainer, appStyles.shadow]}>
@@ -366,8 +366,8 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
           {/* Profile info */}
           <Image source={profile.pic} style={{ width: 100, height: 100 }} />
           <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
-          <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
+          <Text style={appStyles.fonts.regular}>{profile.username}</Text>
+          <Text style={appStyles.fonts.regular}>{profile.location}</Text>
           <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
             {profile.bio}
           </Text>

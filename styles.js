@@ -90,6 +90,11 @@ const appStyles = {
       fontSize: 14,
       color: "#676464",
     },
+    regular:{
+      fontFamily: "IBMPlexSans-Regular",
+      fontSize: 14,
+      color: "#676464"
+    }
   },
   layout: {
     horizontal: {
