@@ -52,6 +52,16 @@ const appStyles = {
       backgroundColor: "#FFC60A",
       alignItems: "center",
     },
+    buttonClick: {
+      backgroundColor: "black",
+      width: "85%",
+      borderRadius: 12,
+      paddingVertical: 17,
+      paddingHorizontal: 22,
+      gap: 10,
+      alignItems: "center",
+      marginVertical: 20,
+    },
   },
   fonts: {
     // paragraph text
@@ -74,6 +84,7 @@ const appStyles = {
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
+      textAlign: 'center',
     },
     headingTwo: {
       fontFamily: "Prompt-Bold",
@@ -112,9 +123,23 @@ const appStyles = {
     shadowRadius: 3,
   },
   shawdowInput: {
-    shadowColor: "#000000",
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4, 
+  },
+  iconShadowBot: {
+    shadowColor: "#000",
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 0, 
+    shadowBlur: 20,
+  },
+  iconShadowTop:{
+    shadowColor: "#fff",
+    shadowOffset: { width: -10, height: -10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20, 
   },
   profileCard: {
     backgroundColor: "white",

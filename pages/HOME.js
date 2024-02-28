@@ -21,10 +21,15 @@ import SavedEventList from "../components/SavedEventList";
 import AttendingEventList from "../components/AttendingEventList";
 const HOME = ({ navigation }) => {
   // list events
+  
   const [events, setEvents] = React.useState([]);
   const addEvent = (newEvent) => {
     // Update the events state with the new event
     setEvents((prevEvents) => [...prevEvents, newEvent]);
+    
+    HOME.navigationOptions = {
+      headerLeft: null, // or any other option you prefer
+    };
   };
 
   // enable filter modal

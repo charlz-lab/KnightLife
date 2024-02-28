@@ -1,47 +1,99 @@
 // EditAccount.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, 
+StyleSheet, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import appStyles from '../../styles';
 
 const EditAccount = () => {
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: '', // Remove the title from the header
+      headerTintColor: '#000', 
+    });
+  }, [navigation]);
 
   const handleSaveChanges = () => {
-    console.log('New Username:', newUsername);
-    console.log('New Email:', newEmail);
-    console.log('New Password:', newPassword);
+    if (!newUsername || !newEmail || !newPassword) {
+      Alert.alert('Please fill out all fields');
+      return;
+    }
+
+    // Perform any other necessary validation before creating the event
+
+    // For simplicity, just show an alert
+    Alert.alert('Account information saved');
+
+    // Clear input fields after successful event creation
+    setNewUsername('');
+    setNewEmail('');
+    setNewPassword('');
+
   };
 
   return (
     <View style={styles.container}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flex: 1,
+          marginTop: 16,
+          justifyContent: 'flex-start',
+          alignContent: 'flex-center',
+        }}>
+        <KeyboardAvoidingView enabled>
+      
       <Text style={appStyles.fonts.heading}>Edit Account</Text>
-      <TextInput
-        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
-        placeholder="New Username"
-        placeholderTextColor="gray"
-        value={newUsername}
-        onChangeText={(text) => setNewUsername(text)}
-      />
-      <TextInput
-        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
-        placeholder="New Email"
-        placeholderTextColor="gray"
-        value={newEmail}
-        onChangeText={(text) => setNewEmail(text)}
-      />
-      <TextInput
-        style={[appStyles.textInput, appStyles.shawdowInput, styles.margin]}
-        placeholder ="New Password"
-        placeholderTextColor="gray"
-        secureTextEntry
-        value={newPassword}
-        onChangeText={(text) => setNewPassword(text)}
-      />
-      <TouchableOpacity style={appStyles.buttons.yellow} onPress={handleSaveChanges}>
-        <Text style={styles.buttonText}>Save Changes</Text>
+
+      <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setNewUsername(text)}
+              placeholder="New Name"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              value={newUsername}
+            />
+          </View>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setNewEmail(text)}
+              placeholder="New Email"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              value={newEmail}
+            />
+          </View>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setNewPassword(text)}
+              placeholder="New Password"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              value={newPassword}
+            />
+          </View>
+      <TouchableOpacity 
+      style={styles.buttonStyle} 
+      onPress={handleSaveChanges}>
+        <Text style={styles.buttonTextStyle}>Save Changes</Text>
       </TouchableOpacity>
+
+      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 };
@@ -49,27 +101,49 @@ const EditAccount = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'top',
-    padding: 16,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    alignContent: 'flex-start',
   },
-  margin: {
-    marginTop: 20,
-    marginBottom: 20,
+  SectionStyle: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    justifyContent: 'center', // Center horizontally
+    height: 60,
+    marginTop: 10,
+    marginLeft: 35,
+    marginRight: 35,
+    margin: 10,
   },
-  input: {
-    width: '80%',
+  buttonStyle: {
+    backgroundColor: '#FFC60A',
+    borderWidth: 0,
+    borderColor: '#7DE24E',
     height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderRadius: 8,
+    alignItems: 'center',
+    borderRadius: 12,
+    marginLeft: 35,
+    marginRight: 35,
+    marginTop: 20,
+    marginBottom: 25,
   },
-  buttonText: {
+  buttonTextStyle: {
     color: '#000',
     fontFamily: "IBMPlexSans-Medium",
-    fontSize: 15,
+      fontSize: 16,
+    paddingVertical: 10,
+    fontSize: 16,
+  },
+  inputStyle: {
+    flex: 1,
+    color: 'black',
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 12,
+    borderColor: '#dadae8',
   },
 });
 

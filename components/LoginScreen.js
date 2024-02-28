@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -13,7 +13,15 @@ import {
 } from "react-native";
 import appStyles from "../styles";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, route }) => {
+  const [headerShown, setHeaderShown] = useState(true);
+
+  useEffect(() => {
+    if (route.params && route.params.headerShown !== undefined) {
+      setHeaderShown(route.params.headerShown);
+    }
+  }, [route.params]);
+
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -142,6 +150,7 @@ const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
+
 export default LoginScreen;
 
 const styles = StyleSheet.create({

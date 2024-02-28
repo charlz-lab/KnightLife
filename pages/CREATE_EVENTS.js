@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from 'react-native';
+import appStyles from '../styles';
 
 const CREATE_EVENTS = () => {
   const [eventName, setEventName] = useState('');
@@ -28,6 +29,13 @@ const CREATE_EVENTS = () => {
 
     // For simplicity, just show an alert
     Alert.alert('Event Created');
+
+    // Clear input fields after successful event creation
+    setEventName('');
+    setEventLocation('');
+    setEventDate('');
+    setEventTime('');
+    setEventDescription('');
   };
 
   return (
@@ -36,12 +44,14 @@ const CREATE_EVENTS = () => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: 'center',
-          alignContent: 'center',
+          marginTop: 16,
+          justifyContent: 'flex-start',
+          alignContent: 'flex-center',
         }}>
         <KeyboardAvoidingView enabled>
-          <Text style={styles.heading}>Create an Event</Text>
-          <View style={styles.SectionStyle}>
+          
+          <Text style={[appStyles.fonts.heading,]}>Create an Event</Text>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(text) => setEventName(text)}
@@ -50,9 +60,10 @@ const CREATE_EVENTS = () => {
               autoCapitalize="words"
               returnKeyType="next"
               blurOnSubmit={false}
+              value={eventName}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(text) => setEventLocation(text)}
@@ -61,9 +72,10 @@ const CREATE_EVENTS = () => {
               autoCapitalize="words"
               returnKeyType="next"
               blurOnSubmit={false}
+              value={eventLocation}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(text) => setEventDate(text)}
@@ -72,9 +84,10 @@ const CREATE_EVENTS = () => {
               keyboardType="numeric"
               returnKeyType="next"
               blurOnSubmit={false}
+              value={eventDate}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(text) => setEventTime(text)}
@@ -83,16 +96,18 @@ const CREATE_EVENTS = () => {
               keyboardType="numeric"
               returnKeyType="next"
               blurOnSubmit={false}
+              value={eventTime}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(text) => setEventDescription(text)}
               placeholder="Event Description"
               placeholderTextColor="#8b9cb5"
-              multiline
+             
               returnKeyType="done"
+              value={eventDescription}
             />
           </View>
           <TouchableOpacity
@@ -101,6 +116,8 @@ const CREATE_EVENTS = () => {
             onPress={handleSubmitPress}>
             <Text style={styles.buttonTextStyle}>CREATE EVENT</Text>
           </TouchableOpacity>
+
+
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
@@ -112,14 +129,18 @@ export default CREATE_EVENTS;
 const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    alignContent: 'center',
+    alignContent: 'flex-start',
   },
   SectionStyle: {
     flexDirection: 'row',
-    height: 40,
-    marginTop: 20,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    justifyContent: 'center', // Center horizontally
+    height: 60,
+    marginTop: 10,
     marginLeft: 35,
     marginRight: 35,
     margin: 10,
@@ -127,18 +148,19 @@ const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: '#FFC60A',
     borderWidth: 0,
-    color: '#FFFFFF',
     borderColor: '#7DE24E',
     height: 40,
     alignItems: 'center',
-    borderRadius: 30,
+    borderRadius: 12,
     marginLeft: 35,
     marginRight: 35,
     marginTop: 20,
     marginBottom: 25,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: '#000',
+    fontFamily: "IBMPlexSans-Medium",
+      fontSize: 16,
     paddingVertical: 10,
     fontSize: 16,
   },
@@ -148,13 +170,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 12,
     borderColor: '#dadae8',
   },
-  heading: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
+
 });
