@@ -103,9 +103,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SplashScreen"
-        screenOptions={{ headerShown: true }}
-      >
+       initialRouteName="SplashScreen"
+       screenOptions={{
+         headerShown: true,
+         headerTintColor: 'black', // back arrow color
+         
+       }}
+     >
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -153,7 +157,9 @@ export default function App() {
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} // Initially hide header
+
+/>
       </Stack.Navigator>
     </NavigationContainer>
   );

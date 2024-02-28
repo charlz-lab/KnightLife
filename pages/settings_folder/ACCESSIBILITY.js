@@ -1,10 +1,19 @@
 // Accessibility.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import appStyles from '../../styles';
 
 const Accessibility = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: '', // Remove the title from the header
+      headerTintColor: '#000', 
+    });
+  }, [navigation]);
 
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
@@ -36,10 +45,12 @@ const Accessibility = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'colum',
+    flexDirection: 'column',
+    backgroundColor: "#fff",
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     padding: 16,
+    flex: 1, 
   },
   margin: {
     marginBottom: 15,

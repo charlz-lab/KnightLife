@@ -1,11 +1,18 @@
 // AddSwitchAccounts.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import appStyles from '../../styles';
 
 const AddSwitchAccounts = ({ navigation }) => {
   const [activeAccount, setActiveAccount] = useState(1);
   const [accountCount, setAccountCount] = useState(2);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: '', // Remove the title from the header
+      headerTintColor: '#000', 
+    });
+  }, [navigation]);
 
   const switchAccount = (index) => {
     setActiveAccount(index);
@@ -36,7 +43,7 @@ const AddSwitchAccounts = ({ navigation }) => {
           </TouchableOpacity>
         ))}
 
-      <TouchableOpacity style={appStyles.buttons.black} onPress={navigateToCreateAccount}>
+      <TouchableOpacity style={appStyles.buttons.buttonClick} onPress={navigateToCreateAccount}>
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
     </View>
@@ -45,10 +52,12 @@ const AddSwitchAccounts = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'colum',
+    flexDirection: 'column',
+    backgroundColor: "#fff",
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'top',
     padding: 16,
+    flex: 1, 
   },
   accountContainer: {
     flexDirection: 'row',

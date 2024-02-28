@@ -23,11 +23,19 @@ import supabase from "../lib/supabase";
 const HOME = ({ navigation }) => {
 
   // list events
+<<<<<<< HEAD
   const [users, setUsers] = useState([])
+=======
+  
+>>>>>>> 5779c82443f47f1440ceb2b3e86d3de7799e6120
   const [events, setEvents] = React.useState([]);
   const addEvent = (newEvent) => {
     // Update the events state with the new event
     setEvents((prevEvents) => [...prevEvents, newEvent]);
+    
+    HOME.navigationOptions = {
+      headerLeft: null, // or any other option you prefer
+    };
   };
 
   // enable filter modal
