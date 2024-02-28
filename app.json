@@ -3,6 +3,9 @@
     "name": "knightlife",
     "slug": "knightlife",
     "version": "1.0.0",
+    "web":{
+      "bundler":"metro"
+    },
     "assetBundlePatterns": [
       "**/*"
     ]

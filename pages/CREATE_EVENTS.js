@@ -1,157 +1,183 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, { useState, createRef } from "react";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  ScrollView,
+  Text,
+  Keyboard,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from 'react-native';
 
-// Define a functional component named UserProfileForm
-const UserProfileForm = () => {
-  // States to store user's information
-  const [name, setName] = useState('');
-  const [input2, setInput2] = useState('');
-  const [input3, setInput3] = useState('');
-  const [input4, setInput4] = useState('');
-  const [input5, setInput5] = useState('');
-  const [input6, setInput6] = useState('');
-
-  // Function to handle name input changes
-  const handleNameChange = (text) => {
-    setName(text);
-  };
-
-  // Function to handle bio input changes
-  const handleInput2Change = (text) => {
-    setInput2(text);
-  };
-
-  // Function to handle description input changes
-  const handleInput3Change = (text) => {
-    setInput3(text);
-  };
-
-  // Function to handle input4 changes
-  const handleInput4Change = (text) => {
-    setInput4(text);
-  };
-
-  // Function to handle input5 changes
-  const handleInput5Change = (text) => {
-    setInput5(text);
-  };
-
-  // Function to handle input6 changes
-  const handleInput6Change = (text) => {
-    setInput6(text);
-  };
-
-  // Function to handle button press
-  const handleButtonPress = () => {
-    // Validate if all fields are entered
-    if (
-      name.trim() === '' ||
-      input2.trim() === '' ||
-      input3.trim() === '' ||
-      input4.trim() === '' ||
-      input5.trim() === '' ||
-      input6.trim() === ''
-    ) {
-      Alert.alert('Error', 'Please enter all fields.');
-    } else {
-      // Do something with the entered information
-      Alert.alert(
-        'Event Created',
-        `Name: ${name}
-        \nLocation: ${input2}
-        \nDate: ${input3}
-        \nTime: ${input4}
-        \nDescription: ${input5}
-        \nExternal Links: ${input6}`
-      );
+const CREATE_EVENTS = () => {
+  const [eventName, setEventName] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
+  const [eventDate, setEventDate] = useState('');
+  const [eventTime, setEventTime] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const locationInputRef = createRef();
+  const dateInputRef = createRef();
+  const timeInputRef = createRef();
+  const descriptionInputRef = createRef();
+  const handleSubmitPress = () => {
+    // Check if all fields are filled out
+    if (!eventName || !eventLocation || !eventDate || !eventTime || !eventDescription) {
+      Alert.alert('Please fill out all fields');
+      return;
     }
-  };
 
+    // Perform any other necessary validation before creating the event
+
+    // For simplicity, just show an alert
+    Alert.alert('Event Created');
+  };
 
   return (
-    
-    <View style={styles.container}>
-      <Text style={styles.heading}>Create an event</Text>
-
-
-      {/* Name */}
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        onChangeText={handleNameChange}
-        value={name}
-        multiline={true}
-      />
-      {/* TextInput for bio input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Location"
-        onChangeText={handleInput2Change}
-        value={input2}
-        multiline={true}
-      />
-      {/* TextInput for description input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Date"
-        onChangeText={handleInput3Change}
-        value={input3}
-        multiline={true}
-      />
-      {/* Additional TextInput boxes */}
-      <TextInput
-        style={styles.input}
-        placeholder="Time"
-        onChangeText={handleInput4Change}
-        value={input4}
-        multiline={true}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Description"
-        onChangeText={handleInput5Change}
-        value={input5}
-        multiline={true}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="External links"
-        onChangeText={handleInput6Change}
-        value={input6}
-        multiline={true}
-      />
-     {/* Button to trigger an action with the entered information */}
-     <Button title="Submit" onPress={handleButtonPress} />
-      
-      
+    <View style={styles.mainBody}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}>
+      <View>
+        <KeyboardAvoidingView enabled>
+          <Text style={styles.heading}>Create an Event</Text>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setEventName(text)}
+              placeholder="Event Name"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                locationInputRef.current && locationInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setEventLocation(text)}
+              placeholder="Event Location"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              ref={locationInputRef}
+              onSubmitEditing={() =>
+                dateInputRef.current && dateInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setEventDate(text)}
+              placeholder="Event Date"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="next"
+              ref={dateInputRef}
+              onSubmitEditing={() =>
+                timeInputRef.current && timeInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setEventTime(text)}
+              placeholder="Event Time"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="next"
+              ref={timeInputRef}
+              onSubmitEditing={() =>
+                descriptionInputRef.current && descriptionInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(text) => setEventDescription(text)}
+              placeholder="Event Description"
+              placeholderTextColor="#8b9cb5"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={descriptionInputRef}
+              onSubmitEditing={Keyboard.dismiss}
+            />
+          </View>
+          <View>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            activeOpacity={0.5}
+            onPress={handleSubmitPress}>
+            <Text style={styles.buttonTextStyle}>CREATE EVENT</Text>
+          </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+      </ScrollView>
     </View>
   );
 };
 
-// Styles for the components
+export default CREATE_EVENTS;
+
 const styles = StyleSheet.create({
-  container: {
+  mainBody: {
     flex: 1,
-    justifyContent: 'top',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    alignContent: 'center',
+  },
+  SectionStyle: {
+    flexDirection: 'row',
+    height: 40,
+    marginTop: 20,
+    marginLeft: 35,
+    marginRight: 35,
+    margin: 10,
+  },
+  buttonStyle: {
+    backgroundColor: '#FFC60A',
+    borderWidth: 0,
+    color: '#FFFFFF',
+    borderColor: '#7DE24E',
+    height: 40,
     alignItems: 'center',
-    padding: 16,
+    borderRadius: 30,
+    marginLeft: 35,
+    marginRight: 35,
+    marginTop: 20,
+    marginBottom: 25,
+  },
+  buttonTextStyle: {
+    color: '#FFFFFF',
+    paddingVertical: 10,
+    fontSize: 16,
+  },
+  inputStyle: {
+    flex: 1,
+    color: 'black',
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: '#dadae8',
   },
   heading: {
-    fontSize: 24,
+    textAlign: 'center',
+    fontSize: 20,
     fontWeight: 'bold',
-    paddingTop: 25,
-    marginBottom: 2,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 2,
-    marginTop: 20,
-    padding: 8,
-    width: '100%',
+    marginBottom: 20,
   },
 });
-
-// Export the UserProfileForm component
-export default UserProfileForm;

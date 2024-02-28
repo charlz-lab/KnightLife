@@ -1,112 +1,167 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  Image,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import * as Font from "expo-font";
-import Card from "../knightlife/components/EventCard";
-import HOME from "./pages/HOME";
-import PROFILE from "./pages/PROFILE";
 import { EDIT_PROFILE } from "./pages/PROFILE";
-import SEARCH from "./pages/SEARCH";
-import SAVED_EVENTS from "./pages/SAVED_EVENTS";
-import CREATE_EVENTS from "./pages/CREATE_EVENTS";
+import appStyles from "./styles";
+import { useFonts } from "expo-font";
+import * as Font from "expo-font";
+import NavBar from "./components/NavBar";
+import SplashScreen from "./components/SplashScreen";
+import Header from "./components/Header";
+import Settings from "./pages/settings_folder/SETTINGS";
+import Privacy from "./pages/settings_folder/PRIVACY";
+import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS";
+import Accessibility from "./pages/settings_folder/ACCESSIBILITY";
+import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT";
+import CreateAccount from "./pages/settings_folder/CREATEACCOUNT";
+import LoginScreen from "./components/LoginScreen";
+import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
+import RegisterScreenCreator from "./components/RegisterScreenCreator";
+import AccountType from "./components/AccountType";
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-var isCreator = false;
+import EventList from "./components/EventList";
+import EventPage from "./pages/EVENT";
+import HOME from "./pages/HOME";
+import SavedEventList from "./components/SavedEventList";
+import AttendingEventList from "./components/AttendingEventList";
 
-// header component
-const HeaderHomeToggle = () => {
+const Auth = () => {
+  // Stack Navigator for Login and Sign up Screen
   return (
-    <View style={styles.toggle}>
-      <TouchableHighlight style={[styles.highlighted, styles.options]}>
-        <Text>Following</Text>
-      </TouchableHighlight>
-      <TouchableHighlight style={styles.options}>
-        <Text>Discover</Text>
-      </TouchableHighlight>
-    </View>
+    <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AccountType"
+        component={AccountType}
+        options={{
+          title: "",
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="RegisterScreenPersonal"
+        component={RegisterScreenPersonal}
+        options={{
+          title: "",
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="RegisterScreenCreator"
+        component={RegisterScreenCreator}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
-// navigation for nav bar
-function NavBar() {
-  return (
-    <Tab.Navigator>
-      {isCreator ? (
-        <>
-          <Tab.Screen name="Create_Events" component={CREATE_EVENTS} />
-          <Tab.Screen name="Profile" component={PROFILE} />
-        </>
-      ) : (
-        <>
-          <Tab.Screen name="Home" component={HOME} />
-          <Tab.Screen name="Profile" component={PROFILE} />
-        </>
-      )}
-    </Tab.Navigator>
-  );
-}
-
 // navigation outside of nav bar
 export default function App() {
+  const [fontLoaded, setFontLoaded] = useState(false);
+  useEffect(() => {
+    async function loadFont() {
+      await Font.loadAsync({
+        "IBMPlexSans-Regular": require("./assets/fonts/IBMPlexSans-Regular.ttf"),
+        "IBMPlexSans-Medium": require("./assets/fonts/IBMPlexSans-Medium.ttf"),
+        "IBMPlexSans-Bold": require("./assets/fonts/IBMPlexSans-Bold.ttf"),
+        "Prompt-Bold": require("./assets/fonts/Prompt-Bold.ttf"),
+      });
+
+      setFontLoaded(true);
+      console.log("Is font loaded" + fontLoaded);
+    }
+
+    loadFont();
+  }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerStyle: styles.header }}>
-        <Stack.Screen name="NavBar" component={NavBar}></Stack.Screen>
+      <Stack.Navigator
+        initialRouteName="SplashScreen"
+        screenOptions={{ headerShown: true }}
+      >
         <Stack.Screen
-          name="HOME"
-          component={HOME}
-          options={{
-            headerStyle: styles.header,
-            headerTitle: () => <HeaderHomeToggle />,
-          }}
+          name="SplashScreen"
+          component={SplashScreen}
+          // Hiding header for Splash Screen
+          options={{ headerShown: false }}
         />
-        <Stack.Screen name="SEARCH" component={SEARCH} />
+        <Stack.Screen
+          name="Auth"
+          component={Auth}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NavBar"
+          component={NavBar}
+          options={{
+            // headerTitle: () => <Header />,
+            title: "",
+            headerStyle: styles.header,
+          }}
+        ></Stack.Screen>
+        <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen name="SavedEventList" component={SavedEventList} />
+        <Stack.Screen
+          name="AttendingEventList"
+          component={AttendingEventList}
+        />
+        <Stack.Screen
+          name="EventPage"
+          component={EventPage}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
+          options={{ title: "" }}
         ></Stack.Screen>
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{ title: "" }}
+        ></Stack.Screen>
+
+        <Stack.Screen name="Privacy" component={Privacy} />
+        <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
+        <Stack.Screen name="Accessibility" component={Accessibility} />
+        <Stack.Screen name="EditAccount" component={EditAccount} />
+        <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   header: {
     flexDirection: "row",
-    backgroundColor: "#FFC60A",
-    paddingVertical: 15,
+    backgroundColor: appStyles.colors.accent2,
     paddingHorizontal: 30,
-    height: "100%",
-    width: "100%",
-  },
-  toggle: {
-    backgroundColor: "#fff",
-    flexDirection: "row",
-    borderRadius: 50,
-    marginVertical: 10,
-    padding: 5,
-  },
-  options: {
-    paddingHorizontal: 38,
-    paddingVertical: 10,
-    borderRadius: 50,
-  },
-  highlighted: {
-    backgroundColor: "#FFC60A",
   },
 });
