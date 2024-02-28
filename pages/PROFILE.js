@@ -341,117 +341,123 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
   return (
     <>
-      <View style={styles.profileContainer}>
-        <View style={[appStyles.profileCard, appStyles.shadow]}>
-          <View
-            style={{
-              flexDirection: "row-reverse",
-              alignSelf: "flex-end",
-              columnGap: 10,
-            }}
-          >
-            <Pressable onPress={() => navigation.navigate("Settings")}>
-              <Image
-                source={require("../assets/icons/fi-br-settings.png")}
-                style={{ width: 21, height: 21 }}
-              ></Image>
-            </Pressable>
-            <Pressable
-              onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
+      <ScrollView>
+        <View style={styles.profileContainer}>
+          <View style={[appStyles.profileCard, appStyles.shadow]}>
+            <View
+              style={{
+                flexDirection: "row-reverse",
+                alignSelf: "flex-end",
+                columnGap: 10,
+              }}
             >
-              <Image
-                source={require("../assets/icons/fi-br-edit.png")}
-                style={{ width: 20, height: 20 }}
-              ></Image>
-            </Pressable>
-          </View>
-          {/* Profile info */}
-          <Image source={profile.pic} style={{ width: 100, height: 100 }} />
-          <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-          <Text style={appStyles.fonts.regular}>{profile.username}</Text>
-          <Text style={appStyles.fonts.regular}>{profile.location}</Text>
-          <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
-            {profile.bio}
-          </Text>
-          {/* style events and followers */}
-          <View style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}>
-            <View style={{ flexDirection: "column", alignItems: "center" }}>
-              <Text style={appStyles.fonts.paragraph}>{profile.eventsNum}</Text>
-              <Text style={appStyles.fonts.paragraph}>Events</Text>
+              <Pressable onPress={() => navigation.navigate("Settings")}>
+                <Image
+                  source={require("../assets/icons/fi-br-settings.png")}
+                  style={{ width: 21, height: 21 }}
+                ></Image>
+              </Pressable>
+              <Pressable
+                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
+              >
+                <Image
+                  source={require("../assets/icons/fi-br-edit.png")}
+                  style={{ width: 20, height: 20 }}
+                ></Image>
+              </Pressable>
             </View>
-            <View style={{ flexDirection: "column", alignItems: "center" }}>
-              <Text style={appStyles.fonts.paragraph}>
-                {profile.followersNum}
+            {/* Profile info */}
+            <Image source={profile.pic} style={{ width: 100, height: 100 }} />
+            <Text style={appStyles.fonts.heading}>{profile.name}</Text>
+            <Text style={appStyles.fonts.regular}>{profile.username}</Text>
+            <Text style={appStyles.fonts.regular}>{profile.location}</Text>
+            <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
+              {profile.bio}
+            </Text>
+            {/* style events and followers */}
+            <View
+              style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}
+            >
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <Text style={appStyles.fonts.paragraph}>
+                  {profile.eventsNum}
+                </Text>
+                <Text style={appStyles.fonts.paragraph}>Events</Text>
+              </View>
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <Text style={appStyles.fonts.paragraph}>
+                  {profile.followersNum}
+                </Text>
+                <Text style={appStyles.fonts.paragraph}>Followers</Text>
+              </View>
+            </View>
+          </View>
+          {/* Upcoming / attended / saved toggle*/}
+          <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+            <TouchableOpacity
+              style={
+                selection === "upcoming"
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "40%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "40%",
+                      alignItems: "center",
+                    }
+              }
+              onPress={() => setSelection("upcoming")}
+            >
+              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+                Upcoming
               </Text>
-              <Text style={appStyles.fonts.paragraph}>Followers</Text>
-            </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selection === "past"
+                  ? {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "#FFC60A",
+                      width: "40%",
+                      alignItems: "center",
+                    }
+                  : {
+                      borderRadius: 20,
+                      padding: 10,
+                      backgroundColor: "white",
+                      width: "40%",
+                      alignItems: "center",
+                    }
+              }
+              onPress={() => setSelection("past")}
+            >
+              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
+                Past
+              </Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        {/* Upcoming / attended / saved toggle*/}
-        <View style={[appStyles.toggleContainer, appStyles.shadow]}>
-          <TouchableOpacity
-            style={
-              selection === "upcoming"
-                ? {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "#FFC60A",
-                    width: "40%",
-                    alignItems: "center",
-                  }
-                : {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-                    width: "40%",
-                    alignItems: "center",
-                  }
-            }
-            onPress={() => setSelection("upcoming")}
-          >
-            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-              Upcoming
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              selection === "past"
-                ? {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "#FFC60A",
-                    width: "40%",
-                    alignItems: "center",
-                  }
-                : {
-                    borderRadius: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-                    width: "40%",
-                    alignItems: "center",
-                  }
-            }
-            onPress={() => setSelection("past")}
-          >
-            <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-              Past
-            </Text>
-          </TouchableOpacity>
-        </View>
 
-        {/* display event cards */}
-        {selection === "upcoming" ? (
-          <EventList events={events} navigation={navigation}></EventList>
-        ) : (
-          // replace with past
-          <SavedEventList
-            events={events}
-            navigation={navigation}
-          ></SavedEventList>
-        )}
-        {/* navigate to edit profile */}
-      </View>
-      <StatusBar style="auto" />
+          {/* display event cards */}
+          {selection === "upcoming" ? (
+            <EventList events={events} navigation={navigation}></EventList>
+          ) : (
+            // replace with past
+            <SavedEventList
+              events={events}
+              navigation={navigation}
+            ></SavedEventList>
+          )}
+          {/* navigate to edit profile */}
+        </View>
+        <StatusBar style="auto" />
+      </ScrollView>
     </>
   );
 };

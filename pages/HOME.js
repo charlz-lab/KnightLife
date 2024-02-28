@@ -1,6 +1,6 @@
-import React from "react"
-import { StatusBar } from "expo-status-bar"
-import { useFonts } from "expo-font"
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import {
   StyleSheet,
   Text,
@@ -9,46 +9,46 @@ import {
   View,
   Pressable,
   Image,
-} from "react-native"
-import Modal from "react-native-modal"
-import appStyles from "../styles"
-import filterIcon from "../assets/icons/fi-filter.png"
-import EventCard from "../components/EventCard"
-import EventList from "../components/EventList"
-import FilterSection from "../components/FilterSection"
-import SearchBar from "../components/SearchBar"
-import SavedEventList from "../components/SavedEventList"
-import AttendingEventList from "../components/AttendingEventList"
-import supabase from "../lib/supabase"
+} from "react-native";
+import Modal from "react-native-modal";
+import appStyles from "../styles";
+import filterIcon from "../assets/icons/fi-filter.png";
+import EventCard from "../components/EventCard";
+import EventList from "../components/EventList";
+import FilterSection from "../components/FilterSection";
+import SearchBar from "../components/SearchBar";
+import SavedEventList from "../components/SavedEventList";
+import AttendingEventList from "../components/AttendingEventList";
+import supabase from "../lib/supabase";
 
 const HOME = ({ navigation }) => {
   // list events
-  const [users, setUsers] = React.useState([])
-  const [events, setEvents] = React.useState([])
+  const [users, setUsers] = React.useState([]);
+  const [events, setEvents] = React.useState([]);
   const addEvent = (newEvent) => {
     // Update the events state with the new event
-    setEvents((prevEvents) => [...prevEvents, newEvent])
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
 
     HOME.navigationOptions = {
       headerLeft: null, // or any other option you prefer
-    }
-  }
+    };
+  };
 
   // enable filter modal
-  const [isModalVisible, setModalVisible] = React.useState(false)
+  const [isModalVisible, setModalVisible] = React.useState(false);
   const toggleModal = async () => {
-    let { data, error } = await supabase.from("users").select("*").limit(20)
+    let { data, error } = await supabase.from("users").select("*").limit(20);
 
-    if (error) console.log("Error: ", error)
-    else setUsers(data)
+    if (error) console.log("Error: ", error);
+    else setUsers(data);
 
-    setModalVisible(!isModalVisible)
-  }
+    setModalVisible(!isModalVisible);
+  };
 
   const handleSearch = (searchText) => {
     // Implement your search logic using searchText
-    console.log("Search Text:", searchText)
-  }
+    console.log("Search Text:", searchText);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -57,12 +57,14 @@ const HOME = ({ navigation }) => {
         style={[
           appStyles.layout.horizontal,
           { paddingHorizontal: 10, width: "100%" },
-        ]}>
+        ]}
+      >
         <SearchBar onSearch={handleSearch} />
         {/* note: "pressable" is more customizable than "button" */}
         <Pressable
           onPress={toggleModal}
-          style={{ flex: 0.5, alignItems: "center" }}>
+          style={{ flex: 0.5, alignItems: "center" }}
+        >
           <Image source={filterIcon} style={{ height: 24, width: 24 }} />
         </Pressable>
       </View>
@@ -79,7 +81,8 @@ const HOME = ({ navigation }) => {
         backdropTransitionOutTiming={400}
         onBackdropPress={toggleModal}
         hideModalContentWhileAnimating={true}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={styles.modalCard}>
           {/* modal header section */}
           <View style={appStyles.layout.horizontal}>
@@ -92,6 +95,10 @@ const HOME = ({ navigation }) => {
             </Pressable>
           </View>
           {/* list of options */}
+          <FilterSection
+            title="Accounts Displayed"
+            tags={["Followed Accounts only"]}
+          />
           <FilterSection
             title="Campus Location"
             tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
@@ -114,8 +121,8 @@ const HOME = ({ navigation }) => {
       </Modal>
       <StatusBar style="auto" />
     </SafeAreaView>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -136,8 +143,8 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
     width: "100%",
-    maxHeight: "70%",
-    gap: 30,
+    maxHeight: "80%",
+    gap: 5,
   },
-})
-export default HOME
+});
+export default HOME;

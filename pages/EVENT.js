@@ -32,9 +32,15 @@ const EventPage = ({ route, navigation }) => {
   };
   //report modal usestate
   const [isModalVisible, setModalVisible] = useState(false);
+  // info modal usestate
+  const [isInfoModalVisible, setInfoModalVisible] = useState(false);
   //toggle showing modal
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  // toggel info modal
+  const toggleInfoModal = () => {
+    setInfoModalVisible(!isInfoModalVisible);
   };
   const updateEvents = [
     {
@@ -124,10 +130,12 @@ const EventPage = ({ route, navigation }) => {
       <View style={styles.signUpContainer}>
         <View style={{ flexDirection: "row", columnGap: 10 }}>
           <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
-          <Image
-            source={require("../assets/icons/infoIcon.png")}
-            style={{ marginTop: 1, width: 20, height: 20 }}
-          />
+          <TouchableOpacity onPress={toggleInfoModal}>
+            <Image
+              source={require("../assets/icons/infoIcon.png")}
+              style={{ marginTop: 1, width: 20, height: 20 }}
+            />
+          </TouchableOpacity>
         </View>
         <Text
           style={[
@@ -173,6 +181,22 @@ const EventPage = ({ route, navigation }) => {
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
+        </View>
+      </Modal>
+
+      {/* modal for info button */}
+      <Modal
+        isVisible={isInfoModalVisible}
+        onBackdropPress={toggleInfoModal}
+        style={styles.modal}
+      >
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Disclaimer</Text>
+          <Text style={styles.modalAlert}>
+            Choosing to attend an event is not the same as signing up for the
+            event itself. Please use the sign up link to sign up for this event
+            externally.
+          </Text>
         </View>
       </Modal>
     </ScrollView>
