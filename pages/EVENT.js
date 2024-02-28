@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import {
-  ScrollView,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
   Image,
+  Pressable,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { Card, Icon } from "react-native-elements";
 import appStyles from "../styles";
 import Modal from "react-native-modal";
 import Ionicon from "react-native-vector-icons/FontAwesome";
 import UpdateList from "../components/UpdateList";
+
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params;
   const handleBack = () => {
@@ -39,35 +41,38 @@ const EventPage = ({ route, navigation }) => {
       creatorName: "John Doe",
       profileImage: "https://example.com/profile.jpg",
       dateTime: "Jan 01",
-      description: "Join us for an exciting event!",
+      description:
+        "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
   ];
   //function to navigate to the previous page
 
   return (
-    <View style={styles.container}>
-      <Image source={event.image} style={styles.image} />
-      {/* close page button with icon*/}
-      <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
-        <Icon
-          name="close"
-          type="ionicon"
-          size={25}
-          color="#676464"
-          style={styles.close}
-        />
-      </TouchableOpacity>
-      {/* report button with icon */}
-      <TouchableOpacity onPress={toggleModal} style={styles.reportButton}>
-        <Icon
-          name="alert-circle-outline"
-          type="ionicon"
-          size={25}
-          color="#FFC60A"
-          style={styles.report}
-        />
-      </TouchableOpacity>
-      <Text style={styles.dateTime}>{event.dateTime}</Text>
+    <ScrollView style={styles.container}>
+      <View>
+        <Image source={event.image} style={styles.image} />
+        {/* close page button with icon*/}
+        <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
+          <Icon
+            name="close"
+            type="ionicon"
+            size={25}
+            color="white"
+            style={styles.close}
+          />
+        </TouchableOpacity>
+        {/* report button with icon */}
+        <TouchableOpacity onPress={toggleModal} style={styles.reportButton}>
+          <Icon
+            name="alert-circle-outline"
+            type="ionicon"
+            size={25}
+            color="#FFC60A"
+            style={styles.report}
+          />
+        </TouchableOpacity>
+        <Text style={styles.dateTime}>{event.dateTime}</Text>
+      </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{event.name}</Text>
         <Text style={styles.creator}>{event.creator}</Text>
@@ -86,23 +91,16 @@ const EventPage = ({ route, navigation }) => {
           {event.membersGoing} Members Going{" "}
         </Text>
         {/* description card */}
-        <View style={styles.toggleContainer}>
-          <Card
-            width="225"
-            borderRadius={12}
-            style={[styles.shadow, styles.card]}
-          >
-            <Text style={appStyles.fonts.paragraph}>
-              {event.description}
-            </Text>
-          </Card>
-        </View>
-        {/* <Text style={styles.updateTitle}>Updates!</Text>
-        <UpdateList updateEvents={updateEvents} />*/}
-        <TouchableOpacity
-          onPress={handleBookmarkToggle}
-          style={styles.bookmarkButton}
-        >
+        {/* <View style={styles.toggleContainer}> */}
+        <Card borderRadius={12} style={[styles.shadow, styles.card]}>
+          <Text style={{ fontFamily: "IBMPlexSans-Medium" }}>
+            {event.description}
+          </Text>
+        </Card>
+        {/* </View> */}
+      </View>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
           <View style={styles.bookmarkBox}>
             <Ionicon
               name={isBookmarked ? "bookmark" : "bookmark-o"}
@@ -110,16 +108,41 @@ const EventPage = ({ route, navigation }) => {
               color="#FFC60A"
             />
           </View>
-        </TouchableOpacity>
+        </Pressable>
+
         {/* toggle attending button if isAttending true or false */}
-        <TouchableOpacity
+
+        <Pressable
           onPress={handleAttendToggle}
           style={isAttending ? styles.attendingButton : styles.attendButton}
         >
           <Text style={[styles.attendButtonText]}>
             {isAttending ? "Attending" : "Attend"}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
+      </View>
+      <View style={styles.signUpContainer}>
+        <View style={{ flexDirection: "row", columnGap: 10 }}>
+          <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
+          <Image
+            source={require("../assets/icons/infoIcon.png")}
+            style={{ marginTop: 1, width: 20, height: 20 }}
+          />
+        </View>
+        <Text
+          style={[
+            { textDecorationLine: "underline" },
+            appStyles.fonts.paragraph,
+          ]}
+        >
+          signuphereucf.com
+        </Text>
+      </View>
+      <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
+        Event Updates:
+      </Text>
+      <View style={styles.updateEventListContainer}>
+        <UpdateList updateEvents={updateEvents} />
       </View>
 
       {/* modal for report button */}
@@ -152,13 +175,13 @@ const EventPage = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: "white",
   },
   image: {
     width: "100%",
@@ -166,9 +189,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover", // Adjust the resizeMode as needed
   },
   detailsContainer: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
     backgroundColor: "#fff",
-    flex: 1,
   },
   reportButton: {
     position: "absolute",
@@ -288,10 +311,15 @@ const styles = StyleSheet.create({
   modalOption2: {
     backgroundColor: "#FF460C",
   },
+  buttonContainer: {
+    flexDirection: "row",
+    height: 65,
+    alignItems: "center",
+    alignSelf: "center",
+    columnGap: 10,
+    margin: 1,
+  },
   bookmarkButton: {
-    position: "absolute",
-    top: 285,
-    left: 27,
     padding: 8,
     paddingTop: 10,
   },
@@ -300,30 +328,27 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 12,
     borderRadius: 15,
+    height: "96%",
   },
   attendButton: {
-    position: "absolute",
-    top: 295,
-    right: 35, // Adjust the position as needed
-    padding: 12,
-    backgroundColor: "#FFC60A",
-    borderRadius: 20,
-    width: 260,
+    width: "70%",
+    borderRadius: 30,
+    borderWidth: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 0,
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#FFC60A",
+    borderColor: "#FFC60A",
   },
   attendingButton: {
-    position: "absolute",
-    top: 295,
-    right: 35, // Adjust the position as needed
-    padding: 10,
     backgroundColor: "#FDF5E6",
     borderColor: "#FFC60A",
     borderWidth: 2,
-    borderRadius: 20,
-    width: 260,
+    width: "70%",
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     alignItems: "center",
-    justifyContent: "center",
   },
   attendButtonText: {
     color: "#080808",
@@ -331,8 +356,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   toggleContainer: {
-    marginBottom: 80,
-
     // Add any styles for the toggle container here
   },
   updateEventListContainer: {
@@ -340,14 +363,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     paddingBottom: 20,
+    marginBottom: 30,
+    borderRadius: 30,
   },
   updateTitle: {
     backgroundColor: "white",
     fontSize: 20,
     color: "#080808",
-    fontFamily: "IBMPlexSans-Medium",
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
     paddingTop: 10,
+  },
+  signUpContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 5,
   },
 });
 

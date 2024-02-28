@@ -69,6 +69,9 @@ const appStyles = {
       fontFamily: "IBMPlexSans-Medium",
       fontSize: 16,
     },
+    paragraphNoSize: {
+      fontFamily: "IBMPlexSans-Medium",
+    },
     // sub headings
     subHeading: {
       fontFamily: "IBMPlexSans-Bold",
@@ -79,6 +82,9 @@ const appStyles = {
       fontSize: 16,
       textTransform: "uppercase",
       marginBottom: 30,
+    },
+    subHeadingNoSize: {
+      fontFamily: "IBMPlexSans-Bold",
     },
     // heading
     heading: {
