@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import appStyles from "../styles";
+import { supabase } from "../lib/supabase";
 
 const RegisterScreenCreator = (props) => {
   const [userName, setUserName] = useState("");
@@ -27,23 +28,34 @@ const RegisterScreenCreator = (props) => {
   const ageInputRef = createRef();
   const passwordInputRef = createRef();
 
-  const handleCreateAccButton = () => {
-    setErrortext("");
-    if (!userName) {
-      alert("Please fill Name");
-      return;
+  // const handleCreateAccButton = () => {
+  //   const { error } = supabase.auth.signUp({ email, password });
+  //   if (error) { console.log('Error signing up') }
+  //   setErrortext("");
+  //   if (!userName) {
+  //     alert("Please fill Name");
+  //     return;
+  //   }
+  //   if (!userEmail) {
+  //     alert("Please fill Email");
+  //     return;
+  //   }
+  //   if (!userPassword) {
+  //     alert("Please fill Password");
+  //     return;
+  //   }
+  //   setIsRegistraionSuccess(true);
+  // };
+  async function handleCreateAccButton() {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password
+    });
+    if (error) {
+      setErrortext(error.message);
+      console.log('Error signing up', error.message);
     }
-    if (!userEmail) {
-      alert("Please fill Email");
-      return;
-    }
-    if (!userPassword) {
-      alert("Please fill Password");
-      return;
-    }
-    setIsRegistraionSuccess(true);
-  };
-
+  }
   const handleCreateProfileButton = () => {
     setErrortext("");
     if (!name) {

@@ -19,8 +19,11 @@ import FilterSection from "../components/FilterSection";
 import SearchBar from "../components/SearchBar";
 import SavedEventList from "../components/SavedEventList";
 import AttendingEventList from "../components/AttendingEventList";
+import supabase from "../lib/supabase";
 const HOME = ({ navigation }) => {
+
   // list events
+  const [users, setUsers] = useState([])
   const [events, setEvents] = React.useState([]);
   const addEvent = (newEvent) => {
     // Update the events state with the new event
@@ -29,20 +32,17 @@ const HOME = ({ navigation }) => {
 
   // enable filter modal
   const [isModalVisible, setModalVisible] = React.useState(false);
-  const toggleModal = () => {
-    console.log(process.env.EXPO_PUBLIC_SERVER_URL);
-    fetch(
-      process.env.EXPO_PUBLIC_SERVER_URL + "/index.php/user/list?limit=20",
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => response.json())
-      .then((responsejson) => {
-        console.log(responsejson);
-      });
-    setModalVisible(!isModalVisible);
-  };
+  const toggleModal = async () => {
+    let { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .limit(20)
+
+    if (error) console.log('Error: ', error)
+    else setUsers(data)
+
+    setModalVisible(!isModalVisible)
+  }
 
   const handleSearch = (searchText) => {
     // Implement your search logic using searchText

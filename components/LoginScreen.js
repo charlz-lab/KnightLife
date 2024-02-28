@@ -12,36 +12,48 @@ import {
   ImageBackground,
 } from "react-native";
 import appStyles from "../styles";
-
+import supabase from "../lib/supabase";
 const LoginScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState("");
+  const [users, setUsers] = useState([])
 
   const passwordInputRef = createRef();
 
-  const handleSubmitPress = () => {
-    setErrortext("");
-    if (!userEmail) {
-      alert("Please fill Email");
-      return;
-    }
-    if (!userPassword) {
-      alert("Please fill Password");
-      return;
-    }
-    let dataToSend = { email: userEmail, password: userPassword };
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+  // const handleSubmitPress = () => {
+  //   setErrortext("");
+  //   if (!userEmail) {
+  //     alert("Please fill Email");
+  //     return;
+  //   }
+  //   if (!userPassword) {
+  //     alert("Please fill Password");
+  //     return;
+  //   }
+  //   let dataToSend = { email: userEmail, password: userPassword };
+  //   let formBody = [];
+  //   for (let key in dataToSend) {
+  //     let encodedKey = encodeURIComponent(key);
+  //     let encodedValue = encodeURIComponent(dataToSend[key]);
+  //     formBody.push(encodedKey + "=" + encodedValue);
+  //   }
+  //   formBody = formBody.join("&");
 
-    navigation.replace("NavBar", { isCreator: true });
-  };
+  //   navigation.replace("NavBar", { isCreator: true });
+  // };
+  const handleSubmitPress = async () => {
+    let { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .limit(20)
+
+    if (error) console.log('Error: ', error)
+    else setUsers(data)
+    console.log('Users: ', data)
+
+  }
 
   return (
     <View style={styles.mainBody}>
@@ -186,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: "#dadae8",
     backgroundColor: "white",
-    ... appStyles.fonts.paragraph
+    ...appStyles.fonts.paragraph
   },
   registerTextStyle: {
     color: "#FFFFFF",
