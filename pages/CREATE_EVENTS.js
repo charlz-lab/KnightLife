@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef } from "react"
 import {
   StyleSheet,
   TextInput,
@@ -9,19 +9,20 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
-} from "react-native";
-import appStyles from "../styles";
+} from "react-native"
+import appStyles from "../styles"
+import supabase from "../lib/supabase"
 
 const CREATE_EVENTS = () => {
-  const [eventName, setEventName] = useState("");
-  const [eventLocation, setEventLocation] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventTime, setEventTime] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const locationInputRef = createRef();
-  const dateInputRef = createRef();
-  const timeInputRef = createRef();
-  const descriptionInputRef = createRef();
+  const [eventName, setEventName] = useState("")
+  const [eventLocation, setEventLocation] = useState("")
+  const [eventDate, setEventDate] = useState("")
+  const [eventTime, setEventTime] = useState("")
+  const [eventDescription, setEventDescription] = useState("")
+  const locationInputRef = createRef()
+  const dateInputRef = createRef()
+  const timeInputRef = createRef()
+  const descriptionInputRef = createRef()
   const handleSubmitPress = () => {
     // Check if all fields are filled out
     if (
@@ -31,23 +32,40 @@ const CREATE_EVENTS = () => {
       !eventTime ||
       !eventDescription
     ) {
-      Alert.alert("Please fill out all fields");
-      return;
+      Alert.alert("Please fill out all fields")
+      return
     }
 
     // Perform any other necessary validation before creating the event
 
-    // For simplicity, just show an alert
-    Alert.alert("Event Created");
+    // Add the event to the database
+    supabase
+      .from("events")
+      .insert({
+        name: eventName,
+        date: new Date(eventDate + " " + eventTime),
+        location: eventLocation,
+        description: eventDescription,
+      })
+      .then((data, error) => {
+        console.log(data, error)
+        if (error) {
+          Alert.alert("Error creating event")
+          return
+        } else {
+          // For simplicity, just show an alert
+          // Eventually, we would want to navigate to the event details page of the newly created event
+          Alert.alert("Event Created")
 
-    // Clear input fields after successful event creation
-    setEventName("");
-    setEventLocation("");
-    setEventDate("");
-    setEventTime("");
-    setEventDescription("");
-  };
-
+          // Clear input fields after successful event creation
+          setEventName("")
+          setEventLocation("")
+          setEventDate("")
+          setEventTime("")
+          setEventDescription("")
+        }
+      })
+  }
   return (
     <View style={styles.mainBody}>
       <ScrollView
@@ -57,8 +75,7 @@ const CREATE_EVENTS = () => {
           marginTop: 16,
           justifyContent: "flex-start",
           alignContent: "flex-center",
-        }}
-      >
+        }}>
         <View>
           <KeyboardAvoidingView enabled>
             <Text style={[appStyles.fonts.heading]}>Create an Event</Text>
@@ -138,8 +155,7 @@ const CREATE_EVENTS = () => {
               <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
-                onPress={handleSubmitPress}
-              >
+                onPress={handleSubmitPress}>
                 <Text style={styles.buttonTextStyle}>CREATE EVENT</Text>
               </TouchableOpacity>
             </View>
@@ -147,10 +163,10 @@ const CREATE_EVENTS = () => {
         </View>
       </ScrollView>
     </View>
-  );
-};
+  )
+}
 
-export default CREATE_EVENTS;
+export default CREATE_EVENTS
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -199,4 +215,4 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "#dadae8",
   },
-});
+})
