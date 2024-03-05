@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react"
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,13 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-} from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import appStyles from "../styles";
-import EventList from "../components/EventList";
-import AttendingEventList from "../components/AttendingEventList";
-import SavedEventList from "../components/SavedEventList";
+} from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
+import appStyles from "../styles"
+import EventList from "../components/EventList"
+import AttendingEventList from "../components/AttendingEventList"
+import SavedEventList from "../components/SavedEventList"
+import supabase from "../lib/supabase"
 
 // jane doe's profile
 let defaultProfile = {
@@ -26,7 +27,7 @@ let defaultProfile = {
   location: "UCF Downtown, Orlando",
   pic: require("../images/janeDoeProfile.png"),
   isCreator: false,
-};
+}
 
 // creator profile
 let defaultCreator = {
@@ -38,11 +39,21 @@ let defaultCreator = {
   followersNum: 1746,
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
-};
+}
+
+// fetch events from database
+const fetchEvents = async () => {
+  const { data, error, status } = await supabase.from("events").select("*")
+  if (error && status !== 406) {
+    throw error
+  } else {
+    return data
+  }
+}
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
-  let [profile, setProfile] = useState(route.params);
+  let [profile, setProfile] = useState(route.params)
 
   const saveAlert = () =>
     Alert.alert(
@@ -59,11 +70,11 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           onPress: () => {
             profile.isCreator
               ? navigation.navigate("Creator Profile", { profile: profile })
-              : navigation.navigate("Personal Profile", { profile: profile });
+              : navigation.navigate("Personal Profile", { profile: profile })
           },
         },
       ]
-    );
+    )
   return (
     <>
       <View style={styles.editContainer}>
@@ -73,8 +84,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             rowGap: 5,
             alignItems: "center",
             marginTop: 25,
-          }}
-        >
+          }}>
           <Image source={profile.pic} style={{ width: 125, height: 125 }} />
           <Text style={appStyles.fonts.paragraph}>Change photo</Text>
         </View>
@@ -84,8 +94,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             width: "90%",
             alignItems: "center",
             rowGap: 5,
-          }}
-        >
+          }}>
           <Text style={appStyles.fonts.subHeading}>Profile Name:</Text>
           <View style={appStyles.sectionStyle}>
             <TextInput
@@ -157,8 +166,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
             style={[appStyles.buttons.yellow, appStyles.shadow]}
-            onPress={saveAlert}
-          >
+            onPress={saveAlert}>
             <Text style={appStyles.fonts.paragraph}>Save</Text>
           </Pressable>
           <Pressable
@@ -166,9 +174,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             onPress={() => {
               profile.isCreator
                 ? navigation.navigate("Creator Profile")
-                : navigation.navigate("Personal Profile");
-            }}
-          >
+                : navigation.navigate("Personal Profile")
+            }}>
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               Cancel
             </Text>
@@ -176,22 +183,22 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         </View>
       </View>
     </>
-  );
-};
+  )
+}
 
 // profile
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultProfile);
-  const [events, setEvents] = useState([]);
-  const [selection, setSelection] = useState("upcoming");
+  const [profile, setProfile] = useState(route.params || defaultProfile)
+  const [events, setEvents] = useState([])
+  const [selection, setSelection] = useState("upcoming")
 
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
-      console.log("profile changed");
+      setProfile(route.params.profile)
+      console.log("profile changed")
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   return (
     <>
@@ -203,21 +210,17 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                 flexDirection: "row-reverse",
                 alignSelf: "flex-end",
                 columnGap: 10,
-              }}
-            >
+              }}>
               <Pressable onPress={() => navigation.navigate("Settings")}>
                 <Image
                   source={require("../assets/icons/fi-br-settings.png")}
-                  style={{ width: 21, height: 21 }}
-                ></Image>
+                  style={{ width: 21, height: 21 }}></Image>
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
-              >
+                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
                 <Image
                   source={require("../assets/icons/fi-br-edit.png")}
-                  style={{ width: 20, height: 20 }}
-                ></Image>
+                  style={{ width: 20, height: 20 }}></Image>
               </Pressable>
             </View>
             {/* Profile info */}
@@ -249,8 +252,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                       alignItems: "center",
                     }
               }
-              onPress={() => setSelection("upcoming")}
-            >
+              onPress={() => setSelection("upcoming")}>
               <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
                 Upcoming
               </Text>
@@ -273,8 +275,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                       alignItems: "center",
                     }
               }
-              onPress={() => setSelection("saved")}
-            >
+              onPress={() => setSelection("saved")}>
               <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
                 Saved
               </Text>
@@ -297,8 +298,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                       alignItems: "center",
                     }
               }
-              onPress={() => setSelection("attended")}
-            >
+              onPress={() => setSelection("attended")}>
               <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
                 Attended
               </Text>
@@ -311,33 +311,37 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
           ) : selection === "saved" ? (
             <SavedEventList
               events={events}
-              navigation={navigation}
-            ></SavedEventList>
+              navigation={navigation}></SavedEventList>
           ) : (
             <AttendingEventList
               events={events}
-              navigation={navigation}
-            ></AttendingEventList>
+              navigation={navigation}></AttendingEventList>
           )}
         </View>
 
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  );
-};
+  )
+}
 
 export const CREATOR_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultCreator);
-  const [events, setEvents] = useState([]);
-  const [selection, setSelection] = useState("upcoming");
+  const [profile, setProfile] = useState(route.params || defaultCreator)
+  const [selection, setSelection] = useState("upcoming")
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetchEvents().then((data) => {
+      setEvents(data)
+    })
+  }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
+      setProfile(route.params.profile)
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   return (
     <>
@@ -349,21 +353,17 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
                 flexDirection: "row-reverse",
                 alignSelf: "flex-end",
                 columnGap: 10,
-              }}
-            >
+              }}>
               <Pressable onPress={() => navigation.navigate("Settings")}>
                 <Image
                   source={require("../assets/icons/fi-br-settings.png")}
-                  style={{ width: 21, height: 21 }}
-                ></Image>
+                  style={{ width: 21, height: 21 }}></Image>
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}
-              >
+                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
                 <Image
                   source={require("../assets/icons/fi-br-edit.png")}
-                  style={{ width: 20, height: 20 }}
-                ></Image>
+                  style={{ width: 20, height: 20 }}></Image>
               </Pressable>
             </View>
             {/* Profile info */}
@@ -376,8 +376,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             </Text>
             {/* style events and followers */}
             <View
-              style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}
-            >
+              style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
                 <Text style={appStyles.fonts.paragraph}>
                   {profile.eventsNum}
@@ -412,8 +411,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
                       alignItems: "center",
                     }
               }
-              onPress={() => setSelection("upcoming")}
-            >
+              onPress={() => setSelection("upcoming")}>
               <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
                 Upcoming
               </Text>
@@ -436,8 +434,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
                       alignItems: "center",
                     }
               }
-              onPress={() => setSelection("past")}
-            >
+              onPress={() => setSelection("past")}>
               <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
                 Past
               </Text>
@@ -445,22 +442,22 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
           </View>
 
           {/* display event cards */}
-          {selection === "upcoming" ? (
+          {console.log(events)}
+          {/* {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : (
             // replace with past
             <SavedEventList
               events={events}
-              navigation={navigation}
-            ></SavedEventList>
-          )}
+              navigation={navigation}></SavedEventList>
+          )} */}
           {/* navigate to edit profile */}
         </View>
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   editContainer: {
@@ -477,4 +474,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-});
+})
