@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react"
+import React, { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -9,61 +9,61 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
-} from "react-native"
-import appStyles from "../styles"
+} from "react-native";
+import appStyles from "../styles";
 
 const RegisterScreenPersonal = (props) => {
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [userPassword, setUserPassword] = useState("")
-  const [name, setName] = useState("")
-  const [year, setYear] = useState("")
-  const [major, setMajor] = useState("")
-  const [location, setLocation] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [errortext, setErrortext] = useState("")
-  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false)
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [name, setName] = useState("");
+  const [year, setYear] = useState("");
+  const [major, setMajor] = useState("");
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
+  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
 
-  const emailInputRef = createRef()
-  const passwordInputRef = createRef()
-  const yearInputRef = createRef()
-  const majorInputRef = createRef()
-  const locationInputRef = createRef()
+  const emailInputRef = createRef();
+  const passwordInputRef = createRef();
+  const yearInputRef = createRef();
+  const majorInputRef = createRef();
+  const locationInputRef = createRef();
 
   const handleCreateAccButton = () => {
-    setErrortext("")
+    setErrortext("");
     if (!userName) {
-      alert("Please fill Name")
-      return
+      alert("Please fill Name");
+      return;
     }
     if (!userEmail) {
-      alert("Please fill Email")
-      return
+      alert("Please fill Email");
+      return;
     }
     if (!userPassword) {
-      alert("Please fill Password")
-      return
+      alert("Please fill Password");
+      return;
     }
-    setIsRegistrationSuccess(true)
-  }
+    setIsRegistrationSuccess(true);
+  };
 
   const handleCreateProfileButton = () => {
-    setErrortext("")
+    setErrortext("");
     if (!name) {
-      alert("Please fill Name")
-      return
+      alert("Please fill Name");
+      return;
     }
     if (!year) {
-      alert("Please fill School Year")
-      return
+      alert("Please fill School Year");
+      return;
     }
     if (!major) {
-      alert("Please fill Major")
-      return
+      alert("Please fill Major");
+      return;
     }
     if (!location) {
-      alert("Please fill Loaction")
-      return
+      alert("Please fill Loaction");
+      return;
     }
     //Show Loader
 
@@ -75,17 +75,17 @@ const RegisterScreenPersonal = (props) => {
       year: year,
       major: major,
       location: location,
-    }
-    var formBody = []
+    };
+    var formBody = [];
     for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key)
-      var encodedValue = encodeURIComponent(dataToSend[key])
-      formBody.push(encodedKey + "=" + encodedValue)
+      var encodedKey = encodeURIComponent(key);
+      var encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + "=" + encodedValue);
     }
-    formBody = formBody.join("&")
-    console.log(dataToSend)
-    props.navigation.navigate("NavBar", { isCreator: false })
-  }
+    formBody = formBody.join("&");
+    console.log(dataToSend);
+    props.navigation.navigate("EmailVerification");
+  };
   if (isRegistrationSuccess) {
     return (
       <View
@@ -95,12 +95,14 @@ const RegisterScreenPersonal = (props) => {
           justifyContent: "center",
           flexDirection: "column",
           rowGap: 20,
-        }}>
+        }}
+      >
         <Text
           style={[
             appStyles.fonts.headingTwo,
             { textAlign: "center", marginTop: -40 },
-          ]}>
+          ]}
+        >
           Customize your {"\n"}Profile
         </Text>
         <View>
@@ -120,7 +122,8 @@ const RegisterScreenPersonal = (props) => {
                 marginTop: 5,
                 textDecorationLine: "underline",
               },
-            ]}>
+            ]}
+          >
             Add profile picture
           </Text>
         </View>
@@ -182,11 +185,13 @@ const RegisterScreenPersonal = (props) => {
           style={[
             appStyles.layout.section,
             { flexDirection: "row", columnGap: 15 },
-          ]}>
+          ]}
+        >
           <TouchableOpacity
             style={[styles.goBack, appStyles.shadow]}
             activeOpacity={0.5}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => props.navigation.goBack()}
+          >
             <Text style={styles.buttonTextStyle}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -196,19 +201,21 @@ const RegisterScreenPersonal = (props) => {
               { width: "35%" },
             ]}
             activeOpacity={0.5}
-            onPress={handleCreateProfileButton}>
+            onPress={handleCreateProfileButton}
+          >
             <Text style={styles.buttonTextStyle}>Finish</Text>
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: "#FFFFFF",
-      }}>
+      }}
+    >
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -216,7 +223,8 @@ const RegisterScreenPersonal = (props) => {
           alignContent: "center",
           flexDirection: "column",
           rowGap: 60,
-        }}>
+        }}
+      >
         <View style={{ alignItems: "center", paddingTop: 40 }}>
           <Text style={appStyles.fonts.headingTwo}>Sign Up</Text>
         </View>
@@ -275,26 +283,29 @@ const RegisterScreenPersonal = (props) => {
             style={[
               appStyles.layout.section,
               { flexDirection: "row", columnGap: 15, marginTop: 30 },
-            ]}>
+            ]}
+          >
             <TouchableOpacity
               style={[styles.goBack, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={() => props.navigation.goBack()}>
+              onPress={() => props.navigation.goBack()}
+            >
               <Text style={styles.buttonTextStyle}>Go Back</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.accBttn, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={handleCreateAccButton}>
+              onPress={handleCreateAccButton}
+            >
               <Text style={styles.buttonTextStyle}>Create Account</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
-  )
-}
-export default RegisterScreenPersonal
+  );
+};
+export default RegisterScreenPersonal;
 
 const styles = StyleSheet.create({
   SectionStyle: {
@@ -362,4 +373,4 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
   },
-})
+});

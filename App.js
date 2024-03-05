@@ -19,6 +19,7 @@ import LoginScreen from "./components/LoginScreen";
 import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
+import EmailVerification from "./components/EmailVerification";
 
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
@@ -78,6 +79,20 @@ const Auth = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="EmailVerification"
+        component={EmailVerification}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -103,13 +118,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-       initialRouteName="SplashScreen"
-       screenOptions={{
-         headerShown: true,
-         headerTintColor: 'black', // back arrow color
-         
-       }}
-     >
+        initialRouteName="SplashScreen"
+        screenOptions={{
+          headerShown: true,
+          headerTintColor: "black", // back arrow color
+        }}
+      >
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -157,9 +171,11 @@ export default function App() {
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} // Initially hide header
-
-/>
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }} // Initially hide header
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
