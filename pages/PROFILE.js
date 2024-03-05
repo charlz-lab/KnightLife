@@ -42,8 +42,12 @@ let defaultCreator = {
 }
 
 // fetch events from database
-const fetchEvents = async () => {
-  const { data, error, status } = await supabase.from("events").select("*")
+const fetchEvents = async (creatorId) => {
+  const { data, error, status } = await supabase
+    .from("events")
+    .select("*")
+    .eq("creator_id", creatorId)
+    .order("date", { ascending: true })
   if (error && status !== 406) {
     throw error
   } else {
@@ -329,11 +333,14 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator)
   const [selection, setSelection] = useState("upcoming")
   const [events, setEvents] = useState([])
+  const creatorId = "ef1e9b2b-53f6-4342-a77c-e1c74b2f627a"
 
   useEffect(() => {
-    fetchEvents().then((data) => {
-      setEvents(data)
-    })
+    if (supabase) {
+      fetchEvents(creatorId).then((data) => {
+        setEvents(data)
+      })
+    }
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
@@ -443,6 +450,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
           {/* display event cards */}
           {console.log(events)}
+          {/* <EventList events={events} navigation={navigation}></EventList> */}
           {/* {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : (

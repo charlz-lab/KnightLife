@@ -33,9 +33,7 @@ const EventList = async ({ events, navigation }) => {
   //     },
   // ]
   const [eventData, setEventData] = useState(events)
-  {
-    /*toggle the bookmarked events*/
-  }
+  /*toggle the bookmarked events*/
   const handleBookmarkToggle = (eventId, isBookmarked) => {
     const updatedData = eventData.map((event) =>
       event.id === eventId ? { ...event, isBookmarked } : event
