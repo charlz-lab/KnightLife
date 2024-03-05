@@ -46,6 +46,7 @@ const CREATE_EVENTS = () => {
         date: new Date(eventDate + " " + eventTime),
         location: eventLocation,
         description: eventDescription,
+        creator_id: "ef1e9b2b-53f6-4342-a77c-e1c74b2f627a", // This would be the logged in user's ID
       })
       .then((data, error) => {
         console.log(data, error)
@@ -79,7 +80,7 @@ const CREATE_EVENTS = () => {
         <View>
           <KeyboardAvoidingView enabled>
             <Text style={[appStyles.fonts.heading]}>Create an Event</Text>
-            <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(text) => setEventName(text)}
@@ -94,7 +95,7 @@ const CREATE_EVENTS = () => {
                 value={eventName}
               />
             </View>
-            <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(text) => setEventLocation(text)}
@@ -110,7 +111,7 @@ const CREATE_EVENTS = () => {
                 value={eventLocation}
               />
             </View>
-            <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(text) => setEventDate(text)}
@@ -125,7 +126,7 @@ const CREATE_EVENTS = () => {
                 value={eventDate}
               />
             </View>
-            <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(text) => setEventTime(text)}
@@ -141,7 +142,7 @@ const CREATE_EVENTS = () => {
                 value={eventTime}
               />
             </View>
-            <View style={[styles.SectionStyle, appStyles.shawdowInput]}>
+            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(text) => setEventDescription(text)}
