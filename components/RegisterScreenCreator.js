@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react"
+import React, { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -9,24 +9,24 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
-} from "react-native"
-import appStyles from "../styles"
-import { supabase } from "../lib/supabase"
+} from "react-native";
+import appStyles from "../styles";
+import { supabase } from "../lib/supabase";
 
 const RegisterScreenCreator = (props) => {
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [name, setName] = useState("")
-  const [location, setLocation] = useState("")
-  const [bio, setBio] = useState("")
-  const [userPassword, setUserPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [errortext, setErrortext] = useState("")
-  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false)
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [bio, setBio] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
+  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
 
-  const emailInputRef = createRef()
-  const ageInputRef = createRef()
-  const passwordInputRef = createRef()
+  const emailInputRef = createRef();
+  const ageInputRef = createRef();
+  const passwordInputRef = createRef();
 
   const handleCreateAccButton = async () => {
     setErrortext("");
@@ -124,12 +124,14 @@ const RegisterScreenCreator = (props) => {
           justifyContent: "center",
           flexDirection: "column",
           rowGap: 30,
-        }}>
+        }}
+      >
         <Text
           style={[
             appStyles.fonts.headingTwo,
             { textAlign: "center", marginTop: -40 },
-          ]}>
+          ]}
+        >
           Customize your {"\n"} Profile
         </Text>
         <View>
@@ -149,7 +151,8 @@ const RegisterScreenCreator = (props) => {
                 marginTop: 5,
                 textDecorationLine: "underline",
               },
-            ]}>
+            ]}
+          >
             Add profile picture
           </Text>
         </View>
@@ -198,11 +201,13 @@ const RegisterScreenCreator = (props) => {
           style={[
             appStyles.layout.section,
             { flexDirection: "row", columnGap: 15 },
-          ]}>
+          ]}
+        >
           <TouchableOpacity
             style={[styles.goBack, appStyles.shadow]}
             activeOpacity={0.5}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => props.navigation.goBack()}
+          >
             <Text style={styles.buttonTextStyle}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -212,12 +217,13 @@ const RegisterScreenCreator = (props) => {
               { width: "35%" },
             ]}
             activeOpacity={0.5}
-            onPress={handleCreateProfileButton}>
+            onPress={handleCreateProfileButton}
+          >
             <Text style={styles.buttonTextStyle}>Finish</Text>
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -228,7 +234,8 @@ const RegisterScreenCreator = (props) => {
           alignContent: "center",
           flexDirection: "column",
           rowGap: 60,
-        }}>
+        }}
+      >
         <View style={{ alignItems: "center", paddingTop: 40 }}>
           <Text style={appStyles.fonts.headingTwo}>Sign Up</Text>
         </View>
@@ -287,26 +294,29 @@ const RegisterScreenCreator = (props) => {
             style={[
               appStyles.layout.section,
               { flexDirection: "row", columnGap: 15, marginTop: 30 },
-            ]}>
+            ]}
+          >
             <TouchableOpacity
               style={[styles.goBack, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={() => props.navigation.goBack()}>
+              onPress={() => props.navigation.goBack()}
+            >
               <Text style={styles.buttonTextStyle}>Go Back</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.accBttn, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={handleCreateAccButton}>
+              onPress={handleCreateAccButton}
+            >
               <Text style={styles.buttonTextStyle}>Create Account</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
-  )
-}
-export default RegisterScreenCreator
+  );
+};
+export default RegisterScreenCreator;
 
 const styles = StyleSheet.create({
   SectionStyle: {
@@ -374,4 +384,4 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
   },
-})
+});

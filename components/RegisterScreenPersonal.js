@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react"
+import React, { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -9,10 +9,9 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
-} from "react-native"
-import appStyles from "../styles"
-import supabase from "../lib/supabase"
-import { useEffect } from "react"
+} from "react-native";
+import appStyles from "../styles";
+
 const RegisterScreenPersonal = (props) => {
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
@@ -25,11 +24,11 @@ const RegisterScreenPersonal = (props) => {
   const [errortext, setErrortext] = useState("")
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false)
 
-  const emailInputRef = createRef()
-  const passwordInputRef = createRef()
-  const yearInputRef = createRef()
-  const majorInputRef = createRef()
-  const locationInputRef = createRef()
+  const emailInputRef = createRef();
+  const passwordInputRef = createRef();
+  const yearInputRef = createRef();
+  const majorInputRef = createRef();
+  const locationInputRef = createRef();
 
   const [newUser, setNewUser] = useState(null); // Use a state variable to store the new user // Declare a variable to store the new user
 
@@ -133,12 +132,14 @@ const RegisterScreenPersonal = (props) => {
           justifyContent: "center",
           flexDirection: "column",
           rowGap: 20,
-        }}>
+        }}
+      >
         <Text
           style={[
             appStyles.fonts.headingTwo,
             { textAlign: "center", marginTop: -40 },
-          ]}>
+          ]}
+        >
           Customize your {"\n"}Profile
         </Text>
         <View>
@@ -158,7 +159,8 @@ const RegisterScreenPersonal = (props) => {
                 marginTop: 5,
                 textDecorationLine: "underline",
               },
-            ]}>
+            ]}
+          >
             Add profile picture
           </Text>
         </View>
@@ -220,11 +222,13 @@ const RegisterScreenPersonal = (props) => {
           style={[
             appStyles.layout.section,
             { flexDirection: "row", columnGap: 15 },
-          ]}>
+          ]}
+        >
           <TouchableOpacity
             style={[styles.goBack, appStyles.shadow]}
             activeOpacity={0.5}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => props.navigation.goBack()}
+          >
             <Text style={styles.buttonTextStyle}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -240,14 +244,15 @@ const RegisterScreenPersonal = (props) => {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: "#FFFFFF",
-      }}>
+      }}
+    >
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -255,7 +260,8 @@ const RegisterScreenPersonal = (props) => {
           alignContent: "center",
           flexDirection: "column",
           rowGap: 60,
-        }}>
+        }}
+      >
         <View style={{ alignItems: "center", paddingTop: 40 }}>
           <Text style={appStyles.fonts.headingTwo}>Sign Up</Text>
         </View>
@@ -314,26 +320,29 @@ const RegisterScreenPersonal = (props) => {
             style={[
               appStyles.layout.section,
               { flexDirection: "row", columnGap: 15, marginTop: 30 },
-            ]}>
+            ]}
+          >
             <TouchableOpacity
               style={[styles.goBack, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={() => props.navigation.goBack()}>
+              onPress={() => props.navigation.goBack()}
+            >
               <Text style={styles.buttonTextStyle}>Go Back</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.accBttn, appStyles.shadow]}
               activeOpacity={0.5}
-              onPress={handleCreateAccButton}>
+              onPress={handleCreateAccButton}
+            >
               <Text style={styles.buttonTextStyle}>Create Account</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
-  )
-}
-export default RegisterScreenPersonal
+  );
+};
+export default RegisterScreenPersonal;
 
 const styles = StyleSheet.create({
   SectionStyle: {
@@ -401,4 +410,4 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
   },
-})
+});

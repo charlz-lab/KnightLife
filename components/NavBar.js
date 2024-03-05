@@ -36,8 +36,8 @@ function NavBar() {
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
-    }
-  }, []) // Empty dependency array ensures it runs only once
+    };
+  }, []); // Empty dependency array ensures it runs only once
 
   return (
     <Tab.Navigator
@@ -47,7 +47,8 @@ function NavBar() {
           backgroundColor: appStyles.colors.mainBackground,
           height: 90, // Adjust the height as needed
         },
-      }}>
+      }}
+    >
       {isCreator ? (
         <>
           <Tab.Screen
@@ -112,7 +113,7 @@ function NavBar() {
         </>
       )}
     </Tab.Navigator>
-  )
+  );
 }
 
 const TabIcon = ({ focused, icon, selectedIcon }) => (
@@ -122,7 +123,7 @@ const TabIcon = ({ focused, icon, selectedIcon }) => (
       source={focused ? selectedIcon : icon}
     />
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   tabIconContainer: {
@@ -163,6 +164,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-})
+});
 
-export default NavBar
+export default NavBar;

@@ -33,25 +33,25 @@ const Settings = () => {
       </View>
       <View style={{ width: "100%", alignItems: "center" }}>
         <TouchableOpacity
-          style={[appStyles.profileCard, appStyles.shawdowInput]}
+          style={[appStyles.profileCard, appStyles.shadowInput]}
           onPress={navigateToPrivacy}
         >
           <Text style={appStyles.fonts.paragraph}>Privacy</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[appStyles.profileCard, appStyles.shawdowInput]}
+          style={[appStyles.profileCard, appStyles.shadowInput]}
           onPress={navigateToAddSwitchAccounts}
         >
           <Text style={appStyles.fonts.paragraph}>Add/Switch Accounts</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[appStyles.profileCard, appStyles.shawdowInput]}
+          style={[appStyles.profileCard, appStyles.shadowInput]}
           onPress={navigateToAccessibility}
         >
           <Text style={appStyles.fonts.paragraph}>Accessibility</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[appStyles.profileCard, appStyles.shawdowInput]}
+          style={[appStyles.profileCard, appStyles.shadowInput]}
           onPress={navigateToEditAccount}
         >
           <Text style={appStyles.fonts.paragraph}>Edit Account</Text>

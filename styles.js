@@ -90,7 +90,7 @@ const appStyles = {
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
-      textAlign: 'center',
+      textAlign: "center",
     },
     headingTwo: {
       fontFamily: "Prompt-Bold",
@@ -107,11 +107,11 @@ const appStyles = {
       fontSize: 14,
       color: "#676464",
     },
-    regular:{
+    regular: {
       fontFamily: "IBMPlexSans-Regular",
       fontSize: 14,
-      color: "#676464"
-    }
+      color: "#676464",
+    },
   },
   layout: {
     horizontal: {
@@ -133,24 +133,24 @@ const appStyles = {
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  shawdowInput: {
+  shadowInput: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.25,
-    shadowRadius: 4, 
+    shadowRadius: 4,
   },
   iconShadowBot: {
     shadowColor: "#000",
     shadowOffset: { width: 10, height: 10 },
     shadowOpacity: 1,
-    shadowRadius: 0, 
+    shadowRadius: 0,
     shadowBlur: 20,
   },
-  iconShadowTop:{
+  iconShadowTop: {
     shadowColor: "#fff",
     shadowOffset: { width: -10, height: -10 },
     shadowOpacity: 0.5,
-    shadowRadius: 20, 
+    shadowRadius: 20,
   },
   profileCard: {
     backgroundColor: "white",
@@ -186,5 +186,5 @@ const appStyles = {
     marginLeft: 35,
     marginRight: 35,
   },
-};
-export default appStyles;
+}
+export default appStyles

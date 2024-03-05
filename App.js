@@ -19,6 +19,7 @@ import LoginScreen from "./components/LoginScreen";
 import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
+import EmailVerification from "./components/EmailVerification";
 import { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 const Stack = createNativeStackNavigator();
@@ -79,6 +80,20 @@ const Auth = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="EmailVerification"
+        component={EmailVerification}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -116,8 +131,7 @@ export default function App() {
         initialRouteName="SplashScreen"
         screenOptions={{
           headerShown: true,
-          headerTintColor: 'black', // back arrow color
-
+          headerTintColor: "black", // back arrow color
         }}
       >
         <Stack.Screen
@@ -167,8 +181,10 @@ export default function App() {
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} // Initially hide header
-
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }} // Initially hide header
         />
       </Stack.Navigator>
     </NavigationContainer>
