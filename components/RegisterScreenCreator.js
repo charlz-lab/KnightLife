@@ -28,25 +28,32 @@ const RegisterScreenCreator = (props) => {
   const ageInputRef = createRef()
   const passwordInputRef = createRef()
 
-  const handleCreateAccButton = () => {
-    // const { error } = supabase.auth.signUp({ email, password })
-    // if (error) {
-    //   console.log("Error signing up")
-    // }
-    setErrortext("")
-    if (!userName) {
-      alert("Please fill Name")
-      return
+  const handleCreateAccButton = async () => {
+    setErrortext("");
+
+    if (!userName || !userEmail || !userPassword) {
+      alert("Please fill in all the fields");
+      return;
     }
-    if (!userEmail) {
-      alert("Please fill Email")
-      return
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: userEmail,
+        password: userPassword,
+        username: userName,
+      });
+
+      if (error) {
+        alert(`Registration failed: ${error.message}`);
+      } else {
+        setIsRegistrationSuccess(true);
+        alert('Registration successful! Check your email for verification.');
+      }
+    } catch (error) {
+
+      console.error('Error during sign up:', error.message);
+      alert('An unexpected error occurred. Please try again.');
     }
-    if (!userPassword) {
-      alert("Please fill Password")
-      return
-    }
-    setIsRegistrationSuccess(true)
   }
   // async function handleCreateAccButton() {
   //   const { error } = await supabase.auth.signUp({
@@ -58,35 +65,56 @@ const RegisterScreenCreator = (props) => {
   //     console.log("Error signing up", error.message)
   //   }
   // }
-  const handleCreateProfileButton = () => {
-    setErrortext("")
-    if (!name) {
-      alert("Please fill Name")
-      return
-    }
-    if (!location) {
-      alert("Please fill Loaction")
-      return
-    }
-    //Show Loader
+  const handleCreateProfileButton = async () => {
+    setErrortext("");
 
-    var dataToSend = {
-      userName: userName,
-      email: userEmail,
-      password: userPassword,
-      name: name,
-      location: location,
+    if (!name || !location) {
+      alert("Please fill all profile fields");
+      return;
     }
-    var formBody = []
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key)
-      var encodedValue = encodeURIComponent(dataToSend[key])
-      formBody.push(encodedKey + "=" + encodedValue)
+
+    const userId = getUserIdSomehow();
+
+    try {
+      const { data: profileData, error: profileError } = await supabase
+        .from('users')
+        .upsert(
+          [
+            {
+              user_id: userId,
+              name,
+              location,
+              image,
+              campus,
+              major
+            },
+          ],
+          { onConflict: ['id'] }
+        );
+
+      if (profileError) {
+        alert("Profile creation failed. " + profileError.message);
+        return;
+      }
+
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .update({ account_type: 'personal' }) // Set the account_type to 'personal'
+        .eq('id', userId);
+
+      if (userError) {
+        alert("Failed to update account type. " + userError.message);
+        return;
+      }
+
+      // Profile and account type update successful
+      alert("Profile creation successful. Account type set to personal.");
+      props.navigation.navigate("NavBar", { isCreator: false });
+    } catch (error) {
+      console.error("Error during profile creation:", error.message);
     }
-    formBody = formBody.join("&")
-    console.log(dataToSend)
-    props.navigation.navigate("NavBar", { isCreator: true })
-  }
+  };
+
   if (isRegistrationSuccess) {
     return (
       <View

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Image } from "react-native-elements"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import CREATE_EVENTS from "../pages/CREATE_EVENTS"
@@ -6,11 +6,31 @@ import HOME from "../pages/HOME"
 import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE"
 import appStyles from "../styles"
 import { StyleSheet, View, Platform } from "react-native"
-
+import supabase from '../lib/supabase';
 const Tab = createBottomTabNavigator()
-let isCreator = true
 
 function NavBar() {
+  const [isCreator, setIsCreator] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const session = supabase.auth.getSession();
+
+      if (session && session.user) {
+        const { data, error } = await supabase
+          .from('users')
+          .select('account_type')
+          .eq('id', session.user.id)
+          .single();
+
+        if (data && data.account_type === 'creator') {
+          setIsCreator(true);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
   useEffect(() => {
     // This effect runs once when the component mounts
     // Define your navigation options here

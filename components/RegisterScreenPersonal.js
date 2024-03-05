@@ -11,7 +11,8 @@ import {
   ScrollView,
 } from "react-native"
 import appStyles from "../styles"
-
+import supabase from "../lib/supabase"
+import { useEffect } from "react"
 const RegisterScreenPersonal = (props) => {
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
@@ -19,7 +20,7 @@ const RegisterScreenPersonal = (props) => {
   const [name, setName] = useState("")
   const [year, setYear] = useState("")
   const [major, setMajor] = useState("")
-  const [location, setLocation] = useState("")
+  const [campus, setCampus] = useState("")
   const [loading, setLoading] = useState(false)
   const [errortext, setErrortext] = useState("")
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false)
@@ -30,62 +31,99 @@ const RegisterScreenPersonal = (props) => {
   const majorInputRef = createRef()
   const locationInputRef = createRef()
 
-  const handleCreateAccButton = () => {
-    setErrortext("")
-    if (!userName) {
-      alert("Please fill Name")
-      return
-    }
-    if (!userEmail) {
-      alert("Please fill Email")
-      return
-    }
-    if (!userPassword) {
-      alert("Please fill Password")
-      return
-    }
-    setIsRegistrationSuccess(true)
-  }
+  const [newUser, setNewUser] = useState(null); // Use a state variable to store the new user // Declare a variable to store the new user
 
-  const handleCreateProfileButton = () => {
-    setErrortext("")
-    if (!name) {
-      alert("Please fill Name")
-      return
-    }
-    if (!year) {
-      alert("Please fill School Year")
-      return
-    }
-    if (!major) {
-      alert("Please fill Major")
-      return
-    }
-    if (!location) {
-      alert("Please fill Loaction")
-      return
-    }
-    //Show Loader
+  const handleCreateAccButton = async () => {
+    setErrortext("");
 
-    var dataToSend = {
-      userName: userName,
-      email: userEmail,
-      password: userPassword,
-      name: name,
-      year: year,
-      major: major,
-      location: location,
+    if (!userName || !userEmail || !userPassword) {
+      alert("Please fill in all the fields");
+      return;
     }
-    var formBody = []
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key)
-      var encodedValue = encodeURIComponent(dataToSend[key])
-      formBody.push(encodedKey + "=" + encodedValue)
+
+    try {
+      const { user, error } = await supabase.auth.signUp({
+        email: userEmail,
+        password: userPassword,
+        username: userName,
+      });
+
+      if (error) {
+        console.error('Sign up error:', error.message); // Log the error message
+        alert(`Registration failed: ${error.message}`);
+      } else {
+        setNewUser(user); // Store the new user
+        setIsRegistrationSuccess(true);
+
+        alert('Registration successful! Check your email for verification.');
+      }
+    } catch (error) {
+      console.error('Error during sign up:', error.message);
+      alert('An unexpected error occurred. Please try again.');
     }
-    formBody = formBody.join("&")
-    console.log(dataToSend)
-    props.navigation.navigate("NavBar", { isCreator: false })
-  }
+  };
+
+  const handleCreateProfileButton = async () => {
+    setErrortext("");
+
+    // Validate input fields for profile creation
+    if (!name || !year || !major || !campus) {
+      alert("Please fill all profile fields");
+      return;
+    }
+
+    if (newUser) {
+      const userId = newUser.id; // Use the new user's ID
+
+      try {
+        // Update the user's profile with the input fields
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .insert({
+            id: userId,
+            username: userName,
+            email: userEmail,
+            password: userPassword,
+            name: name,
+            campus_location: campus,
+            account_type: 'personal'
+          });
+
+        if (userError) {
+          alert("Failed to update account type. " + userError.message);
+          console.log(newUser)
+          return;
+        }
+
+        // Insert into personal_accounts table
+        const { data: personalData, error: personalError } = await supabase
+          .from('personal_users')
+          .insert({
+            id: userId,
+            name: name,
+            school_year: year,
+            major: major,
+            // ...other properties...
+          });
+
+        if (personalError) {
+          alert("Failed to insert into personal_users. " + personalError.message);
+          console.log(newUser)
+          return;
+        }
+
+        // Profile and account type update successful
+        alert("Profile creation successful. Account type set to personal.");
+        console.log(newUser)
+        props.navigation.navigate("NavBar", { isCreator: false });
+      } catch (error) {
+        console.error("Error during profile creation:", error.message);
+      }
+    } else {
+      alert("User is not signed in.");
+    }
+  };
+
   if (isRegistrationSuccess) {
     return (
       <View
@@ -167,7 +205,7 @@ const RegisterScreenPersonal = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(location) => setLocation(location)}
+              onChangeText={(campus) => setCampus(campus)}
               underlineColorAndroid="#f000"
               placeholder="Campus Location"
               placeholderTextColor="#8b9cb5"
@@ -196,7 +234,8 @@ const RegisterScreenPersonal = (props) => {
               { width: "35%" },
             ]}
             activeOpacity={0.5}
-            onPress={handleCreateProfileButton}>
+            onPress={handleCreateProfileButton}
+            disabled={!newUser}>
             <Text style={styles.buttonTextStyle}>Finish</Text>
           </TouchableOpacity>
         </View>

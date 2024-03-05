@@ -29,9 +29,17 @@ const LoginScreen = ({ navigation, route }) => {
   const [errortext, setErrortext] = useState("")
   const [users, setUsers] = useState([])
 
-  const passwordInputRef = createRef()
 
-  const handleSubmitPress = () => {
+
+  const handleSubmitPress = async () => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event);
+      console.log('Session:', session);
+      if (event === 'SIGNED_IN') {
+        console.log('User signed in:', session.user);
+
+      }
+    });
     setErrortext("")
     if (!userEmail) {
       alert("Please fill Email")
@@ -41,16 +49,19 @@ const LoginScreen = ({ navigation, route }) => {
       alert("Please fill Password")
       return
     }
-    let dataToSend = { email: userEmail, password: userPassword }
-    let formBody = []
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key)
-      let encodedValue = encodeURIComponent(dataToSend[key])
-      formBody.push(encodedKey + "=" + encodedValue)
-    }
-    formBody = formBody.join("&")
+    // Prevent the form from refreshing the page
 
-    navigation.replace("NavBar", { isCreator: true })
+    const { user, error } = await supabase.auth.signInWithPassword({ email: userEmail, password: userPassword });
+
+    if (error) {
+      console.error('Error signing in:', error.message);
+      alert('Failed to sign in');
+    } else {
+      console.log('User signed in:', user);
+      alert('Successfully signed in!');
+      navigation.replace("NavBar")
+    }
+
   }
   // const handleSubmitPress = async () => {
   //   let { data, error } = await supabase
@@ -98,9 +109,7 @@ const LoginScreen = ({ navigation, route }) => {
                   autoCapitalize="none"
                   keyboardType="email-address"
                   returnKeyType="next"
-                  onSubmitEditing={() =>
-                    passwordInputRef.current && passwordInputRef.current.focus()
-                  }
+
                   underlineColorAndroid="#f000"
                   blurOnSubmit={false}
                 />
@@ -112,7 +121,6 @@ const LoginScreen = ({ navigation, route }) => {
                   placeholder="Enter Password" //12345
                   placeholderTextColor="black"
                   keyboardType="default"
-                  ref={passwordInputRef}
                   onSubmitEditing={Keyboard.dismiss}
                   blurOnSubmit={false}
                   secureTextEntry={true}

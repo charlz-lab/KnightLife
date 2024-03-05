@@ -19,7 +19,8 @@ import LoginScreen from "./components/LoginScreen";
 import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
-
+import { useEffect, useState } from 'react';
+import { supabase } from './supabaseClient';
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
@@ -85,6 +86,15 @@ const Auth = () => {
 // navigation outside of nav bar
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    setSession(supabase.auth.session());
+
+    supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
+  }, []);
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -103,13 +113,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-       initialRouteName="SplashScreen"
-       screenOptions={{
-         headerShown: true,
-         headerTintColor: 'black', // back arrow color
-         
-       }}
-     >
+        initialRouteName="SplashScreen"
+        screenOptions={{
+          headerShown: true,
+          headerTintColor: 'black', // back arrow color
+
+        }}
+      >
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -159,7 +169,7 @@ export default function App() {
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} // Initially hide header
 
-/>
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

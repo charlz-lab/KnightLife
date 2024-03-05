@@ -16,29 +16,29 @@ import appStyles from "../styles";
 import EventList from "../components/EventList";
 import AttendingEventList from "../components/AttendingEventList";
 import SavedEventList from "../components/SavedEventList";
-
+import supabase from "../lib/supabase";
 // jane doe's profile
-let defaultProfile = {
-  name: "Jane Doe",
-  username: "@janedoe",
-  year: "Senior",
-  major: "Marine Biology",
-  location: "UCF Downtown, Orlando",
-  pic: require("../images/janeDoeProfile.png"),
-  isCreator: false,
-};
+// let defaultProfile = {
+//   name: "Jane Doe",
+//   username: "@janedoe",
+//   year: "Senior",
+//   major: "Marine Biology",
+//   location: "UCF Downtown, Orlando",
+//   pic: require("../images/janeDoeProfile.png"),
+//   isCreator: false,
+// };
 
-// creator profile
-let defaultCreator = {
-  name: "UCF Chess Club",
-  username: "@chessclub",
-  location: "UCF Downtown, Orlando",
-  bio: "Community for students to keep up with existing chess skills and meet others with similar interests. Beginners welcome!",
-  eventsNum: 14,
-  followersNum: 1746,
-  pic: require("../images/chessClubPic.png"),
-  isCreator: true,
-};
+// // creator profile
+// let defaultCreator = {
+//   name: "UCF Chess Club",
+//   username: "@chessclub",
+//   location: "UCF Downtown, Orlando",
+//   bio: "Community for students to keep up with existing chess skills and meet others with similar interests. Beginners welcome!",
+//   eventsNum: 14,
+//   followersNum: 1746,
+//   pic: require("../images/chessClubPic.png"),
+//   isCreator: true,
+// };
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
@@ -181,10 +181,49 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
 
 // profile
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultProfile);
+  const [profile, setProfile] = useState(null);
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true)
   const [selection, setSelection] = useState("upcoming");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = supabase.auth.user().id;
 
+      // Fetch data from the 'users' table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('username, image')
+        .eq('id', userId)
+        .single();
+
+      if (userError) {
+        console.error('Error fetching user data:', userError);
+        return;
+      }
+
+      // Fetch data from another table, e.g., 'user_details'
+      const { data: userDetailsData, error: userDetailsError } = await supabase
+        .from('personal_users')
+        .select('name, school_year, major, campus_location')
+        .eq('id', userId)
+        .single();
+
+      if (userDetailsError) {
+        console.error('Error fetching user details:', userDetailsError);
+        return;
+      }
+
+      // Combine the data from the two tables
+      const combinedData = { ...userData, ...userDetailsData };
+
+      setProfile(combinedData);
+    };
+
+    fetchUserData();
+  }, []);
+  if (loading) {
+    return <Text>Loading...</Text>; // Replace this with your own loading component
+  }
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
@@ -221,7 +260,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               </Pressable>
             </View>
             {/* Profile info */}
-            <Image source={profile.pic} style={{ width: 125, height: 125 }} />
+            <Image source={profile.image} style={{ width: 125, height: 125 }} />
             <Text style={appStyles.fonts.heading}>{profile.name}</Text>
             <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
             <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
@@ -235,19 +274,19 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               style={
                 selection === "upcoming"
                   ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
                   : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
               }
               onPress={() => setSelection("upcoming")}
             >
@@ -259,19 +298,19 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               style={
                 selection === "saved"
                   ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
                   : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
               }
               onPress={() => setSelection("saved")}
             >
@@ -283,19 +322,19 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               style={
                 selection === "attended"
                   ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "25%",
+                    alignItems: "center",
+                  }
                   : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "25%",
+                    alignItems: "center",
+                  }
               }
               onPress={() => setSelection("attended")}
             >
@@ -398,19 +437,19 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
               style={
                 selection === "upcoming"
                   ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "40%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "40%",
+                    alignItems: "center",
+                  }
                   : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "40%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "40%",
+                    alignItems: "center",
+                  }
               }
               onPress={() => setSelection("upcoming")}
             >
@@ -422,19 +461,19 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
               style={
                 selection === "past"
                   ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "40%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "#FFC60A",
+                    width: "40%",
+                    alignItems: "center",
+                  }
                   : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "40%",
-                      alignItems: "center",
-                    }
+                    borderRadius: 20,
+                    padding: 10,
+                    backgroundColor: "white",
+                    width: "40%",
+                    alignItems: "center",
+                  }
               }
               onPress={() => setSelection("past")}
             >
