@@ -1,8 +1,9 @@
 import appStyles from "../styles";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { Card } from "react-native-elements";
-
+import React, { useState } from 'react';
 export default function EmailVerification({ navigation }) {
+
   return (
     <View style={styles.container}>
       <Text style={[appStyles.fonts.headingTwo, { textAlign: "center" }]}>

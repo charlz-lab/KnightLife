@@ -12,8 +12,8 @@ import {
   ImageBackground,
 } from "react-native"
 import appStyles from "../styles"
-import supabase from "../lib/supabase"
-
+import supabase from '../lib/supabase'
+import { Session } from "@supabase/gotrue-js"
 const LoginScreen = ({ navigation, route }) => {
   const [headerShown, setHeaderShown] = useState(true)
 
@@ -28,18 +28,10 @@ const LoginScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false)
   const [errortext, setErrortext] = useState("")
   const [users, setUsers] = useState([])
-
+  const [session, setSession] = useState(supabase.auth.getSession());
 
 
   const handleSubmitPress = async () => {
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event);
-      console.log('Session:', session);
-      if (event === 'SIGNED_IN') {
-        console.log('User signed in:', session.user);
-
-      }
-    });
     setErrortext("")
     if (!userEmail) {
       alert("Please fill Email")
@@ -51,15 +43,19 @@ const LoginScreen = ({ navigation, route }) => {
     }
     // Prevent the form from refreshing the page
 
-    const { user, error } = await supabase.auth.signInWithPassword({ email: userEmail, password: userPassword });
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password: userPassword,
+    })
 
     if (error) {
-      console.error('Error signing in:', error.message);
-      alert('Failed to sign in');
-    } else {
-      console.log('User signed in:', user);
-      alert('Successfully signed in!');
-      navigation.replace("NavBar")
+
+      setLoading(false)
+    }
+    else {
+      navigation.navigate("CustomizeProfile")
+
     }
 
   }
@@ -109,9 +105,8 @@ const LoginScreen = ({ navigation, route }) => {
                   autoCapitalize="none"
                   keyboardType="email-address"
                   returnKeyType="next"
-
                   underlineColorAndroid="#f000"
-                  blurOnSubmit={false}
+                  blurOnSubmit={true}
                 />
               </View>
               <View style={styles.SectionStyle}>
@@ -122,7 +117,7 @@ const LoginScreen = ({ navigation, route }) => {
                   placeholderTextColor="black"
                   keyboardType="default"
                   onSubmitEditing={Keyboard.dismiss}
-                  blurOnSubmit={false}
+                  blurOnSubmit={true}
                   secureTextEntry={true}
                   underlineColorAndroid="#f000"
                   returnKeyType="next"

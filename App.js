@@ -20,15 +20,14 @@ import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
 import EmailVerification from "./components/EmailVerification";
-import { useEffect, useState } from 'react';
-import { supabase } from './supabaseClient';
+
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
 import HOME from "./pages/HOME";
 import SavedEventList from "./components/SavedEventList";
 import AttendingEventList from "./components/AttendingEventList";
-
+import CustomizeProfile from "./components/CustomizeProfile";
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
   return (
@@ -93,6 +92,21 @@ const Auth = () => {
             fontWeight: "bold", //Set Header text style
           },
         }}
+
+      />
+      <Stack.Screen
+        name="CustomizeProfile"
+        component={CustomizeProfile}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -100,16 +114,10 @@ const Auth = () => {
 
 // navigation outside of nav bar
 export default function App() {
+
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [session, setSession] = useState(null);
 
-  useEffect(() => {
-    setSession(supabase.auth.session());
 
-    supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-  }, []);
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -145,6 +153,7 @@ export default function App() {
           component={Auth}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="NavBar"
           component={NavBar}

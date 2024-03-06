@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import appStyles from "../styles";
-
+import supabase from "../lib/supabase";
 const RegisterScreenPersonal = (props) => {
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
@@ -30,8 +30,7 @@ const RegisterScreenPersonal = (props) => {
   const majorInputRef = createRef();
   const locationInputRef = createRef();
 
-  const [newUser, setNewUser] = useState(null); // Use a state variable to store the new user // Declare a variable to store the new user
-
+  const [user, setUser] = useState(null);
   const handleCreateAccButton = async () => {
     setErrortext("");
 
@@ -40,29 +39,30 @@ const RegisterScreenPersonal = (props) => {
       return;
     }
 
-    try {
-      const { user, error } = await supabase.auth.signUp({
-        email: userEmail,
-        password: userPassword,
-        username: userName,
-      });
 
-      if (error) {
-        console.error('Sign up error:', error.message); // Log the error message
-        alert(`Registration failed: ${error.message}`);
+    const { user, error } = await supabase.auth.signUp({
+      email: userEmail,
+      password: userPassword,
+    });
+
+    if (error) {
+      console.error('Sign up error:', error.message); // Log the error message
+      alert(`Sign up failed: ${error.message}`);
+    } else {
+      setIsRegistrationSuccess(true)
+      alert('Registration successful! Check your email for verification.');
+      const { data: confirmedUser, error: confirmError } = await supabase.auth.getUser();
+
+      if (confirmError) {
+        console.error('Confirmation error:', confirmError.message);
+        alert(`Confirmation failed: ${confirmError.message}`);
       } else {
-        setNewUser(user); // Store the new user
-        setIsRegistrationSuccess(true);
-
-        alert('Registration successful! Check your email for verification.');
-      }
-    } catch (error) {
-      console.error('Error during sign up:', error.message);
-      alert('An unexpected error occurred. Please try again.');
+        handleCreateProfileButton(confirmedUser); // Pass the confirmed user object to handleCreateProfileButton
+      } // Pass the user object directly to handleCreateProfileButton
     }
   };
 
-  const handleCreateProfileButton = async () => {
+  const handleCreateProfileButton = async (confirmedUser) => {
     setErrortext("");
 
     // Validate input fields for profile creation
@@ -71,58 +71,59 @@ const RegisterScreenPersonal = (props) => {
       return;
     }
 
-    if (newUser) {
-      const userId = newUser.id; // Use the new user's ID
+    if (confirmedUser) {
+      // Use the new user's ID
+      const userId = user.id;
 
-      try {
-        // Update the user's profile with the input fields
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .insert({
-            id: userId,
-            username: userName,
-            email: userEmail,
-            password: userPassword,
-            name: name,
-            campus_location: campus,
-            account_type: 'personal'
-          });
+      // Insert into your users table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .insert({
+          id: userId,
+          username: userName,
+          email: userEmail,
+          name: name,
+          campus_location: campus,
+          account_type: 'personal'
+        });
 
-        if (userError) {
-          alert("Failed to update account type. " + userError.message);
-          console.log(newUser)
-          return;
-        }
-
-        // Insert into personal_accounts table
-        const { data: personalData, error: personalError } = await supabase
-          .from('personal_users')
-          .insert({
-            id: userId,
-            name: name,
-            school_year: year,
-            major: major,
-            // ...other properties...
-          });
-
-        if (personalError) {
-          alert("Failed to insert into personal_users. " + personalError.message);
-          console.log(newUser)
-          return;
-        }
-
-        // Profile and account type update successful
-        alert("Profile creation successful. Account type set to personal.");
-        console.log(newUser)
-        props.navigation.navigate("NavBar", { isCreator: false });
-      } catch (error) {
-        console.error("Error during profile creation:", error.message);
+      if (userError) {
+        alert("Failed to insert into users. " + userError.message);
+        return;
       }
-    } else {
-      alert("User is not signed in.");
-    }
-  };
 
+      // Insert into personal_users table
+      if (userId) {
+        // userId is not null, proceed with the insert
+        try {
+          // Insert into personal_users table
+          const { data: personalData, error: personalError } = await supabase
+            .from('personal_users')
+            .insert({
+              id: userId,
+              name: name,
+              school_year: year,
+              major: major,
+              // ...other properties...
+            });
+
+          if (personalError) {
+            alert("Failed to insert into personal_users. " + personalError.message);
+            return;
+          }
+
+          // Profile creation successful
+          alert("Profile creation successful. Account type set to personal.");
+          console.log(user)
+          props.navigation.navigate("NavBar", { isCreator: false });
+        } catch (error) {
+          console.error("Error during profile creation:", error.message);
+        }
+      } else {
+        console.error('userId is null.');
+      }
+    };
+  }
   if (isRegistrationSuccess) {
     return (
       <View
@@ -239,7 +240,7 @@ const RegisterScreenPersonal = (props) => {
             ]}
             activeOpacity={0.5}
             onPress={handleCreateProfileButton}
-            disabled={!newUser}>
+          >
             <Text style={styles.buttonTextStyle}>Finish</Text>
           </TouchableOpacity>
         </View>
