@@ -11,10 +11,15 @@ import {
   Alert,
 } from "react-native"
 import appStyles from "../styles"
+import Modal from "react-native-modal";
 import supabase from "../lib/supabase"
 
 const CREATE_EVENTS = () => {
   const [eventName, setEventName] = useState("")
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
   const [eventLocation, setEventLocation] = useState("")
   const [eventDate, setEventDate] = useState("")
   const [eventTime, setEventTime] = useState("")
@@ -56,7 +61,7 @@ const CREATE_EVENTS = () => {
         } else {
           // For simplicity, just show an alert
           // Eventually, we would want to navigate to the event details page of the newly created event
-          Alert.alert("Event Created")
+         setModalVisible(true)
 
           // Clear input fields after successful event creation
           setEventName("")
@@ -168,6 +173,25 @@ const CREATE_EVENTS = () => {
                 
               </TouchableOpacity>
             </View>
+            <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={toggleModal}
+        style={styles.modal}
+      >
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalAlert}>
+            Event has been created!
+          </Text>
+          <View style={styles.modalOptionsContainer}>
+            <TouchableOpacity
+              onPress={toggleModal}
+              style={[styles.modalOption, styles.modalOption1]}
+            >
+              <Text style={styles.modalOptionText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
@@ -223,5 +247,61 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     borderColor: "#dadae8",
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingrRight: 20,
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 30,
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    fontFamily: "IBMPlexSans-Medium",
+    fontSize: 20,
+  },
+  modalAlert: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    alignItems: "center",
+    marginTop: 30,
+    textAlign: "center",
+    fontSize: 20,
+    marginLeft:10,
+    marginRight:10,
+  },
+  modalOptionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 12,
+    marginTop:30,
+  },
+  modalOption: {
+    flex: 1,
+    padding: 8,
+    marginHorizontal: 55,
+    width: 10,
+    padding: 8,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007bff",
+  },
+  modalOptionText: {
+    color: "#fff", //
+  },
+
+  modalOption1: {
+    backgroundColor: "#080808",
+    paddingTop: 10,
   },
 })
