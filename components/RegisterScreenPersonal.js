@@ -33,6 +33,7 @@ const RegisterScreenPersonal = (props) => {
   const [user, setUser] = useState(null);
 
   async function handleCreateAccButton() {
+    //subabase.auth.signUp is a function that creates a new user in the database
     const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
@@ -40,8 +41,9 @@ const RegisterScreenPersonal = (props) => {
     });
     
     if (signUpError) {
-      alert(`Registration failed: ${signUpError.message}`);
+      alert(`Registration failed: ${signUpError.message}`); //alert the user if there is an error
     } else {
+      //if there is no error, the user is signed up and signed in
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: userEmail,
         password: userPassword,
@@ -72,7 +74,7 @@ const RegisterScreenPersonal = (props) => {
   
     if (user) {
       const userId = user.id;
-  
+      // insert user data into the database
       const { data: userData, error: userError } = await supabase
         .from('users')
         .insert({
@@ -82,10 +84,25 @@ const RegisterScreenPersonal = (props) => {
           name: name,
           account_type: "personal",
         });
-  
+        
       console.log(userData, userError);
+      // if there is an error, alert the user
       if (!userError) {
+        // if there is no error, navigate to the NavBar
+        
         props.navigation.navigate("NavBar", { isCreator: false });
+        const userId = user.id;
+        const { data: personalUserData, error: personalUserError } = await supabase
+        .from('personal_users')
+        .insert({
+          id: userId,
+          school_year: year,
+          major: major,
+          // Add other necessary fields here
+        });
+        if (personalUserError) {
+          console.error('Error inserting into personal users:', personalUserError.message);
+        }
       }
     }
     
