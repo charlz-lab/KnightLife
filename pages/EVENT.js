@@ -32,11 +32,16 @@ const EventPage = ({ route, navigation }) => {
   };
   //report modal usestate
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalReportVisible, setModalReportVisible] = useState(false);
   // info modal usestate
   const [isInfoModalVisible, setInfoModalVisible] = useState(false);
   //toggle showing modal
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const toggleReportModal = () => {
+    setModalVisible(false);
+    setModalReportVisible(!isModalReportVisible);
   };
   // toggel info modal
   const toggleInfoModal = () => {
@@ -175,10 +180,29 @@ const EventPage = ({ route, navigation }) => {
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={toggleModal}
+              onPress={toggleReportModal}
               style={[styles.modalOption, styles.modalOption2]}
             >
               <Text style={styles.modalOptionText}>Report</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isModalReportVisible}
+        onBackdropPress={toggleReportModal}
+        style={styles.modal}
+      >
+        <View style={styles.modalContainer}>
+        <Text style={styles.modalTitle}>Report Submitted!</Text>
+          <Text style={styles.modalAlert}>
+          Thank you for expressing your concern. The KnightLife team will be reviewing the report shortly.          </Text>
+          <View style={styles.modalOptionsContainer}>
+            <TouchableOpacity
+              onPress={toggleReportModal}
+              style={[styles.modalReportOption, styles.modalOption1]}
+            >
+              <Text style={styles.modalOptionText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -288,7 +312,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "#fff",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 30,
     width: "80%",
     alignItems: "center",
     justifyContent: "center",
@@ -334,6 +358,17 @@ const styles = StyleSheet.create({
   },
   modalOption2: {
     backgroundColor: "#FF460C",
+  },
+  modalReportOption: {
+    flex: 1,
+    padding: 8,
+    marginHorizontal: 55,
+    width: 10,
+    padding: 8,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007bff",
   },
   buttonContainer: {
     flexDirection: "row",
