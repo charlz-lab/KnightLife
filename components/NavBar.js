@@ -13,25 +13,6 @@ function NavBar() {
   const [isCreator, setIsCreator] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const session = supabase.auth.getSession();
-
-      if (session && session.user) {
-        const { data, error } = await supabase
-          .from('users')
-          .select('account_type')
-          .eq('id', session.user.id)
-          .single();
-
-        if (data && data.account_type === 'creator') {
-          setIsCreator(true);
-        }
-      }
-    };
-
-    fetchUser();
-  }, []);
-  useEffect(() => {
     // This effect runs once when the component mounts
     // Define your navigation options here
     HOME.navigationOptions = {

@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -31,51 +31,48 @@ const RegisterScreenPersonal = (props) => {
   const locationInputRef = createRef();
 
   const [user, setUser] = useState(null);
-  const handleCreateAccButton = async () => {
-    setErrortext("");
 
-    if (!userName || !userEmail || !userPassword) {
-      alert("Please fill in all the fields");
-      return;
-    }
-
-
-    const { user, error } = await supabase.auth.signUp({
+  async function handleCreateAccButton() {
+    const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
+      username: userName,
     });
-
-    if (error) {
-      console.error('Sign up error:', error.message); // Log the error message
-      alert(`Sign up failed: ${error.message}`);
+    
+    if (signUpError) {
+      alert(`Registration failed: ${signUpError.message}`);
     } else {
-      setIsRegistrationSuccess(true)
-      alert('Registration successful! Check your email for verification.');
-      const { data: confirmedUser, error: confirmError } = await supabase.auth.getUser();
-
-      if (confirmError) {
-        console.error('Confirmation error:', confirmError.message);
-        alert(`Confirmation failed: ${confirmError.message}`);
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: userEmail,
+        password: userPassword,
+      });
+    
+      if (signInError) {
+        console.error('Error during sign in:', signInError.message);
+        alert('An unexpected error occurred during sign in. Please try again.');
       } else {
-        handleCreateProfileButton(confirmedUser); // Pass the confirmed user object to handleCreateProfileButton
-      } // Pass the user object directly to handleCreateProfileButton
+        setIsRegistrationSuccess(true);
+        setUser(supabase.auth.getUser());
+        alert('Registration successful! Check your email for verification.');
+      }
     }
-  };
-
-  const handleCreateProfileButton = async (confirmedUser) => {
+  }
+  const handleCreateProfileButton = async () => {
+    console.log("handleCreateProfileButton called");
+    console.log(user);
+    console.log(name, year, major, campus);
+  
     setErrortext("");
-
+  
     // Validate input fields for profile creation
     if (!name || !year || !major || !campus) {
       alert("Please fill all profile fields");
       return;
     }
-
-    if (confirmedUser) {
-      // Use the new user's ID
+  
+    if (user) {
       const userId = user.id;
-
-      // Insert into your users table
+  
       const { data: userData, error: userError } = await supabase
         .from('users')
         .insert({
@@ -83,46 +80,15 @@ const RegisterScreenPersonal = (props) => {
           username: userName,
           email: userEmail,
           name: name,
-          campus_location: campus,
-          account_type: 'personal'
+          account_type: "personal",
         });
-
-      if (userError) {
-        alert("Failed to insert into users. " + userError.message);
-        return;
+  
+      console.log(userData, userError);
+      if (!userError) {
+        props.navigation.navigate("NavBar", { isCreator: false });
       }
-
-      // Insert into personal_users table
-      if (userId) {
-        // userId is not null, proceed with the insert
-        try {
-          // Insert into personal_users table
-          const { data: personalData, error: personalError } = await supabase
-            .from('personal_users')
-            .insert({
-              id: userId,
-              name: name,
-              school_year: year,
-              major: major,
-              // ...other properties...
-            });
-
-          if (personalError) {
-            alert("Failed to insert into personal_users. " + personalError.message);
-            return;
-          }
-
-          // Profile creation successful
-          alert("Profile creation successful. Account type set to personal.");
-          console.log(user)
-          props.navigation.navigate("NavBar", { isCreator: false });
-        } catch (error) {
-          console.error("Error during profile creation:", error.message);
-        }
-      } else {
-        console.error('userId is null.');
-      }
-    };
+    }
+    
   }
   if (isRegistrationSuccess) {
     return (
