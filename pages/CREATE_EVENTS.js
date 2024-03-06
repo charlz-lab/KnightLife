@@ -152,12 +152,20 @@ const CREATE_EVENTS = () => {
                 value={eventDescription}
               />
             </View>
-            <View>
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                activeOpacity={0.5}
-                onPress={handleSubmitPress}>
-                <Text style={styles.buttonTextStyle}>CREATE EVENT</Text>
+            <View style={{ width: "100%", alignItems: "center" }}>
+        <TouchableOpacity
+          style={appStyles.buttons.yellowLogin}
+          activeOpacity={0.5}
+          onPress={handleSubmitPress}
+        >
+          <Text
+            style={[
+              appStyles.fonts.paragraph,
+              { color: "black", paddingVertical: 10 },
+            ]}
+          >
+            Create Event</Text>
+                
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>

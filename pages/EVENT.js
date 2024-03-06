@@ -93,9 +93,16 @@ const EventPage = ({ route, navigation }) => {
           />
           <Text style={styles.locationText}>{event.location}</Text>
         </View>
-        <Text style={styles.membersGoing}>
-          {event.membersGoing} Members Going{" "}
-        </Text>
+
+        <Pressable
+          onPress={() => navigation.navigate("MembersGoing")} >
+            <Text 
+              style={styles.membersGoing}>{event.membersGoing} Members Going{" "} 
+            </Text>
+        </Pressable>
+
+        
+
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
         <Card borderRadius={12} style={[styles.shadow, styles.card]}>
