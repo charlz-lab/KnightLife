@@ -2,9 +2,10 @@ import { Text, TouchableOpacity, View } from "react-native"
 import appStyles from "../styles.js"
 
 const ToggleBar = (props) => {
-  const tabs = props.tabs.map((tab) => {
+  const tabs = props.tabs.map((tab, index) => {
     return (
       <TouchableOpacity
+        key={index}
         style={{
           borderRadius: 20,
           padding: 10,
@@ -22,7 +23,7 @@ const ToggleBar = (props) => {
         </Text>
       </TouchableOpacity>
     )
-  }, [])
+  })
 
   return (
     <View style={[appStyles.toggleContainer, appStyles.shadow]}>{tabs}</View>
