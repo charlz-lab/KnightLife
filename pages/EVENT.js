@@ -36,9 +36,9 @@ const EventPage = ({ route, navigation }) => {
   const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
   const toggleReportModal = () => {
-    setModalVisible(!isModalReportVisible)
+    setModalReportVisible(!isModalReportVisible)
   }
-  // toggel info modal
+  // toggle info modal
   const toggleInfoModal = () => {
     setInfoModalVisible(!isInfoModalVisible)
   }
