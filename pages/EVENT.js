@@ -31,27 +31,13 @@ const EventPage = ({ route, navigation }) => {
     setIsAttending(!isAttending)
   }
   //report modal usestate
-<<<<<<< HEAD
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalReportVisible, setModalReportVisible] = useState(false);
-=======
   const [isModalVisible, setModalVisible] = useState(false)
->>>>>>> jessie-db-creator-eventlist
   // info modal usestate
   const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
   const toggleModal = () => {
-<<<<<<< HEAD
-    setModalVisible(!isModalVisible);
-  };
-  const toggleReportModal = () => {
-    setModalVisible(false);
-    setModalReportVisible(!isModalReportVisible);
-  };
-=======
     setModalVisible(!isModalVisible)
   }
->>>>>>> jessie-db-creator-eventlist
   // toggel info modal
   const toggleInfoModal = () => {
     setInfoModalVisible(!isInfoModalVisible)
@@ -108,14 +94,11 @@ const EventPage = ({ route, navigation }) => {
           <Text style={styles.locationText}>{event.location}</Text>
         </View>
 
-        <Pressable
-          onPress={() => navigation.navigate("MembersGoing")} >
-            <Text 
-              style={styles.membersGoing}>{event.membersGoing} Members Going{" "} 
-            </Text>
+        <Pressable onPress={() => navigation.navigate("MembersGoing")}>
+          <Text style={styles.membersGoing}>
+            {event.membersGoing} Members Going{" "}
+          </Text>
         </Pressable>
-
-        
 
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
@@ -192,14 +175,8 @@ const EventPage = ({ route, navigation }) => {
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-<<<<<<< HEAD
-              onPress={toggleReportModal}
-              style={[styles.modalOption, styles.modalOption2]}
-            >
-=======
               onPress={toggleModal}
               style={[styles.modalOption, styles.modalOption2]}>
->>>>>>> jessie-db-creator-eventlist
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
@@ -208,17 +185,17 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
-        <Text style={styles.modalTitle}>Report Submitted!</Text>
+          <Text style={styles.modalTitle}>Report Submitted!</Text>
           <Text style={styles.modalAlert}>
-          Thank you for expressing your concern. The KnightLife team will be reviewing the report shortly.          </Text>
+            Thank you for expressing your concern. The KnightLife team will be
+            reviewing the report shortly.{" "}
+          </Text>
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalReportOption, styles.modalOption1]}
-            >
+              style={[styles.modalReportOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Close</Text>
             </TouchableOpacity>
           </View>
