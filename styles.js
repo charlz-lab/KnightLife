@@ -52,12 +52,25 @@ const appStyles = {
       backgroundColor: "#FFC60A",
       alignItems: "center",
     },
+    buttonClick: {
+      backgroundColor: "black",
+      width: "85%",
+      borderRadius: 12,
+      paddingVertical: 17,
+      paddingHorizontal: 22,
+      gap: 10,
+      alignItems: "center",
+      marginVertical: 20,
+    },
   },
   fonts: {
     // paragraph text
     paragraph: {
       fontFamily: "IBMPlexSans-Medium",
       fontSize: 16,
+    },
+    paragraphNoSize: {
+      fontFamily: "IBMPlexSans-Medium",
     },
     // sub headings
     subHeading: {
@@ -70,10 +83,14 @@ const appStyles = {
       textTransform: "uppercase",
       marginBottom: 30,
     },
+    subHeadingNoSize: {
+      fontFamily: "IBMPlexSans-Bold",
+    },
     // heading
     heading: {
       fontFamily: "Prompt-Bold",
       fontSize: 20,
+      textAlign: "center",
     },
     headingTwo: {
       fontFamily: "Prompt-Bold",
@@ -87,6 +104,11 @@ const appStyles = {
     // action text
     actionText: {
       fontFamily: "IBMPlexSans-Bold",
+      fontSize: 14,
+      color: "#676464",
+    },
+    regular: {
+      fontFamily: "IBMPlexSans-Regular",
       fontSize: 14,
       color: "#676464",
     },
@@ -107,32 +129,48 @@ const appStyles = {
   // drop shadow
   shadow: {
     shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
-  shawdowInput: {
-    shadowColor: "#000000",
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
+  shadowInput: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  iconShadowBot: {
+    shadowColor: "#000",
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    shadowBlur: 20,
+  },
+  iconShadowTop: {
+    shadowColor: "#fff",
+    shadowOffset: { width: -10, height: -10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
   },
   profileCard: {
     backgroundColor: "white",
-    width: "85%",
     borderRadius: 12,
     paddingVertical: 17,
     paddingHorizontal: 22,
     gap: 10,
     alignItems: "center",
     marginVertical: 20,
+    width: "100%",
   },
   toggleContainer: {
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 0,
     padding: 5,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 40,
     marginBottom: 10,
+    justifyContent: "space-between",
+    // flex: 1,
   },
   textInput: {
     flex: 1,
@@ -150,5 +188,5 @@ const appStyles = {
     marginLeft: 35,
     marginRight: 35,
   },
-};
-export default appStyles;
+}
+export default appStyles

@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -11,203 +11,52 @@ import {
   ScrollView,
 } from "react-native";
 import appStyles from "../styles";
-
+import supabase from "../lib/supabase";
 const RegisterScreenPersonal = (props) => {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [name, setName] = useState("");
-  const [year, setYear] = useState("");
-  const [major, setMajor] = useState("");
-  const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState("");
-  const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+  const [userName, setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [userPassword, setUserPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [errortext, setErrortext] = useState("")
 
-  const emailInputRef = createRef();
-  const passwordInputRef = createRef();
-  const yearInputRef = createRef();
-  const majorInputRef = createRef();
-  const locationInputRef = createRef();
 
-  const handleCreateAccButton = () => {
-    setErrortext("");
-    if (!userName) {
-      alert("Please fill Name");
-      return;
-    }
-    if (!userEmail) {
-      alert("Please fill Email");
-      return;
-    }
-    if (!userPassword) {
-      alert("Please fill Password");
-      return;
-    }
-    setIsRegistraionSuccess(true);
-  };
-
-  const handleCreateProfileButton = () => {
-    setErrortext("");
-    if (!name) {
-      alert("Please fill Name");
-      return;
-    }
-    if (!year) {
-      alert("Please fill School Year");
-      return;
-    }
-    if (!major) {
-      alert("Please fill Major");
-      return;
-    }
-    if (!location) {
-      alert("Please fill Loaction");
-      return;
-    }
-    //Show Loader
-
-    var dataToSend = {
-      userName: userName,
+  async function handleCreateAccButton() {
+    //subabase.auth.signUp is a function that creates a new user in the database
+    const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
-      name: name,
-      year: year,
-      major: major,
-      location: location,
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + "=" + encodedValue);
+      username: userName,
+    });
+
+    if (signUpError) {
+      alert(`Registration failed: ${signUpError.message}`); //alert the user if there is an error
+    } else {
+      //if there is no error, the user is signed up 
+
+      alert('Registration successful! Check your email for verification.');
+
+      // Listen for the user.registered event
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN') {
+          // Insert the user into the users table
+          supabase
+            .from('users')
+            .insert({
+              id: session.user.id,
+              username: userName,
+              email: userEmail,
+              account_type: "personal",
+              // Add other necessary fields here
+            })
+            .then(({ data: userData, error: userInsertError }) => {
+              if (userInsertError) {
+                console.error('Error inserting into users:', userInsertError.message);
+              }
+            });
+        }
+      });
+      props.navigation.navigate("EmailVerification");
     }
-    formBody = formBody.join("&");
-    console.log(dataToSend);
-    props.navigation.navigate("NavBar", { isCreator: false });
-  };
-  if (isRegistraionSuccess) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: appStyles.colors.background,
-          justifyContent: "center",
-          flexDirection: "column",
-          rowGap: 20,
-        }}
-      >
-        <Text
-          style={[
-            appStyles.fonts.headingTwo,
-            { textAlign: "center", marginTop: -40 },
-          ]}
-        >
-          Customize your {"\n"}Profile
-        </Text>
-        <View>
-          <Image
-            source={require("../images/profilePic_placeholder.png")}
-            style={{
-              height: 100,
-              resizeMode: "contain",
-              alignSelf: "center",
-            }}
-          />
-          <Text
-            style={[
-              appStyles.fonts.paragraph,
-              {
-                textAlign: "center",
-                marginTop: 5,
-                textDecorationLine: "underline",
-              },
-            ]}
-          >
-            Add profile picture
-          </Text>
-        </View>
-        <View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(name) => setName(name)}
-              underlineColorAndroid="#f000"
-              placeholder="Name"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(year) => setYear(year)}
-              underlineColorAndroid="#f000"
-              placeholder="School year"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(major) => setMajor(major)}
-              underlineColorAndroid="#f000"
-              placeholder="Major"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(location) => setLocation(location)}
-              underlineColorAndroid="#f000"
-              placeholder="Campus Location"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-        </View>
-        <View
-          style={[
-            appStyles.layout.section,
-            { flexDirection: "row", columnGap: 15 },
-          ]}
-        >
-          <TouchableOpacity
-            style={[styles.goBack, appStyles.shadow]}
-            activeOpacity={0.5}
-            onPress={() => props.navigation.goBack()}
-          >
-            <Text style={styles.buttonTextStyle}>Go Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              appStyles.buttons.yellowNoWidth,
-              appStyles.shadow,
-              { width: "35%" },
-            ]}
-            activeOpacity={0.5}
-            onPress={handleCreateProfileButton}
-          >
-            <Text style={styles.buttonTextStyle}>Finish</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
   }
   return (
     <View
@@ -239,9 +88,6 @@ const RegisterScreenPersonal = (props) => {
                 placeholderTextColor="#8b9cb5"
                 autoCapitalize="sentences"
                 returnKeyType="next"
-                onSubmitEditing={() =>
-                  emailInputRef.current && emailInputRef.current.focus()
-                }
                 blurOnSubmit={false}
               />
             </View>
@@ -253,11 +99,8 @@ const RegisterScreenPersonal = (props) => {
                 placeholder="UCF Email"
                 placeholderTextColor="#8b9cb5"
                 keyboardType="email-address"
-                ref={emailInputRef}
                 returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current && passwordInputRef.current.focus()
-                }
+
                 blurOnSubmit={false}
               />
             </View>
@@ -268,7 +111,7 @@ const RegisterScreenPersonal = (props) => {
                 underlineColorAndroid="#f000"
                 placeholder="Password"
                 placeholderTextColor="#8b9cb5"
-                ref={passwordInputRef}
+
                 returnKeyType="next"
                 secureTextEntry={true}
                 onSubmitEditing={Keyboard.dismiss}

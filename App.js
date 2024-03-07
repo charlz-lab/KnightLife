@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Settings from "./pages/settings_folder/SETTINGS";
 import Privacy from "./pages/settings_folder/PRIVACY";
 import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS";
+import MembersGoing from "./pages/settings_folder/Link pages/MembersGoing";
 import Accessibility from "./pages/settings_folder/ACCESSIBILITY";
 import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT";
 import CreateAccount from "./pages/settings_folder/CREATEACCOUNT";
@@ -19,6 +20,7 @@ import LoginScreen from "./components/LoginScreen";
 import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
+import EmailVerification from "./components/EmailVerification";
 
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
@@ -26,6 +28,7 @@ import EventPage from "./pages/EVENT";
 import HOME from "./pages/HOME";
 import SavedEventList from "./components/SavedEventList";
 import AttendingEventList from "./components/AttendingEventList";
+import CustomizeProfile from "./components/CustomizeProfile";
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -78,6 +81,34 @@ const Auth = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="EmailVerification"
+        component={EmailVerification}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="CustomizeProfile"
+        component={CustomizeProfile}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -104,7 +135,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="SplashScreen"
-        screenOptions={{ headerShown: true }}
+        screenOptions={{
+          headerShown: true,
+          headerTintColor: "black", // back arrow color
+        }}
       >
         <Stack.Screen
           name="SplashScreen"
@@ -152,8 +186,13 @@ export default function App() {
         <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
+        <Stack.Screen name="MembersGoing" component={MembersGoing} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }} // Initially hide header
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

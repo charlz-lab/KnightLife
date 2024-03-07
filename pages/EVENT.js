@@ -1,76 +1,89 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
-  ScrollView,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
   Image,
-} from "react-native";
-import { Card, Icon } from "react-native-elements";
-import appStyles from "../styles";
-import Modal from "react-native-modal";
-import Ionicon from "react-native-vector-icons/FontAwesome";
-import UpdateList from "../components/UpdateList";
+  Pressable,
+} from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
+import { Card, Icon } from "react-native-elements"
+import appStyles from "../styles"
+import Modal from "react-native-modal"
+import Ionicon from "react-native-vector-icons/FontAwesome"
+import UpdateList from "../components/UpdateList"
+
 const EventPage = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event } = route.params
   const handleBack = () => {
-    navigation.goBack();
-  };
-  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
-  const [isAttending, setIsAttending] = useState(false);
+    navigation.goBack()
+  }
+  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
+  const [isAttending, setIsAttending] = useState(false)
   const handleBookmarkToggle = () => {
     // Add your logic for toggling the bookmark state
-    setIsBookmarked(!isBookmarked);
-  };
+    setIsBookmarked(!isBookmarked)
+  }
   const handleAttendToggle = () => {
     // Add your logic for toggling the attendance state
-    setIsAttending(!isAttending);
-  };
+    setIsAttending(!isAttending)
+  }
   //report modal usestate
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalReportVisible, setModalReportVisible] = useState(false)
+  // info modal usestate
+  const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const toggleReportModal = () => {
+    setModalReportVisible(!isModalReportVisible)
+  }
+  // toggle info modal
+  const toggleInfoModal = () => {
+    setInfoModalVisible(!isInfoModalVisible)
+  }
   const updateEvents = [
     {
       creatorName: "John Doe",
       profileImage: "https://example.com/profile.jpg",
       dateTime: "Jan 01",
-      description: "Join us for an exciting event!",
+      description:
+        "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
-  ];
+  ]
   //function to navigate to the previous page
 
   return (
-    <View style={styles.container}>
-      <Image source={event.image} style={styles.image} />
-      {/* close page button with icon*/}
-      <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
-        <Icon
-          name="close"
-          type="ionicon"
-          size={25}
-          color="#676464"
-          style={styles.close}
-        />
-      </TouchableOpacity>
-      {/* report button with icon */}
-      <TouchableOpacity onPress={toggleModal} style={styles.reportButton}>
-        <Icon
-          name="alert-circle-outline"
-          type="ionicon"
-          size={25}
-          color="#FFC60A"
-          style={styles.report}
-        />
-      </TouchableOpacity>
-      <Text style={styles.dateTime}>{event.dateTime}</Text>
+    <ScrollView style={styles.container}>
+      <View>
+        <Image source={event.image} style={styles.image} />
+        {/* close page button with icon*/}
+        <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
+          <Icon
+            name="close"
+            type="ionicon"
+            size={25}
+            color="white"
+            style={styles.close}
+          />
+        </TouchableOpacity>
+        {/* report button with icon */}
+        <TouchableOpacity
+          onPress={toggleReportModal}
+          style={styles.reportButton}>
+          <Icon
+            name="alert-circle-outline"
+            type="ionicon"
+            size={25}
+            color="#FFC60A"
+            style={styles.report}
+          />
+        </TouchableOpacity>
+        <Text style={styles.dateTime}>{event.dateTime}</Text>
+      </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{event.name}</Text>
-        <Text style={styles.creator}>{event.creator}</Text>
+        <Text style={styles.creator}>{event.creator_name}</Text>
         {/* location pin icon*/}
         <View style={styles.locationContainer}>
           <Icon
@@ -82,27 +95,24 @@ const EventPage = ({ route, navigation }) => {
           />
           <Text style={styles.locationText}>{event.location}</Text>
         </View>
-        <Text style={styles.membersGoing}>
-          {event.membersGoing} Members Going{" "}
-        </Text>
+
+        <Pressable onPress={() => navigation.navigate("MembersGoing")}>
+          <Text style={styles.membersGoing}>
+            {event.membersGoing} Members Going{" "}
+          </Text>
+        </Pressable>
+
         {/* description card */}
-        <View style={styles.toggleContainer}>
-          <Card
-            width="225"
-            borderRadius={12}
-            style={[styles.shadow, styles.card]}
-          >
-            <Text style={{ fontFamily: "IBMPlexSans-Medium " }}>
-              {event.description}
-            </Text>
-          </Card>
-        </View>
-        {/* <Text style={styles.updateTitle}>Updates!</Text>
-        <UpdateList updateEvents={updateEvents} />*/}
-        <TouchableOpacity
-          onPress={handleBookmarkToggle}
-          style={styles.bookmarkButton}
-        >
+        {/* <View style={styles.toggleContainer}> */}
+        <Card borderRadius={12} style={[styles.shadow, styles.card]}>
+          <Text style={{ fontFamily: "IBMPlexSans-Medium" }}>
+            {event.description}
+          </Text>
+        </Card>
+        {/* </View> */}
+      </View>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
           <View style={styles.bookmarkBox}>
             <Ionicon
               name={isBookmarked ? "bookmark" : "bookmark-o"}
@@ -110,24 +120,48 @@ const EventPage = ({ route, navigation }) => {
               color="#FFC60A"
             />
           </View>
-        </TouchableOpacity>
+        </Pressable>
+
         {/* toggle attending button if isAttending true or false */}
-        <TouchableOpacity
+
+        <Pressable
           onPress={handleAttendToggle}
-          style={isAttending ? styles.attendingButton : styles.attendButton}
-        >
+          style={isAttending ? styles.attendingButton : styles.attendButton}>
           <Text style={[styles.attendButtonText]}>
             {isAttending ? "Attending" : "Attend"}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
+      </View>
+      <View style={styles.signUpContainer}>
+        <View style={{ flexDirection: "row", columnGap: 10 }}>
+          <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
+          <TouchableOpacity onPress={toggleInfoModal}>
+            <Image
+              source={require("../assets/icons/infoIcon.png")}
+              style={{ marginTop: 1, width: 20, height: 20 }}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={[
+            { textDecorationLine: "underline" },
+            appStyles.fonts.paragraph,
+          ]}>
+          signuphereucf.com
+        </Text>
+      </View>
+      <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
+        Event Updates:
+      </Text>
+      <View style={styles.updateEventListContainer}>
+        <UpdateList updateEvents={updateEvents} />
       </View>
 
       {/* modal for report button */}
       <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
-        style={styles.modal}
-      >
+        isVisible={isModalReportVisible}
+        onBackdropPress={toggleReportModal}
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
           <Text style={styles.modalAlert}>
@@ -138,37 +172,70 @@ const EventPage = ({ route, navigation }) => {
           </Text>
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
-              onPress={toggleModal}
-              style={[styles.modalOption, styles.modalOption1]}
-            >
+              onPress={toggleReportModal}
+              style={[styles.modalOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={toggleModal}
-              style={[styles.modalOption, styles.modalOption2]}
-            >
+              onPress={toggleReportModal}
+              style={[styles.modalOption, styles.modalOption2]}>
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-    </View>
-  );
-};
+      <Modal
+        isVisible={isModalReportVisible}
+        onBackdropPress={toggleReportModal}
+        style={styles.modal}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Report Submitted!</Text>
+          <Text style={styles.modalAlert}>
+            Thank you for expressing your concern. The KnightLife team will be
+            reviewing the report shortly.{" "}
+          </Text>
+          <View style={styles.modalOptionsContainer}>
+            <TouchableOpacity
+              onPress={toggleReportModal}
+              style={[styles.modalReportOption, styles.modalOption1]}>
+              <Text style={styles.modalOptionText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* modal for info button */}
+      <Modal
+        isVisible={isInfoModalVisible}
+        onBackdropPress={toggleInfoModal}
+        style={styles.modal}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Disclaimer</Text>
+          <Text style={styles.modalAlert}>
+            Choosing to attend an event is not the same as signing up for the
+            event itself. Please use the sign up link to sign up for this event
+            externally.
+          </Text>
+        </View>
+      </Modal>
+    </ScrollView>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: "white",
   },
   image: {
     width: "100%",
     height: 350,
     resizeMode: "cover", // Adjust the resizeMode as needed
+    backgroundColor: "#E2E2E2",
   },
   detailsContainer: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
     backgroundColor: "#fff",
-    flex: 1,
   },
   reportButton: {
     position: "absolute",
@@ -241,7 +308,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "#fff",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 30,
     width: "80%",
     alignItems: "center",
     justifyContent: "center",
@@ -288,10 +355,26 @@ const styles = StyleSheet.create({
   modalOption2: {
     backgroundColor: "#FF460C",
   },
+  modalReportOption: {
+    flex: 1,
+    padding: 8,
+    marginHorizontal: 55,
+    width: 10,
+    padding: 8,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007bff",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    height: 65,
+    alignItems: "center",
+    alignSelf: "center",
+    columnGap: 10,
+    margin: 1,
+  },
   bookmarkButton: {
-    position: "absolute",
-    top: 285,
-    left: 27,
     padding: 8,
     paddingTop: 10,
   },
@@ -300,30 +383,27 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 12,
     borderRadius: 15,
+    height: "96%",
   },
   attendButton: {
-    position: "absolute",
-    top: 295,
-    right: 35, // Adjust the position as needed
-    padding: 12,
-    backgroundColor: "#FFC60A",
-    borderRadius: 20,
-    width: 260,
+    width: "70%",
+    borderRadius: 30,
+    borderWidth: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 0,
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#FFC60A",
+    borderColor: "#FFC60A",
   },
   attendingButton: {
-    position: "absolute",
-    top: 295,
-    right: 35, // Adjust the position as needed
-    padding: 10,
     backgroundColor: "#FDF5E6",
     borderColor: "#FFC60A",
     borderWidth: 2,
-    borderRadius: 20,
-    width: 260,
+    width: "70%",
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     alignItems: "center",
-    justifyContent: "center",
   },
   attendButtonText: {
     color: "#080808",
@@ -331,8 +411,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   toggleContainer: {
-    marginBottom: 80,
-
     // Add any styles for the toggle container here
   },
   updateEventListContainer: {
@@ -340,15 +418,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     paddingBottom: 20,
+    marginBottom: 30,
+    borderRadius: 30,
   },
   updateTitle: {
     backgroundColor: "white",
     fontSize: 20,
     color: "#080808",
-    fontFamily: "IBMPlexSans-Medium",
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
     paddingTop: 10,
   },
-});
+  signUpContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 5,
+  },
+})
 
-export default EventPage;
+export default EventPage

@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, useEffect, createRef } from "react"
 import {
   StyleSheet,
   TextInput,
@@ -10,53 +10,80 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
-} from "react-native";
-import appStyles from "../styles";
+} from "react-native"
+import appStyles from "../styles"
+import supabase from '../lib/supabase'
+import { Session } from "@supabase/gotrue-js"
+const LoginScreen = ({ navigation, route }) => {
+  const [headerShown, setHeaderShown] = useState(true)
 
-const LoginScreen = ({ navigation }) => {
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState("");
+  useEffect(() => {
+    if (route.params && route.params.headerShown !== undefined) {
+      setHeaderShown(route.params.headerShown)
+    }
+  }, [route.params])
 
-  const passwordInputRef = createRef();
+  const [userEmail, setUserEmail] = useState("")
+  const [userPassword, setUserPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [errortext, setErrortext] = useState("")
 
-  const handleSubmitPress = () => {
-    setErrortext("");
+
+
+  const handleSubmitPress = async () => {
+    setErrortext("")
     if (!userEmail) {
-      alert("Please fill Email");
-      return;
+      alert("Please fill Email")
+      return
     }
     if (!userPassword) {
-      alert("Please fill Password");
-      return;
+      alert("Please fill Password")
+      return
     }
-    let dataToSend = { email: userEmail, password: userPassword };
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    // Prevent the form from refreshing the page
 
-    navigation.replace("NavBar", { isCreator: false });
-  };
+    setLoading(true)
+    const { data: user, error } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password: userPassword,
+    })
+
+    if (error) {
+
+      setLoading(false)
+    }
+    else {
+      const session = supabase.auth.getSession();
+
+      navigation.navigate("CustomizeProfile")
+
+    }
+
+  }
+  // const handleSubmitPress = async () => {
+  //   let { data, error } = await supabase
+  //     .from('users')
+  //     .select('*')
+  //     .limit(20)
+
+  //   if (error) console.log('Error: ', error)
+  //   else setUsers(data)
+  //   console.log('Users: ', data)
+
+  // }
 
   return (
     <View style={styles.mainBody}>
       <ImageBackground
         source={require("../images/loginBackground.png")}
-        style={{ width: "100%", height: "100%" }}
-      >
+        style={{ width: "100%", height: "100%" }}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             flex: 1,
             justifyContent: "center",
             alignContent: "center",
-          }}
-        >
+          }}>
           <View>
             <KeyboardAvoidingView enabled>
               <View style={{ alignItems: "center" }}>
@@ -79,11 +106,8 @@ const LoginScreen = ({ navigation }) => {
                   autoCapitalize="none"
                   keyboardType="email-address"
                   returnKeyType="next"
-                  onSubmitEditing={() =>
-                    passwordInputRef.current && passwordInputRef.current.focus()
-                  }
                   underlineColorAndroid="#f000"
-                  blurOnSubmit={false}
+                  blurOnSubmit={true}
                 />
               </View>
               <View style={styles.SectionStyle}>
@@ -93,9 +117,8 @@ const LoginScreen = ({ navigation }) => {
                   placeholder="Enter Password" //12345
                   placeholderTextColor="black"
                   keyboardType="default"
-                  ref={passwordInputRef}
                   onSubmitEditing={Keyboard.dismiss}
-                  blurOnSubmit={false}
+                  blurOnSubmit={true}
                   secureTextEntry={true}
                   underlineColorAndroid="#f000"
                   returnKeyType="next"
@@ -108,14 +131,12 @@ const LoginScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={appStyles.buttons.yellowLogin}
                   activeOpacity={0.5}
-                  onPress={handleSubmitPress}
-                >
+                  onPress={handleSubmitPress}>
                   <Text
                     style={[
                       appStyles.fonts.paragraph,
                       { color: "black", paddingVertical: 10 },
-                    ]}
-                  >
+                    ]}>
                     Login
                   </Text>
                 </TouchableOpacity>
@@ -130,9 +151,8 @@ const LoginScreen = ({ navigation }) => {
                   ]}
                   onPress={() =>
                     navigation.navigate("Auth", { screen: "AccountType" })
-                  }
-                >
-                  New Here? Register
+                  }>
+                  Not Registered?
                 </Text>
               </View>
             </KeyboardAvoidingView>
@@ -140,9 +160,10 @@ const LoginScreen = ({ navigation }) => {
         </ScrollView>
       </ImageBackground>
     </View>
-  );
-};
-export default LoginScreen;
+  )
+}
+
+export default LoginScreen
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -186,6 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: "#dadae8",
     backgroundColor: "white",
+    ...appStyles.fonts.paragraph,
   },
   registerTextStyle: {
     color: "#FFFFFF",
@@ -200,4 +222,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
   },
-});
+})
