@@ -73,7 +73,9 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
           </ImageBackground>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{event.name}</Text>
-            <Text style={styles.creator}>Hosted By: {event.id}</Text>
+            <Text style={styles.creator}>
+              Hosted By: {event.creator_name || ""}
+            </Text>
             {/*adding the location pin icon using ionicons*/}
             <View style={styles.locationContainer}>
               <Icon

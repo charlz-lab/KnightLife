@@ -45,11 +45,12 @@ let defaultCreator = {
 
 // fetch events from database
 const fetchEvents = async (creatorId) => {
-  const { data, error, status } = await supabase
-    .from("events")
-    .select("*")
-    .eq("creator_id", creatorId)
-    .order("date", { ascending: true })
+  let eventsListQuery = supabase.from("events").select("*")
+  if (creatorId) {
+    eventsListQuery = eventsListQuery.eq("creator_id", creatorId)
+  }
+  eventsListQuery = eventsListQuery.order("date", { ascending: true })
+  const { data, error, status } = await eventsListQuery
   if (error && status !== 406) {
     throw error
   } else {
@@ -198,6 +199,15 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [events, setEvents] = useState([])
   const [selection, setSelection] = useState("upcoming")
 
+  // fetch events from database
+  useEffect(() => {
+    if (supabase) {
+      fetchEvents().then((data) => {
+        setEvents(data)
+      })
+    }
+  }, [])
+
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
@@ -224,7 +234,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
           />
 
           {/* display event cards */}
-          {/* {selection === "upcoming" ? (
+          {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : selection === "saved" ? (
             <SavedEventList
@@ -234,7 +244,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <AttendingEventList
               events={events}
               navigation={navigation}></AttendingEventList>
-          )} */}
+          )}
         </View>
 
         <StatusBar style="auto" />
@@ -249,6 +259,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [events, setEvents] = useState([])
   const creatorId = "92365ee0-44d3-46b8-a408-c1f319043821"
 
+  // fetch events from database
   useEffect(() => {
     if (supabase) {
       fetchEvents(creatorId).then((data) => {
@@ -280,7 +291,6 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             selection={selection}
             setSelection={setSelection}
           />
-
           {/* display event cards */}
           {console.log(events)}
           {selection === "upcoming" ? (
@@ -314,7 +324,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    paddingBottom: 10,
+    paddingBottom: 30,
     paddingHorizontal: 20,
   },
 })

@@ -1,12 +1,39 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, SafeAreaView, View, FlatList } from "react-native"
 import EventCard from "../components/EventCard"
+import supabase from "../lib/supabase"
 
 const EventList = ({ events, navigation }) => {
-  {
-    /*event data list*/
+  const [eventData, setEventData] = useState([])
+
+  // update the event list with the creator's name
+  const fetchEventCreatorNames = async (events) => {
+    const updatedEvents = await Promise.all(
+      events.map(async (event) => {
+        let eventCreatorQuery = supabase
+          .from("users")
+          .select("name")
+          .eq("id", event.creator_id)
+        const { data, error, status } = await eventCreatorQuery
+        if (error && status !== 406) {
+          throw error
+        } else {
+          console.log(data)
+          return { ...event, creator_name: data[0].name }
+        }
+      })
+    )
+    return updatedEvents
   }
-  const [eventData, setEventData] = useState(events)
+
+  useEffect(() => {
+    if (supabase) {
+      fetchEventCreatorNames(events).then((updatedEvents) => {
+        setEventData(updatedEvents)
+      })
+    }
+  }, [events])
+
   /*toggle the bookmarked events*/
   const handleBookmarkToggle = (eventId, isBookmarked) => {
     const updatedData = eventData.map((event) =>
@@ -14,13 +41,13 @@ const EventList = ({ events, navigation }) => {
     )
     setEventData(updatedData)
   }
-  console.log(events)
+  console.log(eventData)
 
   return (
     <SafeAreaView style={styles.container}>
       {/*flatlist to render the event cards*/}
       <FlatList
-        data={events}
+        data={eventData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <EventCard
