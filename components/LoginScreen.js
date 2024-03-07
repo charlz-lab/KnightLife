@@ -27,8 +27,7 @@ const LoginScreen = ({ navigation, route }) => {
   const [userPassword, setUserPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [errortext, setErrortext] = useState("")
-  const [users, setUsers] = useState([])
-  const [session, setSession] = useState(supabase.auth.getSession());
+
 
 
   const handleSubmitPress = async () => {
@@ -54,7 +53,10 @@ const LoginScreen = ({ navigation, route }) => {
       setLoading(false)
     }
     else {
-      navigation.navigate("CustomizeProfile", { session: supabase.auth.getSession() })
+      const session = supabase.auth.getSession();
+
+      console.log(session);
+      navigation.navigate("CustomizeProfile", { session })
 
     }
 

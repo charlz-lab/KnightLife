@@ -13,7 +13,8 @@ import {
 } from "react-native";
 
 import supabase from '../lib/supabase';
-function CustomizeProfile({ props, route }) {
+import { ScreenStackHeaderSubview } from 'react-native-screens';
+function CustomizeProfile({ props, route, session }) {
     const [name, setName] = useState("")
     const [year, setYear] = useState("")
     const [major, setMajor] = useState("")
@@ -21,8 +22,20 @@ function CustomizeProfile({ props, route }) {
     const [loading, setLoading] = useState(false)
     const [errortext, setErrortext] = useState("")  // Create state variables for the input fields
     const [userName, setUserName] = useState("")
-    const { session } = route.params;
-    supabase.auth.setSession(session)
+    const user = session?.user ?? null;
+    useEffect(() => {
+        const { data: { session } } = supabase.auth.getSession();
+
+        // Define user here
+        const user = session?.user ?? null;
+
+        // Set the session
+        supabase.auth.setSession(session);
+
+        // Additional logic using the 'user' variable can go here
+
+    }, [supabase.auth, /* other dependencies if needed */]);
+    console.log(session)
     const handleCreateProfileButton = async () => {
 
         try {
@@ -35,8 +48,7 @@ function CustomizeProfile({ props, route }) {
 
                     const userId = session.user.id
 
-                    const { data: { session } } = supabase.auth.getSession();
-                    const { data: { user } } = supabase.auth.getUser();
+
                     const userEmail = session.user.email;
                     const userPassword = session.user.password
                     const { data: userData, error: userError } = await supabase
@@ -131,9 +143,9 @@ function CustomizeProfile({ props, route }) {
             </View>
             <View>
                 <View style={styles.SectionStyle}>
-                    <TextInput
+                    {/* <TextInput
                         style={styles.inputStyle}
-                        onChangeText={(userName) => setUserName(name)}
+                        onChangeText={(userName) => setUserName(userName)}
                         underlineColorAndroid="#f000"
                         placeholder="Name"
                         placeholderTextColor="#8b9cb5"
@@ -141,7 +153,7 @@ function CustomizeProfile({ props, route }) {
                         returnKeyType="next"
                         onSubmitEditing={Keyboard.dismiss}
                         blurOnSubmit={false}
-                    />
+                    /> */}
                 </View>
                 <View style={styles.SectionStyle}>
                     <TextInput
