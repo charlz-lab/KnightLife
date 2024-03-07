@@ -20,19 +20,17 @@ import SearchBar from "../components/SearchBar"
 import SavedEventList from "../components/SavedEventList"
 import AttendingEventList from "../components/AttendingEventList"
 import supabase from "../lib/supabase"
+import { handleEventList } from "../lib/utils"
 
 const HOME = ({ navigation }) => {
   // list events
   const [users, setUsers] = React.useState([])
   const [events, setEvents] = React.useState([])
-  const addEvent = (newEvent) => {
-    // Update the events state with the new event
-    setEvents((prevEvents) => [...prevEvents, newEvent])
 
-    HOME.navigationOptions = {
-      headerLeft: null, // or any other option you prefer
-    }
-  }
+  // fetch events from database
+  React.useEffect(() => {
+    handleEventList(setEvents)
+  }, [])
 
   // enable filter modal
   const [isModalVisible, setModalVisible] = React.useState(false)
@@ -67,7 +65,9 @@ const HOME = ({ navigation }) => {
         </Pressable>
       </View>
       {/* List of event cards */}
-      <View>{/* <EventList events={events} navigation={navigation} /> */}</View>
+      <View>
+        <EventList events={events} navigation={navigation} />
+      </View>
       {/* Filter modal */}
       <Modal
         isVisible={isModalVisible}
