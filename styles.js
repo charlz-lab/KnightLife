@@ -154,7 +154,6 @@ const appStyles = {
   },
   profileCard: {
     backgroundColor: "white",
-    width: "85%",
     borderRadius: 12,
     paddingVertical: 17,
     paddingHorizontal: 22,
@@ -164,13 +163,13 @@ const appStyles = {
   },
   toggleContainer: {
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 0,
     padding: 5,
     backgroundColor: "white",
     borderRadius: 40,
     marginBottom: 10,
     justifyContent: "space-between",
-    width: "85%",
+    flex: 1,
   },
   textInput: {
     flex: 1,

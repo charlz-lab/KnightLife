@@ -283,15 +283,14 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
           {/* display event cards */}
           {console.log(events)}
-          <EventList events={events} navigation={navigation}></EventList>
-          {/* {selection === "upcoming" ? (
+          {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : (
             // replace with past
             <SavedEventList
               events={events}
               navigation={navigation}></SavedEventList>
-          )} */}
+          )}
           {/* navigate to edit profile */}
         </View>
         <StatusBar style="auto" />
@@ -314,5 +313,8 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 10,
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
 })

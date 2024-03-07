@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
+    paddingVertical: 10,
+    paddingBottom: 20,
   },
   header: {
     flex: 1,
