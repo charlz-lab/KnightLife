@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Image } from "react-native-elements";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CREATE_EVENTS from "../pages/CREATE_EVENTS";
-import HOME from "../pages/HOME";
-import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE";
-import appStyles from "../styles";
-import { StyleSheet, View, Platform } from "react-native";
+import React, { useEffect } from "react"
+import { Image } from "react-native-elements"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import CREATE_EVENTS from "../pages/CREATE_EVENTS"
+import HOME from "../pages/HOME"
+import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE"
+import appStyles from "../styles"
+import { StyleSheet, View, Platform } from "react-native"
 
-const Tab = createBottomTabNavigator();
-let isCreator = true;
+const Tab = createBottomTabNavigator()
+let isCreator = true
 
 function NavBar() {
   useEffect(() => {
@@ -16,8 +16,8 @@ function NavBar() {
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
-    };
-  }, []); // Empty dependency array ensures it runs only once
+    }
+  }, []) // Empty dependency array ensures it runs only once
 
   return (
     <Tab.Navigator
@@ -27,8 +27,7 @@ function NavBar() {
           backgroundColor: appStyles.colors.mainBackground,
           height: 90, // Adjust the height as needed
         },
-      }}
-    >
+      }}>
       {isCreator ? (
         <>
           <Tab.Screen
@@ -93,7 +92,7 @@ function NavBar() {
         </>
       )}
     </Tab.Navigator>
-  );
+  )
 }
 
 const TabIcon = ({ focused, icon, selectedIcon }) => (
@@ -103,7 +102,7 @@ const TabIcon = ({ focused, icon, selectedIcon }) => (
       source={focused ? selectedIcon : icon}
     />
   </View>
-);
+)
 
 const styles = StyleSheet.create({
   tabIconContainer: {
@@ -144,6 +143,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-});
+})
 
-export default NavBar;
+export default NavBar

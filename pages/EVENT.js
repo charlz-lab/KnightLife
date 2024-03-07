@@ -31,12 +31,12 @@ const EventPage = ({ route, navigation }) => {
     setIsAttending(!isAttending)
   }
   //report modal usestate
-  const [isModalVisible, setModalVisible] = useState(false)
+  const [isModalReportVisible, setModalReportVisible] = useState(false)
   // info modal usestate
   const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible)
+  const toggleReportModal = () => {
+    setModalVisible(!isModalReportVisible)
   }
   // toggel info modal
   const toggleInfoModal = () => {
@@ -68,7 +68,9 @@ const EventPage = ({ route, navigation }) => {
           />
         </TouchableOpacity>
         {/* report button with icon */}
-        <TouchableOpacity onPress={toggleModal} style={styles.reportButton}>
+        <TouchableOpacity
+          onPress={toggleReportModal}
+          style={styles.reportButton}>
           <Icon
             name="alert-circle-outline"
             type="ionicon"
@@ -157,8 +159,8 @@ const EventPage = ({ route, navigation }) => {
 
       {/* modal for report button */}
       <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
+        isVisible={isModalReportVisible}
+        onBackdropPress={toggleReportModal}
         style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
@@ -170,12 +172,12 @@ const EventPage = ({ route, navigation }) => {
           </Text>
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
-              onPress={toggleModal}
+              onPress={toggleReportModal}
               style={[styles.modalOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={toggleModal}
+              onPress={toggleReportModal}
               style={[styles.modalOption, styles.modalOption2]}>
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
