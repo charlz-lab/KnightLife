@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 350,
     resizeMode: "cover", // Adjust the resizeMode as needed
+    backgroundColor: "#E2E2E2",
   },
   detailsContainer: {
     paddingHorizontal: 16,

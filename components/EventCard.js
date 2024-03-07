@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderRadius: 14,
     paddingHorizontal: 10,
+    backgroundColor: "#E2E2E2",
   },
   bookmarkButton: {
     paddingTop: 10,
