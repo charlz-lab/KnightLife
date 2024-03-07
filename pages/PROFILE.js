@@ -357,10 +357,9 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
               }
               navigation={navigation}></EventList>
           ) : (
-            // replace with past
             <EventList
               events={
-                // filter upcoming events
+                // filter past events
                 events.filter((event) => new Date(event.date) < new Date())
               }
               navigation={navigation}></EventList>
