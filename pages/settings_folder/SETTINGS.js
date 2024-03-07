@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import supabase from "../../lib/supabase";
 import appStyles from "../../styles";
+import Modal from "react-native-modal";
 
 const Settings = () => {
   const navigation = useNavigation();
 
   const navigateToPrivacy = () => {
     navigation.navigate("Privacy");
+  };
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   const navigateToAddSwitchAccounts = () => {
@@ -24,7 +31,7 @@ const Settings = () => {
   };
 
   const navigateToLoginScreen = () => {
-    const { data, error } = supabase.auth.signOut();
+    setModalVisible(false);
     navigation.navigate("LoginScreen", { headerShown: false }); // Pass headerShown: false
   };
 
@@ -63,7 +70,7 @@ const Settings = () => {
         <TouchableOpacity
           style={appStyles.buttons.yellowLogin}
           activeOpacity={0.5}
-          onPress={navigateToLoginScreen}
+          onPress={toggleModal}
         >
           <Text
             style={[
@@ -74,6 +81,31 @@ const Settings = () => {
             Sign Out
           </Text>
         </TouchableOpacity>
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}
+          style={styles.modal}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalAlert}>
+              Are you sure you would like to sing out?
+            </Text>
+            <View style={styles.modalOptionsContainer}>
+              <TouchableOpacity
+                onPress={toggleModal}
+                style={[styles.modalOption, styles.modalOption1]}
+              >
+                <Text style={styles.modalOptionText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={navigateToLoginScreen}
+                style={[styles.modalOption, styles.modalOption2]}
+              >
+                <Text style={styles.modalOptionText}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -88,6 +120,65 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     flex: 1,
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingrRight: 20,
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 30,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    fontFamily: "IBMPlexSans-Medium",
+    fontSize: 20,
+  },
+  modalAlert: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    alignItems: "center",
+    marginBottom: 10,
+    textAlign: "center",
+    fontSize: 20,
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  modalOptionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 12,
+  },
+  modalOption: {
+    flex: 1,
+    padding: 8,
+    marginHorizontal: 6,
+
+    padding: 8,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007bff",
+  },
+  modalOptionText: {
+    color: "#fff", //
+  },
+  modalOption1: {
+    backgroundColor: "#080808",
+    paddingTop: 10,
+    marginRight: 20,
+  },
+  modalOption2: {
+    backgroundColor: "#FF460C",
+    marginLeft: 20,
   },
 });
 

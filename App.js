@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Settings from "./pages/settings_folder/SETTINGS";
 import Privacy from "./pages/settings_folder/PRIVACY";
 import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS";
+import MembersGoing from "./pages/settings_folder/Link pages/MembersGoing";
 import Accessibility from "./pages/settings_folder/ACCESSIBILITY";
 import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT";
 import CreateAccount from "./pages/settings_folder/CREATEACCOUNT";
@@ -194,17 +195,14 @@ export default function App() {
           <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
           <Stack.Screen name="Accessibility" component={Accessibility} />
           <Stack.Screen name="EditAccount" component={EditAccount} />
+          <Stack.Screen name="MembersGoing" component={MembersGoing} />
           <Stack.Screen name="CreateAccount" component={CreateAccount} />
           <Stack.Screen
-            name="Auth"
-            component={Auth}
-            options={{ headerShown: false }}
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{ headerShown: false }} // Initially hide header
           />
-
         </Stack.Navigator>
-      ) : (
-        <Auth />
-      )}
     </NavigationContainer>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
   StyleSheet,
   Text,
@@ -6,26 +6,26 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import Ionicon from "react-native-vector-icons/FontAwesome";
-import BookmarkButton from "./BookmarkButton";
-import * as Font from "expo-font";
-import { useNavigation } from "@react-navigation/native";
+} from "react-native"
+import { Icon } from "react-native-elements"
+import Ionicon from "react-native-vector-icons/FontAwesome"
+import BookmarkButton from "./BookmarkButton"
+import * as Font from "expo-font"
+import { useNavigation } from "@react-navigation/native"
 
 const EventCard = ({ event, navigation, onBookmarkToggle }) => {
   const handlePress = () => {
     // navigates to the event details page with event data
-    navigation.navigate("EventPage", { event });
-  };
-  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
+    navigation.navigate("EventPage", { event })
+  }
+  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
 
   const handleBookmarkToggle = () => {
-    setIsBookmarked(!isBookmarked);
-    onBookmarkToggle(event.id, !isBookmarked); // Notify parent component about the bookmark toggle
-  };
+    setIsBookmarked(!isBookmarked)
+    onBookmarkToggle(event.id, !isBookmarked) // Notify parent component about the bookmark toggle
+  }
   //loadAsync google fonts
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false)
 
   useEffect(() => {
     async function loadFont() {
@@ -34,16 +34,16 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
         "IBMPlexSans-Medium": require("../assets/fonts/IBMPlexSans-Medium.ttf"),
         "IBMPlexSans-Bold": require("../assets/fonts/IBMPlexSans-Bold.ttf"),
         "Prompt-Bold": require("../assets/fonts/Prompt-Bold.ttf"),
-      });
+      })
 
-      setFontLoaded(true);
+      setFontLoaded(true)
     }
 
-    loadFont();
-  }, []);
+    loadFont()
+  }, [])
 
   if (!fontLoaded) {
-    return <Text>Loading...</Text>;
+    return <Text>Loading...</Text>
   }
 
   //building card w props
@@ -56,14 +56,12 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
           <ImageBackground
             source={event.image}
             imageStyle={{ borderRadius: 14, width: 290 }}
-            style={styles.imageBanner}
-          >
+            style={styles.imageBanner}>
             <View style={styles.buttonContainer}>
               {/* bookmark toggle saved events, using ionicons */}
               <TouchableOpacity
                 onPress={handleBookmarkToggle}
-                style={styles.bookmarkButton}
-              >
+                style={styles.bookmarkButton}>
                 <Ionicon
                   name={isBookmarked ? "bookmark" : "bookmark-o"}
                   size={20}
@@ -75,7 +73,9 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
           </ImageBackground>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{event.name}</Text>
-            <Text style={styles.creator}>Hosted By: {event.creator}</Text>
+            <Text style={styles.creator}>
+              Hosted By: {event.creator_name || ""}
+            </Text>
             {/*adding the location pin icon using ionicons*/}
             <View style={styles.locationContainer}>
               <Icon
@@ -88,10 +88,9 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
               <Text style={styles.locationText}>{event.location}</Text>
             </View>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+              style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text style={styles.membersGoing}>
-                {event.membersGoing} Members Going{" "}
+                {event.attending_count} Members Going{" "}
               </Text>
               <Icon
                 name="alert-circle-outline"
@@ -105,8 +104,8 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
         </View>
       </View>
     </TouchableOpacity>
-  );
-};
+  )
+}
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
@@ -118,15 +117,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 12,
-    width: "90%",
-    marginVertical: 10,
+    width: "100%",
+    marginBottom: 16,
   },
   //style the drop shadow
   shadow: {
     shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
   //style of all text in card
   textContainer: {
@@ -144,6 +143,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderRadius: 14,
     paddingHorizontal: 10,
+    backgroundColor: "#E2E2E2",
   },
   bookmarkButton: {
     paddingTop: 10,
@@ -187,5 +187,5 @@ const styles = StyleSheet.create({
 
     backgroundColor: "black",
   },
-});
-export default EventCard;
+})
+export default EventCard
