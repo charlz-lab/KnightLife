@@ -210,6 +210,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
     <>
       <ScrollView>
         <View style={styles.profileContainer}>
+          {/* Profile info */}
           <ProfileCard
             profile={profile}
             accountType="personal"
@@ -221,78 +222,6 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             selection={selection}
             setSelection={setSelection}
           />
-          {/* <View style={[appStyles.toggleContainer, appStyles.shadow]}>
-                        
-            <TouchableOpacity
-              style={
-                selection === "upcoming"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("upcoming")}>
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Upcoming
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                selection === "saved"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("saved")}>
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Saved
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                selection === "attended"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "25%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("attended")}>
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Attended
-              </Text>
-            </TouchableOpacity>
-          </View> */}
 
           {/* display event cards */}
           {/* {selection === "upcoming" ? (
@@ -339,6 +268,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
     <>
       <ScrollView>
         <View style={styles.profileContainer}>
+          {/* Profile info */}
           <ProfileCard
             profile={profile}
             accountType="creator"
@@ -350,58 +280,10 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             selection={selection}
             setSelection={setSelection}
           />
-          {/* <View style={[appStyles.toggleContainer, appStyles.shadow]}>
-            <TouchableOpacity
-              style={
-                selection === "upcoming"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "40%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "40%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("upcoming")}>
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Upcoming
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                selection === "past"
-                  ? {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "#FFC60A",
-                      width: "40%",
-                      alignItems: "center",
-                    }
-                  : {
-                      borderRadius: 20,
-                      padding: 10,
-                      backgroundColor: "white",
-                      width: "40%",
-                      alignItems: "center",
-                    }
-              }
-              onPress={() => setSelection("past")}>
-              <Text style={[appStyles.fonts.paragraph, { color: "black" }]}>
-                Past
-              </Text>
-            </TouchableOpacity>
-          </View> */}
 
           {/* display event cards */}
           {console.log(events)}
-          {/* <EventList events={events} navigation={navigation}></EventList> */}
+          <EventList events={events} navigation={navigation}></EventList>
           {/* {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : (

@@ -129,9 +129,9 @@ const appStyles = {
   // drop shadow
   shadow: {
     shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
   shadowInput: {
     shadowColor: "#000",

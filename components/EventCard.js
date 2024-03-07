@@ -115,15 +115,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 12,
-    width: "90%",
+    width: "95%",
     marginVertical: 10,
   },
   //style the drop shadow
   shadow: {
     shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
   //style of all text in card
   textContainer: {
