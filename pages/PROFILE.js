@@ -350,12 +350,20 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
           {/* display event cards */}
           {console.log(events)}
           {selection === "upcoming" ? (
-            <EventList events={events} navigation={navigation}></EventList>
+            <EventList
+              events={
+                // filter upcoming events
+                events.filter((event) => new Date(event.date) > new Date())
+              }
+              navigation={navigation}></EventList>
           ) : (
             // replace with past
-            <SavedEventList
-              events={events}
-              navigation={navigation}></SavedEventList>
+            <EventList
+              events={
+                // filter upcoming events
+                events.filter((event) => new Date(event.date) < new Date())
+              }
+              navigation={navigation}></EventList>
           )}
           {/* navigate to edit profile */}
         </View>
