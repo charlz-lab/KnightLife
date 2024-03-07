@@ -8,6 +8,7 @@ import appStyles from "../styles"
 import { StyleSheet, View, Platform } from "react-native"
 import supabase from '../lib/supabase';
 const Tab = createBottomTabNavigator()
+let isCreator = true
 
 function NavBar() {
   const [isCreator, setIsCreator] = useState(false);
