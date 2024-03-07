@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 12,
     width: "100%",
-    marginVertical: 10,
+    marginBottom: 16,
   },
   //style the drop shadow
   shadow: {

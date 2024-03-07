@@ -36,12 +36,9 @@ const EventList = ({ events, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
-    paddingVertical: 10,
-    paddingBottom: 20,
   },
   header: {
     flex: 1,

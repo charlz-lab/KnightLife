@@ -160,6 +160,7 @@ const appStyles = {
     gap: 10,
     alignItems: "center",
     marginVertical: 20,
+    width: "100%",
   },
   toggleContainer: {
     flexDirection: "row",
@@ -169,7 +170,7 @@ const appStyles = {
     borderRadius: 40,
     marginBottom: 10,
     justifyContent: "space-between",
-    flex: 1,
+    // flex: 1,
   },
   textInput: {
     flex: 1,
