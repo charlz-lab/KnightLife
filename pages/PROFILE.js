@@ -13,6 +13,7 @@ import {
 } from "react-native"
 import { ScrollView } from "react-native-virtualized-view"
 import appStyles from "../styles"
+import ProfileCard from "../components/ProfileCard"
 import EventList from "../components/EventList"
 import AttendingEventList from "../components/AttendingEventList"
 import SavedEventList from "../components/SavedEventList"
@@ -208,34 +209,11 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
     <>
       <ScrollView>
         <View style={styles.profileContainer}>
-          <View style={[appStyles.profileCard, appStyles.shadow]}>
-            <View
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                columnGap: 10,
-              }}>
-              <Pressable onPress={() => navigation.navigate("Settings")}>
-                <Image
-                  source={require("../assets/icons/fi-br-settings.png")}
-                  style={{ width: 21, height: 21 }}></Image>
-              </Pressable>
-              <Pressable
-                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
-                <Image
-                  source={require("../assets/icons/fi-br-edit.png")}
-                  style={{ width: 20, height: 20 }}></Image>
-              </Pressable>
-            </View>
-            {/* Profile info */}
-            <Image source={profile.pic} style={{ width: 125, height: 125 }} />
-            <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-            <Text style={appStyles.fonts.paragraph}>{profile.username}</Text>
-            <Text style={appStyles.fonts.paragraph}>{profile.location}</Text>
-            <Text style={appStyles.fonts.paragraph}>
-              {profile.year} - {profile.major}
-            </Text>
-          </View>
+          <ProfileCard
+            profile={profile}
+            accountType="personal"
+            navigation={navigation}
+          />
           {/* Upcoming / attended / saved toggle*/}
           <View style={[appStyles.toggleContainer, appStyles.shadow]}>
             <TouchableOpacity
@@ -310,7 +288,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
           </View>
 
           {/* display event cards */}
-          {selection === "upcoming" ? (
+          {/* {selection === "upcoming" ? (
             <EventList events={events} navigation={navigation}></EventList>
           ) : selection === "saved" ? (
             <SavedEventList
@@ -320,7 +298,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <AttendingEventList
               events={events}
               navigation={navigation}></AttendingEventList>
-          )}
+          )} */}
         </View>
 
         <StatusBar style="auto" />
@@ -333,7 +311,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator)
   const [selection, setSelection] = useState("upcoming")
   const [events, setEvents] = useState([])
-  const creatorId = "ef1e9b2b-53f6-4342-a77c-e1c74b2f627a"
+  const creatorId = "92365ee0-44d3-46b8-a408-c1f319043821"
 
   useEffect(() => {
     if (supabase) {
@@ -354,50 +332,11 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
     <>
       <ScrollView>
         <View style={styles.profileContainer}>
-          <View style={[appStyles.profileCard, appStyles.shadow]}>
-            <View
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                columnGap: 10,
-              }}>
-              <Pressable onPress={() => navigation.navigate("Settings")}>
-                <Image
-                  source={require("../assets/icons/fi-br-settings.png")}
-                  style={{ width: 21, height: 21 }}></Image>
-              </Pressable>
-              <Pressable
-                onPress={() => navigation.navigate("EDIT_PROFILE", profile)}>
-                <Image
-                  source={require("../assets/icons/fi-br-edit.png")}
-                  style={{ width: 20, height: 20 }}></Image>
-              </Pressable>
-            </View>
-            {/* Profile info */}
-            <Image source={profile.pic} style={{ width: 100, height: 100 }} />
-            <Text style={appStyles.fonts.heading}>{profile.name}</Text>
-            <Text style={appStyles.fonts.regular}>{profile.username}</Text>
-            <Text style={appStyles.fonts.regular}>{profile.location}</Text>
-            <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
-              {profile.bio}
-            </Text>
-            {/* style events and followers */}
-            <View
-              style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
-                <Text style={appStyles.fonts.paragraph}>
-                  {profile.eventsNum}
-                </Text>
-                <Text style={appStyles.fonts.paragraph}>Events</Text>
-              </View>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
-                <Text style={appStyles.fonts.paragraph}>
-                  {profile.followersNum}
-                </Text>
-                <Text style={appStyles.fonts.paragraph}>Followers</Text>
-              </View>
-            </View>
-          </View>
+          <ProfileCard
+            profile={profile}
+            accountType="creator"
+            navigation={navigation}
+          />
           {/* Upcoming / attended / saved toggle*/}
           <View style={[appStyles.toggleContainer, appStyles.shadow]}>
             <TouchableOpacity
@@ -466,6 +405,85 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
     </>
   )
 }
+
+// export const ProfileCard = (props) => {
+//   return (
+//     <View style={[appStyles.profileCard, appStyles.shadow]}>
+//       <View
+//         style={{
+//           flexDirection: "row-reverse",
+//           alignSelf: "flex-end",
+//           columnGap: 10,
+//         }}>
+//         <Pressable onPress={() => props.navigation.navigate("Settings")}>
+//           <Image
+//             source={require("../assets/icons/fi-br-settings.png")}
+//             style={{ width: 21, height: 21 }}></Image>
+//         </Pressable>
+//         <Pressable
+//           onPress={() =>
+//             props.navigation.navigate("EDIT_PROFILE", props.profile)
+//           }>
+//           <Image
+//             source={require("../assets/icons/fi-br-edit.png")}
+//             style={{ width: 20, height: 20 }}></Image>
+//         </Pressable>
+//       </View>
+//       <View style={appStyles.profileCard}>
+//         <Image
+//           source={
+//             props.accountType === "creator"
+//               ? defaultCreator.pic
+//               : defaultProfile.pic
+//           }
+//           style={{ width: 125, height: 125 }}
+//         />
+//         <Text style={appStyles.fonts.heading}>
+//           {props.accountType === "creator"
+//             ? defaultCreator.name
+//             : defaultProfile.name}
+//         </Text>
+//         <Text style={appStyles.fonts.paragraph}>
+//           {props.accountType === "creator"
+//             ? defaultCreator.username
+//             : defaultProfile.username}
+//         </Text>
+//         <Text style={appStyles.fonts.paragraph}>
+//           {props.accountType === "creator"
+//             ? defaultCreator.location
+//             : defaultProfile.location}
+//         </Text>
+//         {/* Render creator's bio if creator account; else render personal account's year and major */}
+//         {props.accountType === "creator" ? (
+//           <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
+//             {defaultCreator.bio}
+//           </Text>
+//         ) : (
+//           <Text style={appStyles.fonts.paragraph}>
+//             {defaultProfile.year} - {defaultProfile.major}
+//           </Text>
+//         )}
+//       </View>
+
+//       {props.accountType === "creator" ? (
+//         <View style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}>
+//           <View style={{ flexDirection: "column", alignItems: "center" }}>
+//             <Text style={appStyles.fonts.paragraph}>
+//               {props.profile.eventsNum}
+//             </Text>
+//             <Text style={appStyles.fonts.paragraph}>Events</Text>
+//           </View>
+//           <View style={{ flexDirection: "column", alignItems: "center" }}>
+//             <Text style={appStyles.fonts.paragraph}>
+//               {props.profile.followersNum}
+//             </Text>
+//             <Text style={appStyles.fonts.paragraph}>Followers</Text>
+//           </View>
+//         </View>
+//       ) : null}
+//     </View>
+//   )
+// }
 
 const styles = StyleSheet.create({
   editContainer: {
