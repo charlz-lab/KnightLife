@@ -51,7 +51,7 @@ const CREATE_EVENTS = () => {
         date: new Date(eventDate + " " + eventTime),
         location: eventLocation,
         description: eventDescription,
-        creator_id: "ef1e9b2b-53f6-4342-a77c-e1c74b2f627a", // This would be the logged in user's ID
+        creator_id: "92365ee0-44d3-46b8-a408-c1f319043821", // This would be the logged in user's ID
       })
       .then((data, error) => {
         console.log(data, error)

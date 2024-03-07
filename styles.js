@@ -129,9 +129,9 @@ const appStyles = {
   // drop shadow
   shadow: {
     shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
   shadowInput: {
     shadowColor: "#000",
@@ -154,21 +154,23 @@ const appStyles = {
   },
   profileCard: {
     backgroundColor: "white",
-    width: "85%",
     borderRadius: 12,
     paddingVertical: 17,
     paddingHorizontal: 22,
     gap: 10,
     alignItems: "center",
     marginVertical: 20,
+    width: "100%",
   },
   toggleContainer: {
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 0,
     padding: 5,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 40,
     marginBottom: 10,
+    justifyContent: "space-between",
+    // flex: 1,
   },
   textInput: {
     flex: 1,

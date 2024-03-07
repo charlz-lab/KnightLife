@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   View,
   Text,
@@ -7,46 +7,55 @@ import {
   ImageBackground,
   Image,
   Pressable,
-} from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import { Card, Icon } from "react-native-elements";
-import appStyles from "../styles";
-import Modal from "react-native-modal";
-import Ionicon from "react-native-vector-icons/FontAwesome";
-import UpdateList from "../components/UpdateList";
+} from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
+import { Card, Icon } from "react-native-elements"
+import appStyles from "../styles"
+import Modal from "react-native-modal"
+import Ionicon from "react-native-vector-icons/FontAwesome"
+import UpdateList from "../components/UpdateList"
 
 const EventPage = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event } = route.params
   const handleBack = () => {
-    navigation.goBack();
-  };
-  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
-  const [isAttending, setIsAttending] = useState(false);
+    navigation.goBack()
+  }
+  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
+  const [isAttending, setIsAttending] = useState(false)
   const handleBookmarkToggle = () => {
     // Add your logic for toggling the bookmark state
-    setIsBookmarked(!isBookmarked);
-  };
+    setIsBookmarked(!isBookmarked)
+  }
   const handleAttendToggle = () => {
     // Add your logic for toggling the attendance state
-    setIsAttending(!isAttending);
-  };
+    setIsAttending(!isAttending)
+  }
   //report modal usestate
+<<<<<<< HEAD
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalReportVisible, setModalReportVisible] = useState(false);
+=======
+  const [isModalVisible, setModalVisible] = useState(false)
+>>>>>>> jessie-db-creator-eventlist
   // info modal usestate
-  const [isInfoModalVisible, setInfoModalVisible] = useState(false);
+  const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
   const toggleModal = () => {
+<<<<<<< HEAD
     setModalVisible(!isModalVisible);
   };
   const toggleReportModal = () => {
     setModalVisible(false);
     setModalReportVisible(!isModalReportVisible);
   };
+=======
+    setModalVisible(!isModalVisible)
+  }
+>>>>>>> jessie-db-creator-eventlist
   // toggel info modal
   const toggleInfoModal = () => {
-    setInfoModalVisible(!isInfoModalVisible);
-  };
+    setInfoModalVisible(!isInfoModalVisible)
+  }
   const updateEvents = [
     {
       creatorName: "John Doe",
@@ -55,7 +64,7 @@ const EventPage = ({ route, navigation }) => {
       description:
         "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
-  ];
+  ]
   //function to navigate to the previous page
 
   return (
@@ -86,7 +95,7 @@ const EventPage = ({ route, navigation }) => {
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{event.name}</Text>
-        <Text style={styles.creator}>{event.creator}</Text>
+        <Text style={styles.creator}>{event.creator_name}</Text>
         {/* location pin icon*/}
         <View style={styles.locationContainer}>
           <Icon
@@ -132,8 +141,7 @@ const EventPage = ({ route, navigation }) => {
 
         <Pressable
           onPress={handleAttendToggle}
-          style={isAttending ? styles.attendingButton : styles.attendButton}
-        >
+          style={isAttending ? styles.attendingButton : styles.attendButton}>
           <Text style={[styles.attendButtonText]}>
             {isAttending ? "Attending" : "Attend"}
           </Text>
@@ -153,8 +161,7 @@ const EventPage = ({ route, navigation }) => {
           style={[
             { textDecorationLine: "underline" },
             appStyles.fonts.paragraph,
-          ]}
-        >
+          ]}>
           signuphereucf.com
         </Text>
       </View>
@@ -169,8 +176,7 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalVisible}
         onBackdropPress={toggleModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
           <Text style={styles.modalAlert}>
@@ -182,14 +188,18 @@ const EventPage = ({ route, navigation }) => {
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleModal}
-              style={[styles.modalOption, styles.modalOption1]}
-            >
+              style={[styles.modalOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
+<<<<<<< HEAD
               onPress={toggleReportModal}
               style={[styles.modalOption, styles.modalOption2]}
             >
+=======
+              onPress={toggleModal}
+              style={[styles.modalOption, styles.modalOption2]}>
+>>>>>>> jessie-db-creator-eventlist
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
@@ -219,8 +229,7 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isInfoModalVisible}
         onBackdropPress={toggleInfoModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Disclaimer</Text>
           <Text style={styles.modalAlert}>
@@ -231,8 +240,8 @@ const EventPage = ({ route, navigation }) => {
         </View>
       </Modal>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -242,6 +251,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 350,
     resizeMode: "cover", // Adjust the resizeMode as needed
+    backgroundColor: "#E2E2E2",
   },
   detailsContainer: {
     paddingHorizontal: 16,
@@ -443,6 +453,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 5,
   },
-});
+})
 
-export default EventPage;
+export default EventPage
