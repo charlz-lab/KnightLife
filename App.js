@@ -21,7 +21,7 @@ import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
 import EmailVerification from "./components/EmailVerification";
-import supabase from "./lib/supabase";
+
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
@@ -29,6 +29,7 @@ import HOME from "./pages/HOME";
 import SavedEventList from "./components/SavedEventList";
 import AttendingEventList from "./components/AttendingEventList";
 import CustomizeProfile from "./components/CustomizeProfile";
+
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
   return (
@@ -93,7 +94,6 @@ const Auth = () => {
             fontWeight: "bold", //Set Header text style
           },
         }}
-
       />
       <Stack.Screen
         name="CustomizeProfile"
@@ -115,16 +115,7 @@ const Auth = () => {
 
 // navigation outside of nav bar
 export default function App() {
-
   const [fontLoaded, setFontLoaded] = useState(false);
-
-  const [initializing, setInitializing] = useState(true);
-  const [session, setSession] = useState(null);
-  const checkSession = async () => {
-    const userSession = supabase.auth.getSession();
-    setSession(userSession);
-    setInitializing(false);
-  };
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -140,69 +131,69 @@ export default function App() {
 
     loadFont();
   }, []);
-  useEffect(() => {
-    checkSession();
-  }, []);
   return (
     <NavigationContainer>
-      {session ? (
-        <Stack.Navigator
-          initialRouteName="SplashScreen"
-          screenOptions={{
-            headerShown: true,
-            headerTintColor: "black", // back arrow color
+      <Stack.Navigator
+        initialRouteName="SplashScreen"
+        screenOptions={{
+          headerShown: true,
+          headerTintColor: "black", // back arrow color
+        }}
+      >
+        <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen}
+          // Hiding header for Splash Screen
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Auth"
+          component={Auth}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NavBar"
+          component={NavBar}
+          options={{
+            // headerTitle: () => <Header />,
+            title: "",
+            headerStyle: styles.header,
           }}
-        >
-          <Stack.Screen
-            name="SplashScreen"
-            component={SplashScreen}
-            // Hiding header for Splash Screen
-            options={{ headerShown: false }}
-          />
+        ></Stack.Screen>
+        <Stack.Screen name="EventsList" component={EventList} />
+        <Stack.Screen name="SavedEventList" component={SavedEventList} />
+        <Stack.Screen
+          name="AttendingEventList"
+          component={AttendingEventList}
+        />
+        <Stack.Screen
+          name="EventPage"
+          component={EventPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EDIT_PROFILE"
+          component={EDIT_PROFILE}
+          options={{ title: "" }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{ title: "" }}
+        ></Stack.Screen>
 
-          <Stack.Screen
-            name="NavBar"
-            component={NavBar}
-            options={{
-              // headerTitle: () => <Header />,
-              title: "",
-              headerStyle: styles.header,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen name="EventsList" component={EventList} />
-          <Stack.Screen name="SavedEventList" component={SavedEventList} />
-          <Stack.Screen
-            name="AttendingEventList"
-            component={AttendingEventList}
-          />
-          <Stack.Screen
-            name="EventPage"
-            component={EventPage}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="EDIT_PROFILE"
-            component={EDIT_PROFILE}
-            options={{ title: "" }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Settings"
-            component={Settings}
-            options={{ title: "" }}
-          ></Stack.Screen>
-
-          <Stack.Screen name="Privacy" component={Privacy} />
-          <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
-          <Stack.Screen name="Accessibility" component={Accessibility} />
-          <Stack.Screen name="EditAccount" component={EditAccount} />
-          <Stack.Screen name="MembersGoing" component={MembersGoing} />
-          <Stack.Screen name="CreateAccount" component={CreateAccount} />
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{ headerShown: false }} // Initially hide header
-          />
-        </Stack.Navigator>
+        <Stack.Screen name="Privacy" component={Privacy} />
+        <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
+        <Stack.Screen name="Accessibility" component={Accessibility} />
+        <Stack.Screen name="EditAccount" component={EditAccount} />
+        <Stack.Screen name="MembersGoing" component={MembersGoing} />
+        <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }} // Initially hide header
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

@@ -55,8 +55,7 @@ const LoginScreen = ({ navigation, route }) => {
     else {
       const session = supabase.auth.getSession();
 
-      console.log(session);
-      navigation.navigate("CustomizeProfile", { session })
+      navigation.navigate("CustomizeProfile")
 
     }
 

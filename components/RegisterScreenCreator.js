@@ -29,30 +29,40 @@ const RegisterScreenCreator = (props) => {
   const passwordInputRef = createRef();
 
   const handleCreateAccButton = async () => {
-    setErrortext("");
+    const { error: signUpError } = await supabase.auth.signUp({
+      email: userEmail,
+      password: userPassword,
+      username: userName,
+    });
 
-    if (!userName || !userEmail || !userPassword) {
-      alert("Please fill in all the fields");
-      return;
-    }
+    if (signUpError) {
+      alert(`Registration failed: ${signUpError.message}`); //alert the user if there is an error
+    } else {
+      //if there is no error, the user is signed up 
 
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: userEmail,
-        password: userPassword,
-        username: userName,
+      alert('Registration successful! Check your email for verification.');
+
+      // Listen for the user.registered event
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN') {
+          // Insert the user into the users table
+          supabase
+            .from('users')
+            .insert({
+              id: session.user.id,
+              username: userName,
+              email: userEmail,
+              account_type: "creator",
+              // Add other necessary fields here
+            })
+            .then(({ data: userData, error: userInsertError }) => {
+              if (userInsertError) {
+                console.error('Error inserting into users:', userInsertError.message);
+              }
+            });
+        }
       });
-
-      if (error) {
-        alert(`Registration failed: ${error.message}`);
-      } else {
-        setIsRegistrationSuccess(true);
-        alert('Registration successful! Check your email for verification.');
-      }
-    } catch (error) {
-
-      console.error('Error during sign up:', error.message);
-      alert('An unexpected error occurred. Please try again.');
+      props.navigation.navigate("EmailVerification");
     }
   }
   // async function handleCreateAccButton() {
