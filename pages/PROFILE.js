@@ -14,6 +14,7 @@ import {
 import { ScrollView } from "react-native-virtualized-view"
 import appStyles from "../styles"
 import ProfileCard from "../components/ProfileCard"
+import ToggleBar from "../components/ToggleBar"
 import EventList from "../components/EventList"
 import AttendingEventList from "../components/AttendingEventList"
 import SavedEventList from "../components/SavedEventList"
@@ -215,7 +216,13 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             navigation={navigation}
           />
           {/* Upcoming / attended / saved toggle*/}
-          <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+          <ToggleBar
+            tabs={["upcoming", "saved", "attended"]}
+            selection={selection}
+            setSelection={setSelection}
+          />
+          {/* <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+                        
             <TouchableOpacity
               style={
                 selection === "upcoming"
@@ -285,7 +292,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                 Attended
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           {/* display event cards */}
           {/* {selection === "upcoming" ? (
@@ -338,7 +345,12 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             navigation={navigation}
           />
           {/* Upcoming / attended / saved toggle*/}
-          <View style={[appStyles.toggleContainer, appStyles.shadow]}>
+          <ToggleBar
+            tabs={["upcoming", "past"]}
+            selection={selection}
+            setSelection={setSelection}
+          />
+          {/* <View style={[appStyles.toggleContainer, appStyles.shadow]}>
             <TouchableOpacity
               style={
                 selection === "upcoming"
@@ -385,7 +397,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
                 Past
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           {/* display event cards */}
           {console.log(events)}
@@ -405,85 +417,6 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
     </>
   )
 }
-
-// export const ProfileCard = (props) => {
-//   return (
-//     <View style={[appStyles.profileCard, appStyles.shadow]}>
-//       <View
-//         style={{
-//           flexDirection: "row-reverse",
-//           alignSelf: "flex-end",
-//           columnGap: 10,
-//         }}>
-//         <Pressable onPress={() => props.navigation.navigate("Settings")}>
-//           <Image
-//             source={require("../assets/icons/fi-br-settings.png")}
-//             style={{ width: 21, height: 21 }}></Image>
-//         </Pressable>
-//         <Pressable
-//           onPress={() =>
-//             props.navigation.navigate("EDIT_PROFILE", props.profile)
-//           }>
-//           <Image
-//             source={require("../assets/icons/fi-br-edit.png")}
-//             style={{ width: 20, height: 20 }}></Image>
-//         </Pressable>
-//       </View>
-//       <View style={appStyles.profileCard}>
-//         <Image
-//           source={
-//             props.accountType === "creator"
-//               ? defaultCreator.pic
-//               : defaultProfile.pic
-//           }
-//           style={{ width: 125, height: 125 }}
-//         />
-//         <Text style={appStyles.fonts.heading}>
-//           {props.accountType === "creator"
-//             ? defaultCreator.name
-//             : defaultProfile.name}
-//         </Text>
-//         <Text style={appStyles.fonts.paragraph}>
-//           {props.accountType === "creator"
-//             ? defaultCreator.username
-//             : defaultProfile.username}
-//         </Text>
-//         <Text style={appStyles.fonts.paragraph}>
-//           {props.accountType === "creator"
-//             ? defaultCreator.location
-//             : defaultProfile.location}
-//         </Text>
-//         {/* Render creator's bio if creator account; else render personal account's year and major */}
-//         {props.accountType === "creator" ? (
-//           <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
-//             {defaultCreator.bio}
-//           </Text>
-//         ) : (
-//           <Text style={appStyles.fonts.paragraph}>
-//             {defaultProfile.year} - {defaultProfile.major}
-//           </Text>
-//         )}
-//       </View>
-
-//       {props.accountType === "creator" ? (
-//         <View style={{ flexDirection: "row", columnGap: 25, marginTop: 10 }}>
-//           <View style={{ flexDirection: "column", alignItems: "center" }}>
-//             <Text style={appStyles.fonts.paragraph}>
-//               {props.profile.eventsNum}
-//             </Text>
-//             <Text style={appStyles.fonts.paragraph}>Events</Text>
-//           </View>
-//           <View style={{ flexDirection: "column", alignItems: "center" }}>
-//             <Text style={appStyles.fonts.paragraph}>
-//               {props.profile.followersNum}
-//             </Text>
-//             <Text style={appStyles.fonts.paragraph}>Followers</Text>
-//           </View>
-//         </View>
-//       ) : null}
-//     </View>
-//   )
-// }
 
 const styles = StyleSheet.create({
   editContainer: {

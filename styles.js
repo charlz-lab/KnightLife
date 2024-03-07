@@ -167,8 +167,10 @@ const appStyles = {
     columnGap: 15,
     padding: 5,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 40,
     marginBottom: 10,
+    justifyContent: "space-between",
+    width: "85%",
   },
   textInput: {
     flex: 1,
