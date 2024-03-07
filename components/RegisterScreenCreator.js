@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import appStyles from "../styles";
-import { supabase } from "../lib/supabase";
+import supabase from "../lib/supabase";
 
 const RegisterScreenCreator = (props) => {
   const [userName, setUserName] = useState("");

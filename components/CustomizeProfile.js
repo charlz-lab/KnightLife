@@ -22,59 +22,18 @@ function CustomizeProfile({ props, route, session }) {
     const [loading, setLoading] = useState(false)
     const [errortext, setErrortext] = useState("")  // Create state variables for the input fields
     const [userName, setUserName] = useState("")
-    const user = session?.user ?? null;
-    useEffect(() => {
-        const { data: { session } } = supabase.auth.getSession();
 
-        // Define user here
-        const user = session?.user ?? null;
-
-        // Set the session
-        supabase.auth.setSession(session);
-
-        // Additional logic using the 'user' variable can go here
-
-    }, [supabase.auth, /* other dependencies if needed */]);
-    console.log(session)
-    const handleCreateProfileButton = async () => {
-
+    async function handleCreateProfileButton() {
         try {
+            const user = supabase.auth.getUser();
 
-            if (session && user) {
-                // Use the email from the user object
-
+            if (user) {
                 try {
-                    // Update the user's profile with the input fields
-
-                    const userId = session.user.id
-
-
-                    const userEmail = session.user.email;
-                    const userPassword = session.user.password
-                    const { data: userData, error: userError } = await supabase
-                        .from('users')
-                        .insert([
-                            {
-                                id: userId,
-                                username: userName,
-                                email: userEmail,
-                                password: userPassword,
-                                campus_location: campus,
-                                // other fields...
-                            },
-                        ]);
-
-                    if (userError) {
-                        alert("Failed to update account type. " + userError.message);
-                        console.log(user);
-                        return;
-                    }
-
                     // Insert into personal_users table
                     const { data: personalData, error: personalError } = await supabase
                         .from('personal_users')
                         .insert({
-                            id: userId,
+                            id: user.id,
                             name: name,
                             school_year: year,
                             major: major,
