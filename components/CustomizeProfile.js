@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import supabase from '../lib/supabase';
-function CustomizeProfile({ props }) {
+function CustomizeProfile({ props, route }) {
     const [name, setName] = useState("")
     const [year, setYear] = useState("")
     const [major, setMajor] = useState("")
@@ -21,21 +21,24 @@ function CustomizeProfile({ props }) {
     const [loading, setLoading] = useState(false)
     const [errortext, setErrortext] = useState("")  // Create state variables for the input fields
     const [userName, setUserName] = useState("")
-
+    const { session } = route.params;
+    supabase.auth.setSession(session)
     const handleCreateProfileButton = async () => {
 
         try {
-            const session = supabase.auth.getSession();
-            const user = supabase.auth.getUserIdentities();
+
             if (session && user) {
                 // Use the email from the user object
 
                 try {
                     // Update the user's profile with the input fields
 
-                    const userId = user.id;
-                    const userEmail = user.email;
-                    const userPassword = user.password
+                    const userId = session.user.id
+
+                    const { data: { session } } = supabase.auth.getSession();
+                    const { data: { user } } = supabase.auth.getUser();
+                    const userEmail = session.user.email;
+                    const userPassword = session.user.password
                     const { data: userData, error: userError } = await supabase
                         .from('users')
                         .insert([

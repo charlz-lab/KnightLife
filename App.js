@@ -117,7 +117,25 @@ export default function App() {
 
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const session = supabase.auth.session();
+
+    setUser(session?.user ?? null);
+
+    // onAuthStateChange returns a cleanup function
+    const cleanup = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Call the cleanup function when the component unmounts
+    return () => {
+      cleanup();
+    };
+  }, []);
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({

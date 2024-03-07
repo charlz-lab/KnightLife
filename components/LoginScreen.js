@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation, route }) => {
     // Prevent the form from refreshing the page
 
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: user, error } = await supabase.auth.signInWithPassword({
       email: userEmail,
       password: userPassword,
     })
@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation, route }) => {
       setLoading(false)
     }
     else {
-      navigation.navigate("CustomizeProfile")
+      navigation.navigate("CustomizeProfile", { session: supabase.auth.getSession() })
 
     }
 
