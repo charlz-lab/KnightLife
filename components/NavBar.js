@@ -8,7 +8,7 @@ import appStyles from "../styles"
 import { StyleSheet, View, Platform } from "react-native"
 
 const Tab = createBottomTabNavigator()
-let isCreator = true
+let isCreator = false
 
 function NavBar() {
   useEffect(() => {

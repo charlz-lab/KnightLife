@@ -284,15 +284,23 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
 
           {/* display event cards */}
           {selection === "upcoming" ? (
-            <EventList events={events} navigation={navigation}></EventList>
+            <EventList
+              events={
+                // filter upcoming events
+                events.filter((event) => new Date(event.date) > new Date())
+              }
+              navigation={navigation}></EventList>
           ) : selection === "saved" ? (
             <SavedEventList
               events={events}
               navigation={navigation}></SavedEventList>
           ) : (
-            <AttendingEventList
-              events={events}
-              navigation={navigation}></AttendingEventList>
+            <EventList
+              events={
+                // filter upcoming events
+                events.filter((event) => new Date(event.date) < new Date())
+              }
+              navigation={navigation}></EventList>
           )}
         </View>
 
