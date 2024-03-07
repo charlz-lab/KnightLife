@@ -86,7 +86,15 @@ const RegisterScreenPersonal = (props) => {
           campus_location: campus,
           account_type: 'personal'
         });
-
+      const { data: personalData, error: personalError } = await supabase
+        .from('personal_users')
+        .insert({
+          id: userId,
+          name: name,
+          school_year: year,
+          major: major,
+          // ...other properties...
+        });
       if (userError) {
         alert("Failed to insert into users. " + userError.message);
         return;
