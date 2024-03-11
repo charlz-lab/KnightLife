@@ -104,14 +104,8 @@ const EditEvents = ({ route, navigation }) => {
           </Pressable>
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
-            onPress={() => {
-              profile.isCreator
-                ? navigation.navigate("Creator Profile")
-                : navigation.navigate("Personal Profile")
-            }}>
-            <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
-              Cancel
-            </Text>
+            onPress={() => navigation.goBack()}>
+            <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}> Cancel </Text>
           </Pressable>
         </View>
     </View>
@@ -126,16 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
   },
-  profileContainer: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: appStyles.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-    paddingBottom: 30,
-    paddingHorizontal: 20,
-  },
+  
 })
 
 export default EditEvents;
