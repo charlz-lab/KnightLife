@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation, route }) => {
     else {
       const session = supabase.auth.getSession();
 
-      navigation.navigate("CustomizeProfile")
+      navigation.navigate("NavBar", { isCreator: true })
 
     }
 
