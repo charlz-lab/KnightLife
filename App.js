@@ -21,6 +21,7 @@ import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
 import RegisterScreenCreator from "./components/RegisterScreenCreator";
 import AccountType from "./components/AccountType";
 import EmailVerification from "./components/EmailVerification";
+import EditEvents from "./pages/settings_folder/Link pages/EditEvent";
 
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
@@ -186,6 +187,7 @@ export default function App() {
         <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
+        <Stack.Screen name="EditEvents" component={EditEvents} />
         <Stack.Screen name="MembersGoing" component={MembersGoing} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
         <Stack.Screen

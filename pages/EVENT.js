@@ -20,6 +20,7 @@ const EventPage = ({ route, navigation }) => {
   const handleBack = () => {
     navigation.goBack()
   }
+  
   const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
   const [isAttending, setIsAttending] = useState(false)
   const handleBookmarkToggle = () => {
@@ -50,7 +51,18 @@ const EventPage = ({ route, navigation }) => {
       description:
         "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
-  ]
+  ];
+
+  const handleEventUpdate = (updatedEvent) => {
+    // Handle the updated event in your state or data structure
+    // Update the state or data structure containing events
+    // You might want to use a state management solution for this
+    // For simplicity, let's assume events is a state in EventPage
+    setEvents((prevEvents) =>
+      prevEvents.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
+    );
+  };
+
   //function to navigate to the previous page
 
   return (
@@ -101,6 +113,21 @@ const EventPage = ({ route, navigation }) => {
             {event.membersGoing} Members Going{" "}
           </Text>
         </Pressable>
+
+  {/* edit event need to make it so only creator accounts have it description.*/}
+  <Pressable
+        onPress={() =>
+          navigation.navigate("EditEvents", {
+            event: event,
+            onEventUpdate: handleEventUpdate,
+          })
+        }>
+        {/* Your UI component for editing event */}
+        <Image
+          source={require("../assets/icons/fi-br-edit.png")}
+          style={{ width: 20, height: 20 }}
+        />
+      </Pressable>
 
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
