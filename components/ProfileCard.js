@@ -1,5 +1,5 @@
-import { Image, Pressable, Text, View } from "react-native"
-import appStyles from "../styles"
+import { Image, Pressable, Text, View } from "react-native";
+import appStyles from "../styles";
 
 const ProfileCard = (props) => {
   return (
@@ -9,23 +9,30 @@ const ProfileCard = (props) => {
           flexDirection: "row-reverse",
           alignSelf: "flex-end",
           columnGap: 10,
-        }}>
+        }}
+      >
         <Pressable onPress={() => props.navigation.navigate("Settings")}>
           <Image
             source={require("../assets/icons/fi-br-settings.png")}
-            style={{ width: 21, height: 21 }}></Image>
+            style={{ width: 21, height: 21 }}
+          ></Image>
         </Pressable>
         <Pressable
           onPress={() =>
             props.navigation.navigate("EDIT_PROFILE", props.profile)
-          }>
+          }
+        >
           <Image
             source={require("../assets/icons/fi-br-edit.png")}
-            style={{ width: 20, height: 20 }}></Image>
+            style={{ width: 20, height: 20 }}
+          ></Image>
         </Pressable>
       </View>
       <View style={appStyles.profileCard}>
-        <Image source={props.profile.pic} style={{ width: 125, height: 125 }} />
+        <Image
+          source={props.profile.pic}
+          style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
+        />
         <Text style={appStyles.fonts.heading}>{props.profile.name}</Text>
         <Text style={appStyles.fonts.paragraph}>{props.profile.username}</Text>
         <Text style={appStyles.fonts.paragraph}>{props.profile.location}</Text>
@@ -58,7 +65,7 @@ const ProfileCard = (props) => {
         </View>
       ) : null}
     </View>
-  )
-}
+  );
+};
 
-export default ProfileCard
+export default ProfileCard;
