@@ -11,15 +11,15 @@ import {
   Alert,
 } from "react-native"
 import appStyles from "../styles"
-import Modal from "react-native-modal";
+import Modal from "react-native-modal"
 import supabase from "../lib/supabase"
 
 const CREATE_EVENTS = () => {
   const [eventName, setEventName] = useState("")
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false)
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+    setModalVisible(!isModalVisible)
+  }
   const [eventLocation, setEventLocation] = useState("")
   const [eventDate, setEventDate] = useState("")
   const [eventTime, setEventTime] = useState("")
@@ -28,7 +28,8 @@ const CREATE_EVENTS = () => {
   const dateInputRef = createRef()
   const timeInputRef = createRef()
   const descriptionInputRef = createRef()
-  const handleSubmitPress = () => {
+
+  const handleSubmitPress = async () => {
     // Check if all fields are filled out
     if (
       !eventName ||
@@ -43,6 +44,11 @@ const CREATE_EVENTS = () => {
 
     // Perform any other necessary validation before creating the event
 
+    // Get user ID from the logged in user
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
     // Add the event to the database
     supabase
       .from("events")
@@ -51,7 +57,7 @@ const CREATE_EVENTS = () => {
         date: new Date(eventDate + " " + eventTime),
         location: eventLocation,
         description: eventDescription,
-        creator_id: "92365ee0-44d3-46b8-a408-c1f319043821", // This would be the logged in user's ID
+        creator_id: user.id, // This would be the logged in user's ID
       })
       .then((data, error) => {
         console.log(data, error)
@@ -61,7 +67,7 @@ const CREATE_EVENTS = () => {
         } else {
           // For simplicity, just show an alert
           // Eventually, we would want to navigate to the event details page of the newly created event
-         setModalVisible(true)
+          setModalVisible(true)
 
           // Clear input fields after successful event creation
           setEventName("")
@@ -158,40 +164,34 @@ const CREATE_EVENTS = () => {
               />
             </View>
             <View style={{ width: "100%", alignItems: "center" }}>
-        <TouchableOpacity
-          style={appStyles.buttons.yellowLogin}
-          activeOpacity={0.5}
-          onPress={handleSubmitPress}
-        >
-          <Text
-            style={[
-              appStyles.fonts.paragraph,
-              { color: "black", paddingVertical: 10 },
-            ]}
-          >
-            Create Event</Text>
-                
+              <TouchableOpacity
+                style={appStyles.buttons.yellowLogin}
+                activeOpacity={0.5}
+                onPress={handleSubmitPress}>
+                <Text
+                  style={[
+                    appStyles.fonts.paragraph,
+                    { color: "black", paddingVertical: 10 },
+                  ]}>
+                  Create Event
+                </Text>
               </TouchableOpacity>
             </View>
             <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
-        style={styles.modal}
-      >
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalAlert}>
-            Event has been created!
-          </Text>
-          <View style={styles.modalOptionsContainer}>
-            <TouchableOpacity
-              onPress={toggleModal}
-              style={[styles.modalOption, styles.modalOption1]}
-            >
-              <Text style={styles.modalOptionText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+              isVisible={isModalVisible}
+              onBackdropPress={toggleModal}
+              style={styles.modal}>
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalAlert}>Event has been created!</Text>
+                <View style={styles.modalOptionsContainer}>
+                  <TouchableOpacity
+                    onPress={toggleModal}
+                    style={[styles.modalOption, styles.modalOption1]}>
+                    <Text style={styles.modalOptionText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
@@ -275,15 +275,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: "center",
     fontSize: 20,
-    marginLeft:10,
-    marginRight:10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   modalOptionsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 12,
-    marginTop:30,
+    marginTop: 30,
   },
   modalOption: {
     flex: 1,

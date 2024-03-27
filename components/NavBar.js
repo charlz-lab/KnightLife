@@ -11,7 +11,6 @@ const Tab = createBottomTabNavigator()
 
 function NavBar({ route }) {
   const { isCreator } = route.params
-  console.log("Account Type: ", isCreator)
 
   useEffect(() => {
     // This effect runs once when the component mounts
