@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react"
+import React, { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -9,25 +9,29 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
-} from "react-native"
-import appStyles from "../styles"
+  Image,
+} from "react-native";
+import appStyles from "../styles";
 import Modal from "react-native-modal";
-import supabase from "../lib/supabase"
+import supabase from "../lib/supabase";
+import * as ImagePicker from "expo-image-picker";
 
 const CREATE_EVENTS = () => {
-  const [eventName, setEventName] = useState("")
+  const [eventName, setEventName] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const [eventLocation, setEventLocation] = useState("")
-  const [eventDate, setEventDate] = useState("")
-  const [eventTime, setEventTime] = useState("")
-  const [eventDescription, setEventDescription] = useState("")
-  const locationInputRef = createRef()
-  const dateInputRef = createRef()
-  const timeInputRef = createRef()
-  const descriptionInputRef = createRef()
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventBuilding, setEventBuilding] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [eventTime, setEventTime] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const locationInputRef = createRef();
+  const buildingInputRef = createRef();
+  const dateInputRef = createRef();
+  const timeInputRef = createRef();
+  const descriptionInputRef = createRef();
   const handleSubmitPress = () => {
     // Check if all fields are filled out
     if (
@@ -37,8 +41,8 @@ const CREATE_EVENTS = () => {
       !eventTime ||
       !eventDescription
     ) {
-      Alert.alert("Please fill out all fields")
-      return
+      Alert.alert("Please fill out all fields");
+      return;
     }
 
     // Perform any other necessary validation before creating the event
@@ -54,160 +58,217 @@ const CREATE_EVENTS = () => {
         creator_id: "92365ee0-44d3-46b8-a408-c1f319043821", // This would be the logged in user's ID
       })
       .then((data, error) => {
-        console.log(data, error)
+        console.log(data, error);
         if (error) {
-          Alert.alert("Error creating event")
-          return
+          Alert.alert("Error creating event");
+          return;
         } else {
           // For simplicity, just show an alert
           // Eventually, we would want to navigate to the event details page of the newly created event
-         setModalVisible(true)
+          setModalVisible(true);
 
           // Clear input fields after successful event creation
-          setEventName("")
-          setEventLocation("")
-          setEventDate("")
-          setEventTime("")
-          setEventDescription("")
+          setEventName("");
+          setEventLocation("");
+          setEventDate("");
+          setEventTime("");
+          setEventDescription("");
         }
-      })
-  }
+      });
+  };
+
+  //image upload
+  const [image, setImage] = useState(null);
+
+  let openImagePickerAsync = async () => {
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [0, 0],
+    });
+
+    if (pickerResult.canceled === true) {
+      return;
+    }
+
+    setImage({ uri: pickerResult.assets[0].uri });
+  };
   return (
-    <View style={styles.mainBody}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          marginTop: 16,
-          justifyContent: "flex-start",
-          alignContent: "flex-center",
-        }}>
-        <View>
-          <KeyboardAvoidingView enabled>
-            <Text style={[appStyles.fonts.heading]}>Create an Event</Text>
-            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(text) => setEventName(text)}
-                placeholder="Event Name"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="words"
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  locationInputRef.current && locationInputRef.current.focus()
-                }
-                blurOnSubmit={false}
-                value={eventName}
-              />
-            </View>
-            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(text) => setEventLocation(text)}
-                placeholder="Event Location"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="words"
-                returnKeyType="next"
-                ref={locationInputRef}
-                onSubmitEditing={() =>
-                  dateInputRef.current && dateInputRef.current.focus()
-                }
-                blurOnSubmit={false}
-                value={eventLocation}
-              />
-            </View>
-            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(text) => setEventDate(text)}
-                placeholder="Event Date"
-                placeholderTextColor="#8b9cb5"
-                returnKeyType="next"
-                ref={dateInputRef}
-                onSubmitEditing={() =>
-                  timeInputRef.current && timeInputRef.current.focus()
-                }
-                blurOnSubmit={false}
-                value={eventDate}
-              />
-            </View>
-            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(text) => setEventTime(text)}
-                placeholder="Event Time"
-                placeholderTextColor="#8b9cb5"
-                returnKeyType="next"
-                ref={timeInputRef}
-                onSubmitEditing={() =>
-                  descriptionInputRef.current &&
-                  descriptionInputRef.current.focus()
-                }
-                blurOnSubmit={false}
-                value={eventTime}
-              />
-            </View>
-            <View style={[styles.SectionStyle, appStyles.shadowInput]}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(text) => setEventDescription(text)}
-                placeholder="Event Description"
-                placeholderTextColor="#8b9cb5"
-                returnKeyType="done"
-                value={eventDescription}
-              />
-            </View>
-            <View style={{ width: "100%", alignItems: "center" }}>
-        <TouchableOpacity
-          style={appStyles.buttons.yellowLogin}
-          activeOpacity={0.5}
-          onPress={handleSubmitPress}
-        >
-          <Text
-            style={[
-              appStyles.fonts.paragraph,
-              { color: "black", paddingVertical: 10 },
-            ]}
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      style={{ backgroundColor: "white" }}
+      contentContainerStyle={{ height: 800 }}
+    >
+      <KeyboardAvoidingView enabled>
+        <Text style={[appStyles.fonts.heading, { marginTop: 16 }]}>
+          Create an Event
+        </Text>
+        <View style={{ flexDirection: "column", rowGap: 30 }}>
+          <TouchableOpacity
+            style={styles.imageBanner}
+            onPress={openImagePickerAsync}
           >
-            Create Event</Text>
-                
-              </TouchableOpacity>
-            </View>
-            <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
-        style={styles.modal}
-      >
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalAlert}>
-            Event has been created!
-          </Text>
-          <View style={styles.modalOptionsContainer}>
-            <TouchableOpacity
-              onPress={toggleModal}
-              style={[styles.modalOption, styles.modalOption1]}
-            >
-              <Text style={styles.modalOptionText}>Close</Text>
-            </TouchableOpacity>
+            {image === null ? (
+              <Text
+                style={[
+                  appStyles.fonts.paragraph,
+                  {
+                    textAlign: "center",
+                    color: "#8b9cb5",
+                    paddingTop: 65,
+                  },
+                ]}
+              >
+                Add Image Banner
+              </Text>
+            ) : (
+              <Image source={image} style={styles.imageUpload} />
+            )}
+          </TouchableOpacity>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventName(text)}
+              placeholder="Name"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                locationInputRef.current && locationInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+              value={eventName}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventLocation(text)}
+              placeholder="Location"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              ref={locationInputRef}
+              onSubmitEditing={() =>
+                dateInputRef.current && dateInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+              value={eventLocation}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventLocation(text)}
+              placeholder="Building & Room Number"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="words"
+              returnKeyType="next"
+              ref={buildingInputRef}
+              onSubmitEditing={() =>
+                dateInputRef.current && dateInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+              value={eventLocation}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventDate(text)}
+              placeholder="Date (YYYY-MM-DD)"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="next"
+              ref={dateInputRef}
+              onSubmitEditing={() =>
+                timeInputRef.current && timeInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+              value={eventDate}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventTime(text)}
+              placeholder="Time (HH:MM:SS)"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="next"
+              ref={timeInputRef}
+              onSubmitEditing={() =>
+                descriptionInputRef.current &&
+                descriptionInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+              value={eventTime}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setEventDescription(text)}
+              placeholder="Description"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="done"
+              value={eventDescription}
+            />
           </View>
         </View>
-      </Modal>
-          </KeyboardAvoidingView>
+        <View>
+          <TouchableOpacity
+            style={[appStyles.buttons.yellowLogin, { alignSelf: "center" }]}
+            activeOpacity={0.5}
+            onPress={handleSubmitPress}
+          >
+            <Text
+              style={[
+                appStyles.fonts.paragraph,
+                { color: "black", paddingVertical: 10 },
+              ]}
+            >
+              Create Event
+            </Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </View>
-  )
-}
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}
+          style={styles.modal}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalAlert}>Event has been created!</Text>
+            <View style={styles.modalOptionsContainer}>
+              <TouchableOpacity
+                onPress={toggleModal}
+                style={[styles.modalOption, styles.modalOption1]}
+              >
+                <Text style={styles.modalOptionText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </KeyboardAvoidingView>
+    </ScrollView>
+  );
+};
 
-export default CREATE_EVENTS
+export default CREATE_EVENTS;
 
 const styles = StyleSheet.create({
   mainBody: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
     alignContent: "flex-start",
+    height: "100%",
   },
   SectionStyle: {
     flexDirection: "row",
@@ -275,15 +336,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: "center",
     fontSize: 20,
-    marginLeft:10,
-    marginRight:10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   modalOptionsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 12,
-    marginTop:30,
+    marginTop: 30,
   },
   modalOption: {
     flex: 1,
@@ -304,4 +365,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#080808",
     paddingTop: 10,
   },
-})
+  imageBanner: {
+    marginTop: 20,
+    width: "80%%",
+    height: "25%",
+    alignItems: "center",
+    alignSelf: "center",
+    borderRadius: 30,
+    borderColor: "#dadae8",
+    borderWidth: 1,
+  },
+  imageUpload: {
+    width: "100%%",
+    height: "100%",
+    borderRadius: 30,
+  },
+});

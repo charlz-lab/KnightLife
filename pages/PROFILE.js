@@ -161,7 +161,14 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           />
 
           <TouchableOpacity onPress={openImagePickerAsync}>
-            <Text style={appStyles.fonts.paragraph}>Change photo</Text>
+            <Text
+              style={[
+                appStyles.fonts.paragraph,
+                { textDecorationLine: "underline" },
+              ]}
+            >
+              Change photo
+            </Text>
           </TouchableOpacity>
         </View>
         <View
@@ -189,7 +196,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               onChangeText={(value) =>
                 setProfile({ ...profile, username: value })
               }
-              style={[appStyles.fonts.regular, appStyles.textInput]}
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
             />
           </View>
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
@@ -199,7 +206,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               onChangeText={(value) =>
                 setProfile({ ...profile, location: value })
               }
-              style={[appStyles.fonts.regular, appStyles.textInput]}
+              style={[appStyles.fonts.paragraph, appStyles.textInput]}
             />
           </View>
           {profile.isCreator ? (
