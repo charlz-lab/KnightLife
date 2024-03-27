@@ -31,6 +31,10 @@
     "expo-constants": "~14.4.2",
     "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",
+<<<<<<< HEAD
+=======
+    "expo-image-picker": "~14.3.2",
+>>>>>>> f14bbfa7e18732b75a745931efab5ea17fc79a36
     "expo-notifications": "~0.20.1",
     "expo-secure-store": "~12.3.1",
     "expo-splash-screen": "~0.20.5",
