@@ -12,8 +12,9 @@ import {
   ImageBackground,
 } from "react-native"
 import appStyles from "../styles"
-import supabase from '../lib/supabase'
+import supabase from "../lib/supabase"
 import { Session } from "@supabase/gotrue-js"
+
 const LoginScreen = ({ navigation, route }) => {
   const [headerShown, setHeaderShown] = useState(true)
 
@@ -26,12 +27,10 @@ const LoginScreen = ({ navigation, route }) => {
   const [userEmail, setUserEmail] = useState("")
   const [userPassword, setUserPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [errortext, setErrortext] = useState("")
-
-
+  const [errortext, setErrorText] = useState("")
 
   const handleSubmitPress = async () => {
-    setErrortext("")
+    setErrorText("")
     if (!userEmail) {
       alert("Please fill Email")
       return
@@ -40,37 +39,35 @@ const LoginScreen = ({ navigation, route }) => {
       alert("Please fill Password")
       return
     }
-    // Prevent the form from refreshing the page
 
-    setLoading(true)
-    const { data: user, error } = await supabase.auth.signInWithPassword({
+    // authenticate the user
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword({
       email: userEmail,
       password: userPassword,
     })
-
+    console.log(user)
+    console.log(user.id)
+    // if there is an error, display the error message
     if (error) {
-
-      setLoading(false)
+      setErrorText(error.message)
+      console.error("Error:", error)
+      return
     }
-    else {
-      const session = supabase.auth.getSession();
-
-      navigation.navigate("NavBar", { isCreator: true })
-
-    }
-
+    // if there is no error, get the user's account type
+    const { data: userData } = await supabase
+      .from("users")
+      .select("account_type")
+      .eq("id", user.id)
+    const accountType = userData[0].account_type
+    console.log(accountType)
+    // navigate to the appropriate screen based on the user's account type
+    navigation.navigate("NavBar", {
+      isCreator: accountType === "creator" ? true : false,
+    })
   }
-  // const handleSubmitPress = async () => {
-  //   let { data, error } = await supabase
-  //     .from('users')
-  //     .select('*')
-  //     .limit(20)
-
-  //   if (error) console.log('Error: ', error)
-  //   else setUsers(data)
-  //   console.log('Users: ', data)
-
-  // }
 
   return (
     <View style={styles.mainBody}>

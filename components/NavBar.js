@@ -6,12 +6,11 @@ import HOME from "../pages/HOME"
 import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE"
 import appStyles from "../styles"
 import { StyleSheet, View, Platform } from "react-native"
-import supabase from '../lib/supabase';
+import supabase from "../lib/supabase"
 const Tab = createBottomTabNavigator()
-let isCreator = true;
 
-function NavBar() {
-
+function NavBar({ isCreator }) {
+  console.log("Account Type: ", isCreator)
 
   useEffect(() => {
     // This effect runs once when the component mounts
