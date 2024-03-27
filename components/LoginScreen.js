@@ -14,6 +14,7 @@ import {
 import appStyles from "../styles"
 import supabase from '../lib/supabase'
 import { Session } from "@supabase/gotrue-js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = ({ navigation, route }) => {
   const [headerShown, setHeaderShown] = useState(true)
 
@@ -28,38 +29,43 @@ const LoginScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false)
   const [errortext, setErrortext] = useState("")
 
-
-
   const handleSubmitPress = async () => {
-    setErrortext("")
+    setErrortext("");
+
     if (!userEmail) {
-      alert("Please fill Email")
-      return
+      alert("Please fill Email");
+      return;
     }
     if (!userPassword) {
-      alert("Please fill Password")
-      return
+      alert("Please fill Password");
+      return;
     }
-    // Prevent the form from refreshing the page
 
-    setLoading(true)
-    const { data: user, error } = await supabase.auth.signInWithPassword({
+    setLoading(true);
+    const { user, error } = await supabase.auth.signInWithPassword({
       email: userEmail,
       password: userPassword,
-    })
+    });
 
     if (error) {
-
-      setLoading(false)
-    }
-    else {
-      const session = supabase.auth.getSession();
-
-      navigation.navigate("NavBar", { isCreator: true })
-
+      setLoading(false);
+      console.error("Login failed:", error.message);
+      return;
     }
 
-  }
+    // Store user data (e.g., email, name, etc.)
+    try {
+      await AsyncStorage.setItem('userData', JSON.stringify(user));
+      console.log("User data stored successfully");
+    } catch (storageError) {
+      console.error("Error storing user data:", storageError);
+      // Handle storage error
+    }
+
+    setLoading(false);
+    navigation.navigate("NavBar", { isCreator: true });
+  };
+
   // const handleSubmitPress = async () => {
   //   let { data, error } = await supabase
   //     .from('users')
