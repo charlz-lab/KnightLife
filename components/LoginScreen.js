@@ -12,9 +12,10 @@ import {
   ImageBackground,
 } from "react-native"
 import appStyles from "../styles"
-import supabase from '../lib/supabase'
+import supabase from "../lib/supabase"
 import { Session } from "@supabase/gotrue-js"
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 const LoginScreen = ({ navigation, route }) => {
   const [headerShown, setHeaderShown] = useState(true)
 
@@ -27,56 +28,47 @@ const LoginScreen = ({ navigation, route }) => {
   const [userEmail, setUserEmail] = useState("")
   const [userPassword, setUserPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [errortext, setErrortext] = useState("")
+  const [errorText, setErrorText] = useState("")
 
   const handleSubmitPress = async () => {
-    setErrortext("");
-
+    setErrorText("")
     if (!userEmail) {
-      alert("Please fill Email");
-      return;
+      alert("Please fill Email")
+      return
     }
     if (!userPassword) {
-      alert("Please fill Password");
-      return;
+      alert("Please fill Password")
+      return
     }
 
-    setLoading(true);
-    const { user, error } = await supabase.auth.signInWithPassword({
+    // authenticate the user
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword({
       email: userEmail,
       password: userPassword,
-    });
-
+    })
+    console.log(user)
+    console.log(user.id)
+    // if there is an error, display the error message
     if (error) {
-      setLoading(false);
-      console.error("Login failed:", error.message);
-      return;
+      setErrorText(error.message)
+      console.error("Error:", error)
+      return
     }
-
-    // Store user data (e.g., email, name, etc.)
-    try {
-      await AsyncStorage.setItem('userData', JSON.stringify(user));
-      console.log("User data stored successfully");
-    } catch (storageError) {
-      console.error("Error storing user data:", storageError);
-      // Handle storage error
-    }
-
-    setLoading(false);
-    navigation.navigate("NavBar", { isCreator: true });
-  };
-
-  // const handleSubmitPress = async () => {
-  //   let { data, error } = await supabase
-  //     .from('users')
-  //     .select('*')
-  //     .limit(20)
-
-  //   if (error) console.log('Error: ', error)
-  //   else setUsers(data)
-  //   console.log('Users: ', data)
-
-  // }
+    // if there is no error, get the user's account type
+    const { data: userData } = await supabase
+      .from("users")
+      .select("account_type")
+      .eq("id", user.id)
+    const accountType = userData[0].account_type
+    console.log(accountType)
+    // navigate to the appropriate screen based on the user's account type
+    navigation.navigate("NavBar", {
+      isCreator: accountType === "creator" ? true : false,
+    })
+  }
 
   return (
     <View style={styles.mainBody}>
@@ -130,8 +122,8 @@ const LoginScreen = ({ navigation, route }) => {
                   returnKeyType="next"
                 />
               </View>
-              {errortext != "" ? (
-                <Text style={styles.errorTextStyle}>{errortext}</Text>
+              {errorText != "" ? (
+                <Text style={styles.errorTextStyle}>{errorText}</Text>
               ) : null}
               <View style={appStyles.layout.section}>
                 <TouchableOpacity

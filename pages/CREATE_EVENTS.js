@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef } from "react"
 import {
   StyleSheet,
   TextInput,
@@ -10,29 +10,30 @@ import {
   KeyboardAvoidingView,
   Alert,
   Image,
-} from "react-native";
-import appStyles from "../styles";
-import Modal from "react-native-modal";
-import supabase from "../lib/supabase";
-import * as ImagePicker from "expo-image-picker";
+} from "react-native"
+import appStyles from "../styles"
+import Modal from "react-native-modal"
+import supabase from "../lib/supabase"
+import * as ImagePicker from "expo-image-picker"
 
 const CREATE_EVENTS = () => {
-  const [eventName, setEventName] = useState("");
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [eventName, setEventName] = useState("")
+  const [isModalVisible, setModalVisible] = useState(false)
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-  const [eventLocation, setEventLocation] = useState("");
-  const [eventBuilding, setEventBuilding] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventTime, setEventTime] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const locationInputRef = createRef();
-  const buildingInputRef = createRef();
-  const dateInputRef = createRef();
-  const timeInputRef = createRef();
-  const descriptionInputRef = createRef();
-  const handleSubmitPress = () => {
+    setModalVisible(!isModalVisible)
+  }
+  const [eventLocation, setEventLocation] = useState("")
+  const [eventBuilding, setEventBuilding] = useState("")
+  const [eventDate, setEventDate] = useState("")
+  const [eventTime, setEventTime] = useState("")
+  const [eventDescription, setEventDescription] = useState("")
+  const locationInputRef = createRef()
+  const buildingInputRef = createRef()
+  const dateInputRef = createRef()
+  const timeInputRef = createRef()
+  const descriptionInputRef = createRef()
+
+  const handleSubmitPress = async () => {
     // Check if all fields are filled out
     if (
       !eventName ||
@@ -41,11 +42,16 @@ const CREATE_EVENTS = () => {
       !eventTime ||
       !eventDescription
     ) {
-      Alert.alert("Please fill out all fields");
-      return;
+      Alert.alert("Please fill out all fields")
+      return
     }
 
     // Perform any other necessary validation before creating the event
+
+    // Get user ID from the logged in user
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
     // Add the event to the database
     supabase
@@ -55,58 +61,57 @@ const CREATE_EVENTS = () => {
         date: new Date(eventDate + " " + eventTime),
         location: eventLocation,
         description: eventDescription,
-        creator_id: "92365ee0-44d3-46b8-a408-c1f319043821", // This would be the logged in user's ID
+        creator_id: user.id, // This would be the logged in user's ID
       })
       .then((data, error) => {
-        console.log(data, error);
+        console.log(data, error)
         if (error) {
-          Alert.alert("Error creating event");
-          return;
+          Alert.alert("Error creating event")
+          return
         } else {
           // For simplicity, just show an alert
           // Eventually, we would want to navigate to the event details page of the newly created event
-          setModalVisible(true);
+          setModalVisible(true)
 
           // Clear input fields after successful event creation
-          setEventName("");
-          setEventLocation("");
-          setEventDate("");
-          setEventTime("");
-          setEventDescription("");
+          setEventName("")
+          setEventLocation("")
+          setEventDate("")
+          setEventTime("")
+          setEventDescription("")
         }
-      });
-  };
+      })
+  }
 
   //image upload
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null)
 
   let openImagePickerAsync = async () => {
     let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      await ImagePicker.requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
+      alert("Permission to access camera roll is required!")
+      return
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [0, 0],
-    });
+    })
 
     if (pickerResult.canceled === true) {
-      return;
+      return
     }
 
-    setImage({ uri: pickerResult.assets[0].uri });
-  };
+    setImage({ uri: pickerResult.assets[0].uri })
+  }
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
       style={{ backgroundColor: "white" }}
-      contentContainerStyle={{ height: 800 }}
-    >
+      contentContainerStyle={{ height: 800 }}>
       <KeyboardAvoidingView enabled>
         <Text style={[appStyles.fonts.heading, { marginTop: 16 }]}>
           Create an Event
@@ -114,8 +119,7 @@ const CREATE_EVENTS = () => {
         <View style={{ flexDirection: "column", rowGap: 30 }}>
           <TouchableOpacity
             style={styles.imageBanner}
-            onPress={openImagePickerAsync}
-          >
+            onPress={openImagePickerAsync}>
             {image === null ? (
               <Text
                 style={[
@@ -125,8 +129,7 @@ const CREATE_EVENTS = () => {
                     color: "#8b9cb5",
                     paddingTop: 65,
                   },
-                ]}
-              >
+                ]}>
                 Add Image Banner
               </Text>
             ) : (
@@ -226,14 +229,12 @@ const CREATE_EVENTS = () => {
           <TouchableOpacity
             style={[appStyles.buttons.yellowLogin, { alignSelf: "center" }]}
             activeOpacity={0.5}
-            onPress={handleSubmitPress}
-          >
+            onPress={handleSubmitPress}>
             <Text
               style={[
                 appStyles.fonts.paragraph,
                 { color: "black", paddingVertical: 10 },
-              ]}
-            >
+              ]}>
               Create Event
             </Text>
           </TouchableOpacity>
@@ -241,15 +242,13 @@ const CREATE_EVENTS = () => {
         <Modal
           isVisible={isModalVisible}
           onBackdropPress={toggleModal}
-          style={styles.modal}
-        >
+          style={styles.modal}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalAlert}>Event has been created!</Text>
             <View style={styles.modalOptionsContainer}>
               <TouchableOpacity
                 onPress={toggleModal}
-                style={[styles.modalOption, styles.modalOption1]}
-              >
+                style={[styles.modalOption, styles.modalOption1]}>
                 <Text style={styles.modalOptionText}>Close</Text>
               </TouchableOpacity>
             </View>
@@ -257,10 +256,10 @@ const CREATE_EVENTS = () => {
         </Modal>
       </KeyboardAvoidingView>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default CREATE_EVENTS;
+export default CREATE_EVENTS
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -380,4 +379,4 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 30,
   },
-});
+})
