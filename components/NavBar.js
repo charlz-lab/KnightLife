@@ -9,7 +9,8 @@ import { StyleSheet, View, Platform } from "react-native"
 import supabase from "../lib/supabase"
 const Tab = createBottomTabNavigator()
 
-function NavBar({ isCreator }) {
+function NavBar({ route }) {
+  const { isCreator } = route.params
   console.log("Account Type: ", isCreator)
 
   useEffect(() => {
