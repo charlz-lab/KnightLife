@@ -58,16 +58,39 @@ const LoginScreen = ({ navigation, route }) => {
       return
     }
     // if there is no error, get the user's account type
-    const { data: userData } = await supabase
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("name")
+      .eq("id", user.id);
+
+    // If there is an error fetching user data, handle it
+    if (userError) {
+      console.error("Error fetching user data:", userError);
+      return;
+    }
+
+    // If 'name' field doesn't exist, navigate to CustomizeProfile screen
+    if (!userData[0]?.name) {
+      navigation.navigate("CustomizeProfile");
+      return;
+    }
+    const { data: accountData, error: accountError } = await supabase
       .from("users")
       .select("account_type")
-      .eq("id", user.id)
-    const accountType = userData[0].account_type
-    console.log(accountType)
-    // navigate to the appropriate screen based on the user's account type
+      .eq("id", user.id);
+
+    // If there is an error fetching account data, handle it
+    if (accountError) {
+      console.error("Error fetching account data:", accountError);
+      return;
+    }
+
+    const accountType = accountData[0]?.account_type;
+
+    // Navigate to the appropriate screen based on the user's account type
     navigation.navigate("NavBar", {
-      isCreator: accountType === "creator" ? true : false,
-    })
+      isCreator: accountType === "creator",
+    });
   }
 
   return (
