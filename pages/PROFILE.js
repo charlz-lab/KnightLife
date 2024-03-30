@@ -19,7 +19,7 @@ import EventList from "../components/EventList"
 import AttendingEventList from "../components/AttendingEventList"
 import SavedEventList from "../components/SavedEventList"
 import supabase from "../lib/supabase"
-import { subscribeToEvents } from "../lib/utils"
+import { subscribeToEvents, fetchEvents } from "../lib/utils"
 import * as ImagePicker from "expo-image-picker"
 
 // jane doe's profile
@@ -43,21 +43,6 @@ let defaultCreator = {
   followersNum: 1746,
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
-}
-
-// fetch events from database
-const fetchEvents = async (creatorId) => {
-  let eventsListQuery = supabase.from("events").select("*")
-  if (creatorId) {
-    eventsListQuery = eventsListQuery.eq("creator_id", creatorId)
-  }
-  eventsListQuery = eventsListQuery.order("date", { ascending: true })
-  const { data, error, status } = await eventsListQuery
-  if (error && status !== 406) {
-    throw error
-  } else {
-    return data
-  }
 }
 
 // edit profile page
