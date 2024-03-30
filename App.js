@@ -187,7 +187,11 @@ export default function App() {
         <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
         <Stack.Screen name="Accessibility" component={Accessibility} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
-        <Stack.Screen name="EditEvents" component={EditEvents} />
+        <Stack.Screen
+          name="EditEvents"
+          component={EditEvents}
+          options={{ title: "", headerStyle: styles.header }}
+        />
         <Stack.Screen name="MembersGoing" component={MembersGoing} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
         <Stack.Screen
