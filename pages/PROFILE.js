@@ -19,7 +19,7 @@ import EventList from "../components/EventList"
 import AttendingEventList from "../components/AttendingEventList"
 import SavedEventList from "../components/SavedEventList"
 import supabase from "../lib/supabase"
-import { subscribeToEvents, fetchEvents } from "../lib/utils"
+import { handleEventList } from "../lib/utils"
 import * as ImagePicker from "expo-image-picker"
 
 // jane doe's profile
@@ -294,18 +294,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
   // fetch events from database
   useEffect(() => {
-    const fetchEventsData = async (creatorId) => {
-      const eventsData = await fetchEvents(creatorId)
-      setEvents(eventsData)
-    }
-
-    const subscription = subscribeToEvents(creatorId, setEvents)
-
-    fetchEventsData()
-
-    return () => {
-      subscription.unsubscribe()
-    }
+    handleEventList(setEvents, true, creatorId)
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
