@@ -16,8 +16,6 @@ import appStyles from "../styles"
 import ProfileCard from "../components/ProfileCard"
 import ToggleBar from "../components/ToggleBar"
 import EventList from "../components/EventList"
-import SavedEventList from "../components/SavedEventList"
-import supabase from "../lib/supabase"
 import { handleEventList } from "../lib/utils"
 import * as ImagePicker from "expo-image-picker"
 
@@ -213,12 +211,14 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
 // profile
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultProfile)
-  const [events, setEvents] = useState([])
+  const [savedEvents, setSavedEvents] = useState([])
+  const [attendingEvents, setAttendingEvents] = useState([])
   const [selection, setSelection] = useState("upcoming")
 
   // fetch events from database
   useEffect(() => {
-    handleEventList(setEvents, false, null)
+    handleEventList(setSavedEvents, "saved")
+    handleEventList(setAttendingEvents, "attending")
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
@@ -251,18 +251,25 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <EventList
               events={
                 // filter upcoming events
-                events.filter((event) => new Date(event.date) > new Date())
+                attendingEvents.filter(
+                  (event) => new Date(event.date) > new Date()
+                )
               }
               navigation={navigation}></EventList>
           ) : selection === "saved" ? (
-            <SavedEventList
-              events={events}
-              navigation={navigation}></SavedEventList>
+            <EventList
+              events={savedEvents.filter(
+                (event) => new Date(event.date) > new Date()
+              )}
+              navigation={navigation}
+            />
           ) : (
             <EventList
               events={
                 // filter upcoming events
-                events.filter((event) => new Date(event.date) < new Date())
+                attendingEvents.filter(
+                  (event) => new Date(event.date) < new Date()
+                )
               }
               navigation={navigation}></EventList>
           )}
@@ -281,7 +288,7 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
   // fetch events from database
   useEffect(() => {
-    handleEventList(setEvents, true)
+    handleEventList(setEvents, "creator")
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE

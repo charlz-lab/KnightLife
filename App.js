@@ -27,7 +27,6 @@ const Stack = createNativeStackNavigator()
 import EventList from "./components/EventList"
 import EventPage from "./pages/EVENT"
 import HOME from "./pages/HOME"
-import SavedEventList from "./components/SavedEventList"
 import CustomizeProfile from "./components/CustomizeProfile"
 
 const Auth = () => {
@@ -159,7 +158,6 @@ export default function App() {
             headerStyle: styles.header,
           }}></Stack.Screen>
         <Stack.Screen name="EventsList" component={EventList} />
-        <Stack.Screen name="SavedEventList" component={SavedEventList} />
         <Stack.Screen
           name="EventPage"
           component={EventPage}
