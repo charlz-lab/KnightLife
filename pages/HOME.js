@@ -42,73 +42,75 @@ const HOME = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Filter & search section */}
-      <View
-        style={[
-          appStyles.layout.horizontal,
-          { paddingHorizontal: 10, width: "100%" },
-        ]}>
-        <SearchBar onSearch={handleSearch} />
-        {/* note: "pressable" is more customizable than "button" */}
-        <Pressable
-          onPress={toggleModal}
-          style={{ flex: 0.5, alignItems: "center" }}>
-          <Image source={filterIcon} style={{ height: 24, width: 24 }} />
-        </Pressable>
-      </View>
-      {/* List of event cards */}
-      <View>
-        <EventList events={events} navigation={navigation} />
-      </View>
-      {/* Filter modal */}
-      <Modal
-        isVisible={isModalVisible}
-        animationInTiming={300}
-        animationOutTiming={300}
-        backdropTransitionInTiming={400}
-        backdropTransitionOutTiming={400}
-        onBackdropPress={toggleModal}
-        hideModalContentWhileAnimating={true}
-        style={styles.modal}>
-        <View style={styles.modalCard}>
-          {/* modal header section */}
-          <View style={appStyles.layout.horizontal}>
-            <View style={appStyles.layout.horizontal}>
-              <Image source={filterIcon} style={{ height: 24, width: 24 }} />
-              <Text style={appStyles.fonts.subHeading}>Filter</Text>
-            </View>
-            <Pressable onPress={toggleModal}>
-              <Text>Close</Text>
-            </Pressable>
-          </View>
-          {/* list of options */}
-          <FilterSection
-            title="Accounts Displayed"
-            tags={["Followed Accounts only"]}
-          />
-          <FilterSection
-            title="Campus Location"
-            tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
-          />
-          <FilterSection
-            title="Event Category"
-            tags={[
-              "Academic",
-              "Arts",
-              "Career",
-              "Entertainment",
-              "Recreation",
-              "Social",
-              "Sports",
-              "Volunteer",
-              "Other",
-            ]}
-          />
+    <ScrollView>
+      <View style={styles.container}>
+        {/* Filter & search section */}
+        <View
+          style={[
+            appStyles.layout.horizontal,
+            { paddingHorizontal: 10, width: "100%" },
+          ]}>
+          <SearchBar onSearch={handleSearch} />
+          {/* note: "pressable" is more customizable than "button" */}
+          <Pressable
+            onPress={toggleModal}
+            style={{ flex: 0.5, alignItems: "center" }}>
+            <Image source={filterIcon} style={{ height: 24, width: 24 }} />
+          </Pressable>
         </View>
-      </Modal>
+
+        {/* List of event cards */}
+        <EventList events={events} navigation={navigation} />
+
+        {/* Filter modal */}
+        <Modal
+          isVisible={isModalVisible}
+          animationInTiming={300}
+          animationOutTiming={300}
+          backdropTransitionInTiming={400}
+          backdropTransitionOutTiming={400}
+          onBackdropPress={toggleModal}
+          hideModalContentWhileAnimating={true}
+          style={styles.modal}>
+          <View style={styles.modalCard}>
+            {/* modal header section */}
+            <View style={appStyles.layout.horizontal}>
+              <View style={appStyles.layout.horizontal}>
+                <Image source={filterIcon} style={{ height: 24, width: 24 }} />
+                <Text style={appStyles.fonts.subHeading}>Filter</Text>
+              </View>
+              <Pressable onPress={toggleModal}>
+                <Text>Close</Text>
+              </Pressable>
+            </View>
+            {/* list of options */}
+            <FilterSection
+              title="Accounts Displayed"
+              tags={["Followed Accounts only"]}
+            />
+            <FilterSection
+              title="Campus Location"
+              tags={["Main Campus", "Downtown", "Rosen", "Cocoa"]}
+            />
+            <FilterSection
+              title="Event Category"
+              tags={[
+                "Academic",
+                "Arts",
+                "Career",
+                "Entertainment",
+                "Recreation",
+                "Social",
+                "Sports",
+                "Volunteer",
+                "Other",
+              ]}
+            />
+          </View>
+        </Modal>
+      </View>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({
@@ -118,6 +120,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: appStyles.colors.background,
     alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingBottom: 30,
+    paddingHorizontal: 10,
   },
   modal: {
     margin: 0,
