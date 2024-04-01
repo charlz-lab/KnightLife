@@ -18,7 +18,7 @@ const EventList = ({ events, navigation }) => {
         if (error && status !== 406) {
           throw error
         } else {
-          console.log(data)
+          // console.log(data)
           return { ...event, creator_name: data[0].name }
         }
       })
@@ -41,7 +41,7 @@ const EventList = ({ events, navigation }) => {
     )
     setEventData(updatedData)
   }
-  console.log(eventData)
+  // console.log(eventData)
 
   return (
     <SafeAreaView style={styles.container}>

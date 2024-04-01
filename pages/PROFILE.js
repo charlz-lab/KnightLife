@@ -310,7 +310,6 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             setSelection={setSelection}
           />
           {/* display event cards */}
-          {console.log(events)}
           {selection === "upcoming" ? (
             <EventList
               events={
