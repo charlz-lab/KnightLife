@@ -16,7 +16,6 @@ import appStyles from "../styles"
 import ProfileCard from "../components/ProfileCard"
 import ToggleBar from "../components/ToggleBar"
 import EventList from "../components/EventList"
-import AttendingEventList from "../components/AttendingEventList"
 import SavedEventList from "../components/SavedEventList"
 import supabase from "../lib/supabase"
 import { handleEventList } from "../lib/utils"
@@ -282,7 +281,6 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
 
   // fetch events from database
   useEffect(() => {
-    // fetch events from database using the logged in user's ID
     handleEventList(setEvents, true)
   }, [])
 

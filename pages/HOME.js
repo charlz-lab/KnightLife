@@ -18,7 +18,6 @@ import EventList from "../components/EventList"
 import FilterSection from "../components/FilterSection"
 import SearchBar from "../components/SearchBar"
 import SavedEventList from "../components/SavedEventList"
-import AttendingEventList from "../components/AttendingEventList"
 import supabase from "../lib/supabase"
 import { handleEventList } from "../lib/utils"
 
