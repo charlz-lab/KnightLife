@@ -24,22 +24,16 @@ import { handleEventList } from "../lib/utils"
 
 const HOME = ({ navigation }) => {
   // list events
-  const [users, setUsers] = React.useState([])
   const [events, setEvents] = React.useState([])
 
   // fetch events from database
   React.useEffect(() => {
-    handleEventList(setEvents)
+    handleEventList(setEvents, false, null)
   }, [])
 
   // enable filter modal
   const [isModalVisible, setModalVisible] = React.useState(false)
   const toggleModal = async () => {
-    let { data, error } = await supabase.from("users").select("*").limit(20)
-
-    if (error) console.log("Error: ", error)
-    else setUsers(data)
-
     setModalVisible(!isModalVisible)
   }
 

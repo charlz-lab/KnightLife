@@ -219,18 +219,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
 
   // fetch events from database
   useEffect(() => {
-    const fetchEventsData = async () => {
-      const eventsData = await fetchEvents()
-      setEvents(eventsData)
-    }
-
-    const subscription = subscribeToEvents(setEvents)
-
-    fetchEventsData()
-
-    return () => {
-      subscription.unsubscribe()
-    }
+    handleEventList(setEvents, false, null)
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
