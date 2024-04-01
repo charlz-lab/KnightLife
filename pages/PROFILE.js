@@ -282,8 +282,14 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const creatorId = "92365ee0-44d3-46b8-a408-c1f319043821"
 
   // fetch events from database
-  useEffect(() => {
-    handleEventList(setEvents, true, creatorId)
+  useEffect(async () => {
+    // get user ID from the logged in user
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    // fetch events from database using the logged in user's ID
+    handleEventList(setEvents, true, user.id)
   }, [])
 
   // changes profile if changes where made in EDIT_PROFILE
