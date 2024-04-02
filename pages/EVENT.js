@@ -14,7 +14,12 @@ import appStyles from "../styles"
 import Modal from "react-native-modal"
 import Ionicon from "react-native-vector-icons/FontAwesome"
 import UpdateList from "../components/UpdateList"
-import { getEventStatus } from "../lib/utils"
+import {
+  getEventStatus,
+  addEventStatus,
+  deleteEventStatus,
+  updateEventStatus,
+} from "../lib/utils"
 
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params
@@ -22,21 +27,45 @@ const EventPage = ({ route, navigation }) => {
     navigation.goBack()
   }
 
+  // get the event status for the logged in user
   const [status, setStatus] = useState("")
   useEffect(() => {
     getEventStatus(setStatus, event.id)
   }, [])
 
-  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
-  const [isAttending, setIsAttending] = useState(false)
+  // function to toggle the bookmark status
   const handleBookmarkToggle = () => {
-    // Add your logic for toggling the bookmark state
-    setIsBookmarked(!isBookmarked)
+    if (status == "saved") {
+      // if the user previously bookmarked the event, remove the status
+      setStatus("")
+      deleteEventStatus(event.id)
+    } else if (status == "attending") {
+      // if the user was previously attending the event, update the status to saved
+      setStatus("saved")
+      updateEventStatus(event.id, "saved")
+    } else {
+      // if the user did not have a previous status, add the status to the database
+      setStatus("saved")
+      addEventStatus(event.id, "saved")
+    }
   }
+  // function to toggle the attending status
   const handleAttendToggle = () => {
-    // Add your logic for toggling the attendance state
-    setIsAttending(!isAttending)
+    if (status == "attending") {
+      // if the user was previously attending the event, remove the status
+      setStatus("")
+      deleteEventStatus(event.id)
+    } else if (status == "saved") {
+      // if the user previously bookmarked the event, update the status to attending
+      setStatus("attending")
+      updateEventStatus(event.id, "attending")
+    } else {
+      // if the user did not have a previous status, add the status to the database
+      setStatus("attending")
+      addEventStatus(event.id, "attending")
+    }
   }
+
   //report modal usestate
   const [isModalReportVisible, setModalReportVisible] = useState(false)
   // info modal usestate
@@ -55,7 +84,7 @@ const EventPage = ({ route, navigation }) => {
       profileImage: "https://example.com/profile.jpg",
       dateTime: "Jan 01",
       description:
-        "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
+        "All gear necessary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
   ]
 
