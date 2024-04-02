@@ -49,8 +49,6 @@ const LoginScreen = ({ navigation, route }) => {
       email: userEmail,
       password: userPassword,
     })
-    console.log(user)
-    console.log(user.id)
     // if there is an error, display the error message
     if (error) {
       setErrorText(error.message)

@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { EDIT_PROFILE } from "./pages/PROFILE";
-import appStyles from "./styles";
-import { useFonts } from "expo-font";
-import * as Font from "expo-font";
-import NavBar from "./components/NavBar";
-import SplashScreen from "./components/SplashScreen";
-import Header from "./components/Header";
-import Settings from "./pages/settings_folder/SETTINGS";
-import Privacy from "./pages/settings_folder/PRIVACY";
-import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS";
-import MembersGoing from "./pages/settings_folder/Link pages/MembersGoing";
-import Accessibility from "./pages/settings_folder/ACCESSIBILITY";
-import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT";
-import CreateAccount from "./pages/settings_folder/CREATEACCOUNT";
-import LoginScreen from "./components/LoginScreen";
-import RegisterScreenPersonal from "./components/RegisterScreenPersonal";
-import RegisterScreenCreator from "./components/RegisterScreenCreator";
-import AccountType from "./components/AccountType";
-import EmailVerification from "./components/EmailVerification";
-import EditEvents from "./pages/settings_folder/Link pages/EditEvent";
+import React, { useState, useEffect } from "react"
+import { StyleSheet, Text } from "react-native"
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { EDIT_PROFILE } from "./pages/PROFILE"
+import appStyles from "./styles"
+import { useFonts } from "expo-font"
+import * as Font from "expo-font"
+import NavBar from "./components/NavBar"
+import SplashScreen from "./components/SplashScreen"
+import Header from "./components/Header"
+import Settings from "./pages/settings_folder/SETTINGS"
+import Privacy from "./pages/settings_folder/PRIVACY"
+import AddSwitchAccounts from "./pages/settings_folder/ADD_SWITCH_ACCOUNTS"
+import MembersGoing from "./pages/settings_folder/Link pages/MembersGoing"
+import Accessibility from "./pages/settings_folder/ACCESSIBILITY"
+import EditAccount from "./pages/settings_folder/EDIT_ACCOUNT"
+import CreateAccount from "./pages/settings_folder/CREATEACCOUNT"
+import LoginScreen from "./components/LoginScreen"
+import RegisterScreenPersonal from "./components/RegisterScreenPersonal"
+import RegisterScreenCreator from "./components/RegisterScreenCreator"
+import AccountType from "./components/AccountType"
+import EmailVerification from "./components/EmailVerification"
+import EditEvents from "./pages/settings_folder/Link pages/EditEvent"
 
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
@@ -127,12 +127,12 @@ const Auth = () => {
         }}
       />
     </Stack.Navigator>
-  );
-};
+  )
+}
 
 // navigation outside of nav bar
 export default function App() {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false)
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -140,14 +140,14 @@ export default function App() {
         "IBMPlexSans-Medium": require("./assets/fonts/IBMPlexSans-Medium.ttf"),
         "IBMPlexSans-Bold": require("./assets/fonts/IBMPlexSans-Bold.ttf"),
         "Prompt-Bold": require("./assets/fonts/Prompt-Bold.ttf"),
-      });
+      })
 
-      setFontLoaded(true);
-      console.log("Is font loaded" + fontLoaded);
+      setFontLoaded(true)
+      console.log("Is font loaded" + fontLoaded)
     }
 
-    loadFont();
-  }, []);
+    loadFont()
+  }, [])
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -155,8 +155,7 @@ export default function App() {
         screenOptions={{
           headerShown: true,
           headerTintColor: "black", // back arrow color
-        }}
-      >
+        }}>
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -179,11 +178,6 @@ export default function App() {
           }}
         ></Stack.Screen>
         <Stack.Screen name="EventsList" component={EventList} />
-        <Stack.Screen name="SavedEventList" component={SavedEventList} />
-        <Stack.Screen
-          name="AttendingEventList"
-          component={AttendingEventList}
-        />
         <Stack.Screen
           name="EventPage"
           component={EventPage}
@@ -192,13 +186,11 @@ export default function App() {
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
-          options={{ title: "" }}
-        ></Stack.Screen>
+          options={{ title: "" }}></Stack.Screen>
         <Stack.Screen
           name="Settings"
           component={Settings}
-          options={{ title: "" }}
-        ></Stack.Screen>
+          options={{ title: "" }}></Stack.Screen>
 
         <Stack.Screen name="Privacy" component={Privacy} />
         <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
@@ -218,7 +210,7 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 const styles = StyleSheet.create({
   header: {
@@ -226,4 +218,4 @@ const styles = StyleSheet.create({
     backgroundColor: appStyles.colors.accent2,
     paddingHorizontal: 30,
   },
-});
+})

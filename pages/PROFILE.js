@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react"
 import {
   StyleSheet,
   Text,
@@ -10,16 +10,14 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-} from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import appStyles from "../styles";
-import ProfileCard from "../components/ProfileCard";
-import ToggleBar from "../components/ToggleBar";
-import EventList from "../components/EventList";
-import AttendingEventList from "../components/AttendingEventList";
-import SavedEventList from "../components/SavedEventList";
-import supabase from "../lib/supabase";
-import * as ImagePicker from "expo-image-picker";
+} from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
+import appStyles from "../styles"
+import ProfileCard from "../components/ProfileCard"
+import ToggleBar from "../components/ToggleBar"
+import EventList from "../components/EventList"
+import { handleEventList } from "../lib/utils"
+import * as ImagePicker from "expo-image-picker"
 
 // jane doe's profile
 let defaultProfile = {
@@ -30,7 +28,7 @@ let defaultProfile = {
   location: "UCF Downtown, Orlando",
   pic: require("../images/janeDoeProfile.png"),
   isCreator: false,
-};
+}
 
 // creator profile
 let defaultCreator = {
@@ -140,21 +138,21 @@ const subscribeToEvents = (creatorId, setEvents) => {
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
-  let [profile, setProfile] = useState(route.params);
-  const [image, setImage] = useState(null);
+  let [profile, setProfile] = useState(route.params)
+  const [image, setImage] = useState(null)
 
   let openImagePickerAsync = async () => {
     let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      await ImagePicker.requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
+      alert("Permission to access camera roll is required!")
+      return
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync()
     if (pickerResult.canceled === true) {
-      return;
+      return
     }
 
     setImage({ localUri: pickerResult.assets[0].uri });
@@ -231,8 +229,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             rowGap: 5,
             alignItems: "center",
             marginTop: 25,
-          }}
-        >
+          }}>
           <Image
             source={profile.image}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
@@ -243,8 +240,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               style={[
                 appStyles.fonts.paragraph,
                 { textDecorationLine: "underline" },
-              ]}
-            >
+              ]}>
               Change photo
             </Text>
           </TouchableOpacity>
@@ -255,8 +251,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             width: "90%",
             alignItems: "center",
             rowGap: 5,
-          }}
-        >
+          }}>
           <Text style={appStyles.fonts.subHeading}>Profile Name:</Text>
           <View style={appStyles.sectionStyle}>
             <TextInput
@@ -328,8 +323,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
             style={[appStyles.buttons.yellow, appStyles.shadow]}
-            onPress={saveAlert}
-          >
+            onPress={saveAlert}>
             <Text style={appStyles.fonts.paragraph}>Save</Text>
           </Pressable>
           <Pressable
@@ -337,9 +331,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             onPress={() => {
               profile.isCreator
                 ? navigation.navigate("Creator Profile")
-                : navigation.navigate("Personal Profile");
-            }}
-          >
+                : navigation.navigate("Personal Profile")
+            }}>
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               Cancel
             </Text>
@@ -347,14 +340,15 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         </View>
       </View>
     </>
-  );
-};
+  )
+}
 
 // profile
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultProfile);
-  const [events, setEvents] = useState([]);
-  const [selection, setSelection] = useState("upcoming");
+  const [profile, setProfile] = useState(route.params || defaultProfile)
+  const [savedEvents, setSavedEvents] = useState([])
+  const [attendingEvents, setAttendingEvents] = useState([])
+  const [selection, setSelection] = useState("upcoming")
 
   // fetch events from database
   useEffect(() => {
@@ -387,10 +381,10 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
-      console.log("profile changed");
+      setProfile(route.params.profile)
+      console.log("profile changed")
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   return (
     <>
@@ -414,31 +408,35 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             <EventList
               events={
                 // filter upcoming events
-                events.filter((event) => new Date(event.date) > new Date())
+                attendingEvents.filter(
+                  (event) => new Date(event.date) > new Date()
+                )
               }
-              navigation={navigation}
-            ></EventList>
+              navigation={navigation}></EventList>
           ) : selection === "saved" ? (
-            <SavedEventList
-              events={events}
+            <EventList
+              events={savedEvents.filter(
+                (event) => new Date(event.date) > new Date()
+              )}
               navigation={navigation}
-            ></SavedEventList>
+            />
           ) : (
             <EventList
               events={
                 // filter upcoming events
-                events.filter((event) => new Date(event.date) < new Date())
+                attendingEvents.filter(
+                  (event) => new Date(event.date) < new Date()
+                )
               }
-              navigation={navigation}
-            ></EventList>
+              navigation={navigation}></EventList>
           )}
         </View>
 
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  );
-};
+  )
+}
 
 export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator);
@@ -477,9 +475,9 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile);
+      setProfile(route.params.profile)
     }
-  }, [route.params?.profile]);
+  }, [route.params?.profile])
 
   return (
     <>
@@ -498,31 +496,28 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             setSelection={setSelection}
           />
           {/* display event cards */}
-          {console.log(events)}
           {selection === "upcoming" ? (
             <EventList
               events={
                 // filter upcoming events
                 events.filter((event) => new Date(event.date) > new Date())
               }
-              navigation={navigation}
-            ></EventList>
+              navigation={navigation}></EventList>
           ) : (
             <EventList
               events={
                 // filter past events
                 events.filter((event) => new Date(event.date) < new Date())
               }
-              navigation={navigation}
-            ></EventList>
+              navigation={navigation}></EventList>
           )}
           {/* navigate to edit profile */}
         </View>
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   editContainer: {
@@ -542,4 +537,4 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingHorizontal: 20,
   },
-});
+})
