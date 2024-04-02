@@ -29,7 +29,7 @@ const EventPage = ({ route, navigation }) => {
   }
 
   // check if the current user is the creator of the event
-  const [isCreator, setIsCreator] = useState(false)
+  const [isCreator, setIsCreator] = useState(true)
   useEffect(async () => {
     const {
       data: { user },
@@ -200,9 +200,7 @@ const EventPage = ({ route, navigation }) => {
               />
             </View>
           </Pressable>
-
           {/* toggle attending button if isAttending true or false */}
-
           <Pressable
             onPress={handleAttendToggle}
             style={
