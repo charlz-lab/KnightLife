@@ -20,12 +20,22 @@ import {
   deleteEventStatus,
   updateEventStatus,
 } from "../lib/utils"
+import supabase from "../lib/supabase"
 
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params
   const handleBack = () => {
     navigation.goBack()
   }
+
+  // check if the current user is the creator of the event
+  const [isCreator, setIsCreator] = useState(false)
+  useEffect(async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    setIsCreator(user.id == event.creator_id)
+  }, [])
 
   // get the event status for the logged in user
   const [status, setStatus] = useState("")
@@ -174,29 +184,38 @@ const EventPage = ({ route, navigation }) => {
         </Card>
         {/* </View> */}
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
-          <View style={styles.bookmarkBox}>
-            <Ionicon
-              name={status == "saved" ? "bookmark" : "bookmark-o"}
-              size={25}
-              color="#FFC60A"
-            />
-          </View>
-        </Pressable>
+      {isCreator ? (
+        ""
+      ) : (
+        // only show the buttons if the user is not the creator of the event
+        <View style={styles.buttonContainer}>
+          <Pressable
+            onPress={handleBookmarkToggle}
+            style={styles.bookmarkButton}>
+            <View style={styles.bookmarkBox}>
+              <Ionicon
+                name={status == "saved" ? "bookmark" : "bookmark-o"}
+                size={25}
+                color="#FFC60A"
+              />
+            </View>
+          </Pressable>
 
-        {/* toggle attending button if isAttending true or false */}
+          {/* toggle attending button if isAttending true or false */}
 
-        <Pressable
-          onPress={handleAttendToggle}
-          style={
-            status == "attending" ? styles.attendingButton : styles.attendButton
-          }>
-          <Text style={[styles.attendButtonText]}>
-            {status == "attending" ? "Attending" : "Attend"}
-          </Text>
-        </Pressable>
-      </View>
+          <Pressable
+            onPress={handleAttendToggle}
+            style={
+              status == "attending"
+                ? styles.attendingButton
+                : styles.attendButton
+            }>
+            <Text style={[styles.attendButtonText]}>
+              {status == "attending" ? "Attending" : "Attend"}
+            </Text>
+          </Pressable>
+        </View>
+      )}
       <View style={styles.signUpContainer}>
         <View style={{ flexDirection: "row", columnGap: 10 }}>
           <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
