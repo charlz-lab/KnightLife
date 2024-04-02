@@ -28,11 +28,11 @@ const RegisterScreenCreator = (props) => {
   const ageInputRef = createRef();
   const passwordInputRef = createRef();
 
-  const handleCreateAccButton = async () => {
+  async function handleCreateAccButton() {
+    //subabase.auth.signUp is a function that creates a new user in the database
     const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
-      username: userName,
     });
 
     if (signUpError) {
@@ -50,7 +50,6 @@ const RegisterScreenCreator = (props) => {
             .from('users')
             .insert({
               id: session.user.id,
-              username: userName,
               email: userEmail,
               account_type: "creator",
               // Add other necessary fields here
@@ -65,176 +64,7 @@ const RegisterScreenCreator = (props) => {
       props.navigation.navigate("EmailVerification");
     }
   }
-  // async function handleCreateAccButton() {
-  //   const { error } = await supabase.auth.signUp({
-  //     email,
-  //     password,
-  //   })
-  //   if (error) {
-  //     setErrortext(error.message)
-  //     console.log("Error signing up", error.message)
-  //   }
-  // }
-  const handleCreateProfileButton = async () => {
-    setErrortext("");
 
-    if (!name || !location) {
-      alert("Please fill all profile fields");
-      return;
-    }
-
-    const userId = getUserIdSomehow();
-
-    try {
-      const { data: profileData, error: profileError } = await supabase
-        .from('users')
-        .upsert(
-          [
-            {
-              user_id: userId,
-              name,
-              location,
-              image,
-              campus,
-              major
-            },
-          ],
-          { onConflict: ['id'] }
-        );
-
-      if (profileError) {
-        alert("Profile creation failed. " + profileError.message);
-        return;
-      }
-
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .update({ account_type: 'personal' }) // Set the account_type to 'personal'
-        .eq('id', userId);
-
-      if (userError) {
-        alert("Failed to update account type. " + userError.message);
-        return;
-      }
-
-      // Profile and account type update successful
-      alert("Profile creation successful. Account type set to personal.");
-      props.navigation.navigate("NavBar", { isCreator: false });
-    } catch (error) {
-      console.error("Error during profile creation:", error.message);
-    }
-  };
-
-  if (isRegistrationSuccess) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: appStyles.colors.background,
-          justifyContent: "center",
-          flexDirection: "column",
-          rowGap: 30,
-        }}
-      >
-        <Text
-          style={[
-            appStyles.fonts.headingTwo,
-            { textAlign: "center", marginTop: -40 },
-          ]}
-        >
-          Customize your {"\n"} Profile
-        </Text>
-        <View>
-          <Image
-            source={require("../images/profilePic_placeholder.png")}
-            style={{
-              height: 100,
-              resizeMode: "contain",
-              alignSelf: "center",
-            }}
-          />
-          <Text
-            style={[
-              appStyles.fonts.paragraph,
-              {
-                textAlign: "center",
-                marginTop: 5,
-                textDecorationLine: "underline",
-              },
-            ]}
-          >
-            Add profile picture
-          </Text>
-        </View>
-        <View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(name) => setName(name)}
-              underlineColorAndroid="#f000"
-              placeholder="Name"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(location) => setLocation(location)}
-              underlineColorAndroid="#f000"
-              placeholder="Campus Location"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(bio) => setBio(bio)}
-              underlineColorAndroid="#f000"
-              placeholder="Bio"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-        </View>
-        <View
-          style={[
-            appStyles.layout.section,
-            { flexDirection: "row", columnGap: 15 },
-          ]}
-        >
-          <TouchableOpacity
-            style={[styles.goBack, appStyles.shadow]}
-            activeOpacity={0.5}
-            onPress={() => props.navigation.goBack()}
-          >
-            <Text style={styles.buttonTextStyle}>Go Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              appStyles.buttons.yellowNoWidth,
-              appStyles.shadow,
-              { width: "35%" },
-            ]}
-            activeOpacity={0.5}
-            onPress={handleCreateProfileButton}
-          >
-            <Text style={styles.buttonTextStyle}>Finish</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <ScrollView
@@ -251,7 +81,7 @@ const RegisterScreenCreator = (props) => {
         </View>
         <KeyboardAvoidingView enabled>
           <View style={{ marginTop: 55 }}>
-            <View style={styles.SectionStyle}>
+            {/* <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserName) => setUserName(UserName)}
@@ -265,7 +95,7 @@ const RegisterScreenCreator = (props) => {
                 }
                 blurOnSubmit={false}
               />
-            </View>
+            </View> */}
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}

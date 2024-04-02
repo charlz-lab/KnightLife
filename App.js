@@ -29,7 +29,8 @@ import EventPage from "./pages/EVENT";
 import HOME from "./pages/HOME";
 import SavedEventList from "./components/SavedEventList";
 import AttendingEventList from "./components/AttendingEventList";
-import CustomizeProfile from "./components/CustomizeProfile";
+import CustomizeProfilePersonal from "./components/CustomizeProfilePersonal";
+import CustomizeProfileCreator from "./components/CustomizeProfileCreator";
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -97,12 +98,27 @@ const Auth = () => {
         }}
       />
       <Stack.Screen
-        name="CustomizeProfile"
-        component={CustomizeProfile}
+        name="CustomizeProfilePersonal"
+        component={CustomizeProfilePersonal}
         options={{
           title: "", //Set Header Title
           headerStyle: {
             backgroundColor: appStyles.colors.accent2, //Set Header color
+          },
+          headerTintColor: appStyles.colors.mainBackground, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: "bold", //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="CustomizeProfileCreator"
+        component={CustomizeProfileCreator}
+        options={{
+          title: "", //Set Header Title
+          headerStyle: {
+            backgroundColor: appStyles.colors.accent2,
+            //Set Header color
           },
           headerTintColor: appStyles.colors.mainBackground, //Set Header text color
           headerTitleStyle: {
@@ -159,6 +175,7 @@ export default function App() {
             // headerTitle: () => <Header />,
             title: "",
             headerStyle: styles.header,
+            headerBackVisible: false,
           }}
         ></Stack.Screen>
         <Stack.Screen name="EventsList" component={EventList} />

@@ -1,7 +1,13 @@
 import { Image, Pressable, Text, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Buffer } from "buffer";
 import appStyles from "../styles";
-
+import supabase from "../lib/supabase";
 const ProfileCard = (props) => {
+  const [imageData, setImageData] = useState(""); // state to hold the image data
+
+  // run whenever the profile prop changes
+
   return (
     <View style={[appStyles.profileCard, appStyles.shadow]}>
       <View
@@ -29,13 +35,23 @@ const ProfileCard = (props) => {
         </Pressable>
       </View>
       <View style={appStyles.profileCard}>
-        <Image
-          source={props.profile.pic}
-          style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
-        />
+        {props.profile.image ? (
+          // Display the image if imageData is available
+          <Image
+            source={{ uri: `data:image/png;base64,${props.profile.image}` }}
+            style={{ width: 125, height: 125, borderRadius: 125 / 2, resizeMode: 'cover' }}
+          />
+
+        ) : (
+          // Show a placeholder or loading indicator if imageData is not available
+          <Image
+            source={require("../images/janeDoeProfile.png")}
+            style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
+          />
+        )}
         <Text style={appStyles.fonts.heading}>{props.profile.name}</Text>
-        <Text style={appStyles.fonts.paragraph}>{props.profile.username}</Text>
-        <Text style={appStyles.fonts.paragraph}>{props.profile.location}</Text>
+        <Text style={appStyles.fonts.paragraph}>@{props.profile.username}</Text>
+        <Text style={appStyles.fonts.paragraph}>{props.profile.campus_location}</Text>
         {/* Render creator's bio if creator account; else render personal account's year and major */}
         {props.accountType === "creator" ? (
           <Text style={[appStyles.fonts.paragraph, { textAlign: "center" }]}>
@@ -43,7 +59,7 @@ const ProfileCard = (props) => {
           </Text>
         ) : (
           <Text style={appStyles.fonts.paragraph}>
-            {props.profile.year} - {props.profile.major}
+            {props.profile.school_year} - {props.profile.major}
           </Text>
         )}
       </View>

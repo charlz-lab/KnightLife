@@ -43,7 +43,44 @@ let defaultCreator = {
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
 };
+//fetch personal user data
+const fetchPersonalProfile = async () => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data, error, status } = await supabase
+      .from("personal_users")
+      .select("*")
+      .eq("id", user.id); // Use user.id to get the user's ID
 
+    if (error && status !== 406) {
+      throw error;
+    } else {
+      return data[0];
+    }
+  } catch (error) {
+    console.error("Error fetching personal user data:", error.message);
+    return null;
+  }
+};
+//fetch creator profile data
+const fetchCreatorProfile = async () => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data, error, status } = await supabase
+      .from("creator_users")
+      .select("*")
+      .eq("id", user.id); // Use user.id to get the user's ID
+
+    if (error && status !== 406) {
+      throw error;
+    } else {
+      return data[0];
+    }
+  } catch (error) {
+    console.error("Error fetching creator user data:", error.message);
+    return null;
+  }
+};
 // fetch events from database
 const fetchEvents = async (creatorId) => {
   let eventsListQuery = supabase.from("events").select("*");
@@ -121,10 +158,10 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
     }
 
     setImage({ localUri: pickerResult.assets[0].uri });
-    setProfile({ ...profile, pic: { uri: pickerResult.assets[0].uri } });
+    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } });
   };
 
-  const saveAlert = () =>
+  const saveAlert = () => {
     Alert.alert(
       "Save Changes",
       "Are you sure you would like to save your changes?",
@@ -136,14 +173,55 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         },
         {
           text: "Save",
-          onPress: () => {
-            profile.isCreator
-              ? navigation.navigate("Creator Profile", { profile: profile })
-              : navigation.navigate("Personal Profile", { profile: profile });
+          onPress: async () => {
+            try {
+              const { data: { user } } = await supabase.auth.getUser();
+              if (profile.isCreator) {
+                // Update the creator_users table
+                const { error } = await supabase
+                  .from("creator_users")
+                  .update({
+                    name: profile.name,
+                    username: profile.username,
+                    campus_location: profile.campus_location,
+                    bio: profile.bio,
+                  })
+                  .eq("id", user.id);
+
+                if (error) {
+                  throw error;
+                }
+              } else {
+                // Update the personal_users table
+                const { error } = await supabase
+                  .from("personal_users")
+                  .update({
+                    name: profile.name,
+                    username: profile.username,
+                    campus_location: profile.campus_location,
+                    school_year: profile.school_year,
+                    major: profile.major,
+
+                  })
+                  .eq("id", user.id);
+
+                if (error) {
+                  throw error;
+                }
+              }
+
+              // navigate to the respective profile page after successful update
+              profile.isCreator
+                ? navigation.navigate("Creator Profile", { profile })
+                : navigation.navigate("Personal Profile", { profile });
+            } catch (error) {
+              console.error("Error updating profile:", error.message);
+            }
           },
         },
       ]
     );
+  };
   return (
     <>
       <View style={styles.editContainer}>
@@ -156,7 +234,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           }}
         >
           <Image
-            source={profile.pic}
+            source={profile.image}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
           />
 
@@ -202,9 +280,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
           <View style={appStyles.sectionStyle}>
             <TextInput
-              value={profile.location}
+              value={profile.campus_location}
               onChangeText={(value) =>
-                setProfile({ ...profile, location: value })
+                setProfile({ ...profile, campus_location: value })
               }
               style={[appStyles.fonts.paragraph, appStyles.textInput]}
             />
@@ -227,9 +305,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               <Text style={appStyles.fonts.subHeading}>Year:</Text>
               <View style={appStyles.sectionStyle}>
                 <TextInput
-                  value={profile.year}
+                  value={profile.school_year}
                   onChangeText={(value) =>
-                    setProfile({ ...profile, year: value })
+                    setProfile({ ...profile, school_year: value })
                   }
                   style={[appStyles.fonts.paragraph, appStyles.textInput]}
                 />
@@ -293,7 +371,19 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
       subscription.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Fetch user's profile data
+        const userData = await fetchPersonalProfile(); // Remove route.params.userId from here
+        setProfile(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error.message);
+      }
+    };
 
+    fetchUserData();
+  }, []);
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
@@ -354,16 +444,16 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultCreator);
   const [selection, setSelection] = useState("upcoming");
   const [events, setEvents] = useState([]);
-  const creatorId = "92365ee0-44d3-46b8-a408-c1f319043821";
+
 
   // fetch events from database
   useEffect(() => {
-    const fetchEventsData = async (creatorId) => {
-      const eventsData = await fetchEvents(creatorId);
+    const fetchEventsData = async () => {
+      const eventsData = await fetchEvents();
       setEvents(eventsData);
     };
 
-    const subscription = subscribeToEvents(creatorId, setEvents);
+    const subscription = subscribeToEvents(setEvents);
 
     fetchEventsData();
 
@@ -371,7 +461,19 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
       subscription.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Fetch user's profile data
+        const userData = await fetchCreatorProfile(); // Remove route.params.userId from here
+        setProfile(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error.message);
+      }
+    };
 
+    fetchUserData();
+  }, []);
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {

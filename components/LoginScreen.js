@@ -57,41 +57,49 @@ const LoginScreen = ({ navigation, route }) => {
       console.error("Error:", error)
       return
     }
-    // if there is no error, get the user's account type
+    // if there is no error, check if the user has "name"
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("name")
       .eq("id", user.id);
-
-    // If there is an error fetching user data, handle it
-    if (userError) {
-      console.error("Error fetching user data:", userError);
-      return;
-    }
-
-    // If 'name' field doesn't exist, navigate to CustomizeProfile screen
-    if (!userData[0]?.name) {
-      navigation.navigate("CustomizeProfile");
-      return;
-    }
     const { data: accountData, error: accountError } = await supabase
       .from("users")
       .select("account_type")
       .eq("id", user.id);
-
-    // If there is an error fetching account data, handle it
+    if (userError) {
+      console.error("Error fetching user data:", userError);
+      return;
+    }
     if (accountError) {
-      console.error("Error fetching account data:", accountError);
+      console.error("Error fetching account type:", userError);
+      return;
+    }
+    const name = userData[0]?.name;
+    const accountType = accountData[0]?.account_type;
+
+    // check if name is missing and account type exists
+    if (!name && accountType) {
+      // navigate to the appropriate profile customization screen
+      if (accountType === "personal") {
+        navigation.navigate("CustomizeProfilePersonal");
+      } else if (accountType === "creator") {
+        navigation.navigate("CustomizeProfileCreator");
+      } else {
+        console.error("Unknown account type:", accountType);
+      }
       return;
     }
 
-    const accountType = accountData[0]?.account_type;
+    // Navigate based on account type
+    if (accountType === "personal") {
+      navigation.navigate("NavBar", { isCreator: false });
+    } else if (accountType === "creator") {
+      navigation.navigate("NavBar", { isCreator: true });
+    } else {
+      console.error("Unknown account type:", accountType);
+    }
+  };
 
-    // Navigate to the appropriate screen based on the user's account type
-    navigation.navigate("NavBar", {
-      isCreator: accountType === "creator",
-    });
-  }
 
   return (
     <View style={styles.mainBody}>

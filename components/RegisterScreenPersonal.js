@@ -25,7 +25,7 @@ const RegisterScreenPersonal = (props) => {
     const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
-      username: userName,
+
     });
 
     if (signUpError) {
@@ -43,10 +43,8 @@ const RegisterScreenPersonal = (props) => {
             .from('users')
             .insert({
               id: session.user.id,
-              username: userName,
               email: userEmail,
               account_type: "personal",
-              // Add other necessary fields here
             })
             .then(({ data: userData, error: userInsertError }) => {
               if (userInsertError) {
@@ -79,7 +77,7 @@ const RegisterScreenPersonal = (props) => {
         </View>
         <KeyboardAvoidingView enabled>
           <View style={{ marginTop: 55 }}>
-            <View style={styles.SectionStyle}>
+            {/* <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserName) => setUserName(UserName)}
@@ -90,7 +88,7 @@ const RegisterScreenPersonal = (props) => {
                 returnKeyType="next"
                 blurOnSubmit={false}
               />
-            </View>
+            </View> */}
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}

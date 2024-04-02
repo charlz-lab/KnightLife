@@ -17,6 +17,7 @@ function NavBar({ route }) {
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
+      headerBackVisible: false,
     }
   }, []) // Empty dependency array ensures it runs only once
 
@@ -24,6 +25,7 @@ function NavBar({ route }) {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+
         tabBarStyle: {
           backgroundColor: appStyles.colors.mainBackground,
           height: 90, // Adjust the height as needed
@@ -81,9 +83,11 @@ function NavBar({ route }) {
             component={PERSONAL_PROFILE}
             options={{
               title: "",
+
               tabBarIcon: ({ size, focused, color }) => (
                 <TabIcon
                   focused={focused}
+
                   icon={require("../assets/icons/fi-bs-profile.png")}
                   selectedIcon={require("../assets/icons/fi-bs-profileYellow.png")}
                 />

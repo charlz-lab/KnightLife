@@ -6,49 +6,88 @@ import {
     View,
     Text,
     Image,
-    KeyboardAvoidingView,
     Keyboard,
     TouchableOpacity,
     ScrollView,
+    KeyboardAvoidingView
 } from "react-native";
 
 import supabase from '../lib/supabase';
-import { ScreenStackHeaderSubview } from 'react-native-screens';
-function CustomizeProfile({ props, route, session }) {
+import * as ImagePicker from 'expo-image-picker';
+
+function CustomizeProfileCreator({ navigation, route, session }) {
     const [name, setName] = useState("")
-    const [year, setYear] = useState("")
-    const [major, setMajor] = useState("")
     const [campus, setCampus] = useState("")
     const [loading, setLoading] = useState(false)
     const [errortext, setErrortext] = useState("")  // Create state variables for the input fields
     const [userName, setUserName] = useState("")
+    const [bio, setBio] = useState("")
+    const [image, setImage] = useState(null);
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
 
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.uri);
+        }
+    };
     async function handleCreateProfileButton() {
-        try {
-            const user = supabase.auth.getUser();
 
+        try {
+
+            const { data: { user } } = await supabase.auth.getUser();
+            console.log("user", user);
             if (user) {
                 try {
-                    // Insert into personal_users table
-                    const { data: personalData, error: personalError } = await supabase
-                        .from('personal_users')
-                        .insert({
-                            id: user.id,
-                            name: name,
-                            school_year: year,
-                            major: major,
-                        });
+                    // Insert into users table
 
-                    if (personalError) {
-                        alert("Failed to insert into personal_users. " + personalError.message);
-                        console.log(user);
+                    console.log("user", user.id);
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .update({
+                            name: name,
+                            campus_location: campus,
+                            image: image
+                        })
+                        .eq('id', user.id)
+                        .select();
+
+                    if (userError) {
+                        alert("Failed to insert into users. " + userError.message);
+                        console.error("Error inserting into users:", userError.message);
                         return;
                     }
 
-                    // Profile and account type update successful
-                    alert("Profile creation successful. Account type set to personal.");
-                    console.log(user);
-                    props.navigation.navigate("NavBar", { isCreator: false });
+                    // Insert into personal_users table
+                    const { data: personalData, error: creatorError } = await supabase
+                        .from('creator_users')
+                        .insert({
+                            id: user.id,
+                            name: name,
+                            username: userName,
+                            bio: bio,
+                            campus_location: campus,
+
+
+                        });
+
+                    if (creatorError) {
+                        alert("Failed to insert into creator_users. " + creatorError.message);
+                        console.error("Error inserting into creator_users:", creatorError.message);
+                        return;
+                    }
+
+                    // Profile creation successful
+                    alert("Profile creation successful.");
+                    navigation.navigate("NavBar", {
+                        isCreator: true,
+                    });
                 } catch (error) {
                     console.error("Error during profile creation:", error.message);
                 }
@@ -67,7 +106,7 @@ function CustomizeProfile({ props, route, session }) {
                 backgroundColor: appStyles.colors.background,
                 justifyContent: "center",
                 flexDirection: "column",
-                rowGap: 20,
+                rowGap: 30,
             }}
         >
             <Text
@@ -76,44 +115,28 @@ function CustomizeProfile({ props, route, session }) {
                     { textAlign: "center", marginTop: -40 },
                 ]}
             >
-                Customize your {"\n"}Profile
+                Customize your {"\n"} Profile
             </Text>
             <View>
-                <Image
-                    source={require("../images/profilePic_placeholder.png")}
-                    style={{
-                        height: 100,
-                        resizeMode: "contain",
-                        alignSelf: "center",
-                    }}
-                />
-                <Text
-                    style={[
-                        appStyles.fonts.paragraph,
-                        {
-                            textAlign: "center",
-                            marginTop: 5,
-                            textDecorationLine: "underline",
-                        },
-                    ]}
-                >
-                    Add profile picture
-                </Text>
+                <TouchableOpacity style={{ alignItems: 'center', marginTop: 20 }} onPress={pickImage}>
+                    {image ? <Image source={{ uri: image }} style={{ width: 100, height: 100 }} /> :
+                        <Text
+                            style={[
+                                appStyles.fonts.paragraph,
+                                {
+                                    textAlign: "center",
+                                    marginTop: 5,
+                                    textDecorationLine: "underline",
+                                },
+                            ]}
+                        >
+                            Add profile picture
+                        </Text>}
+                </TouchableOpacity>
+
             </View>
             <View>
-                <View style={styles.SectionStyle}>
-                    {/* <TextInput
-                        style={styles.inputStyle}
-                        onChangeText={(userName) => setUserName(userName)}
-                        underlineColorAndroid="#f000"
-                        placeholder="Name"
-                        placeholderTextColor="#8b9cb5"
-                        autoCapitalize="sentences"
-                        returnKeyType="next"
-                        onSubmitEditing={Keyboard.dismiss}
-                        blurOnSubmit={false}
-                    /> */}
-                </View>
+
                 <View style={styles.SectionStyle}>
                     <TextInput
                         style={styles.inputStyle}
@@ -130,22 +153,9 @@ function CustomizeProfile({ props, route, session }) {
                 <View style={styles.SectionStyle}>
                     <TextInput
                         style={styles.inputStyle}
-                        onChangeText={(year) => setYear(year)}
+                        onChangeText={(userName) => setUserName(userName)}
                         underlineColorAndroid="#f000"
-                        placeholder="School year"
-                        placeholderTextColor="#8b9cb5"
-                        autoCapitalize="sentences"
-                        returnKeyType="next"
-                        onSubmitEditing={Keyboard.dismiss}
-                        blurOnSubmit={false}
-                    />
-                </View>
-                <View style={styles.SectionStyle}>
-                    <TextInput
-                        style={styles.inputStyle}
-                        onChangeText={(major) => setMajor(major)}
-                        underlineColorAndroid="#f000"
-                        placeholder="Major"
+                        placeholder="UserName"
                         placeholderTextColor="#8b9cb5"
                         autoCapitalize="sentences"
                         returnKeyType="next"
@@ -159,6 +169,19 @@ function CustomizeProfile({ props, route, session }) {
                         onChangeText={(campus) => setCampus(campus)}
                         underlineColorAndroid="#f000"
                         placeholder="Campus Location"
+                        placeholderTextColor="#8b9cb5"
+                        autoCapitalize="sentences"
+                        returnKeyType="next"
+                        onSubmitEditing={Keyboard.dismiss}
+                        blurOnSubmit={false}
+                    />
+                </View>
+                <View style={styles.SectionStyle}>
+                    <TextInput
+                        style={styles.inputStyle}
+                        onChangeText={(bio) => setBio(bio)}
+                        underlineColorAndroid="#f000"
+                        placeholder="Bio"
                         placeholderTextColor="#8b9cb5"
                         autoCapitalize="sentences"
                         returnKeyType="next"
@@ -188,7 +211,7 @@ function CustomizeProfile({ props, route, session }) {
                     ]}
                     activeOpacity={0.5}
                     onPress={handleCreateProfileButton}
-                    disabled={!supabase.auth.getUser()}>
+                >
                     <Text style={styles.buttonTextStyle}>Finish</Text>
                 </TouchableOpacity>
             </View>
@@ -197,7 +220,7 @@ function CustomizeProfile({ props, route, session }) {
 
 }
 
-export default CustomizeProfile
+export default CustomizeProfileCreator
 const styles = StyleSheet.create({
     SectionStyle: {
         flexDirection: "row",
