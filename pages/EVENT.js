@@ -136,7 +136,9 @@ const EventPage = ({ route, navigation }) => {
             style={styles.report}
           />
         </TouchableOpacity>
-        <Text style={styles.dateTime}>{event.dateTime}</Text>
+        <Text style={styles.dateTime}>
+          {new Date(event.date).toLocaleString()}
+        </Text>
       </View>
       <View style={styles.detailsContainer}>
         <View style={{ flexDirection: "row", columnGap: "280%" }}>
@@ -338,7 +340,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    top: 45,
+    top: 60,
     left: 16,
     padding: 8,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -346,7 +348,7 @@ const styles = StyleSheet.create({
   },
   dateTime: {
     position: "absolute",
-    top: 45,
+    top: 60,
     right: 16,
     padding: 8,
     backgroundColor: "#080808",
