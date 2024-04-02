@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   View,
   Text,
@@ -7,42 +7,48 @@ import {
   ImageBackground,
   Image,
   Pressable,
-} from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import { Card, Icon } from "react-native-elements";
-import appStyles from "../styles";
-import Modal from "react-native-modal";
-import Ionicon from "react-native-vector-icons/FontAwesome";
-import UpdateList from "../components/UpdateList";
+} from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
+import { Card, Icon } from "react-native-elements"
+import appStyles from "../styles"
+import Modal from "react-native-modal"
+import Ionicon from "react-native-vector-icons/FontAwesome"
+import UpdateList from "../components/UpdateList"
+import { getEventStatus } from "../lib/utils"
 
 const EventPage = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event } = route.params
   const handleBack = () => {
-    navigation.goBack();
-  };
+    navigation.goBack()
+  }
 
-  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false);
-  const [isAttending, setIsAttending] = useState(false);
+  const [status, setStatus] = useState("")
+  useEffect(() => {
+    getEventStatus(setStatus, event.id)
+  }, [])
+
+  const [isBookmarked, setIsBookmarked] = useState(event.isBookmarked || false)
+  const [isAttending, setIsAttending] = useState(false)
   const handleBookmarkToggle = () => {
     // Add your logic for toggling the bookmark state
-    setIsBookmarked(!isBookmarked);
-  };
+    setIsBookmarked(!isBookmarked)
+  }
   const handleAttendToggle = () => {
     // Add your logic for toggling the attendance state
-    setIsAttending(!isAttending);
-  };
+    setIsAttending(!isAttending)
+  }
   //report modal usestate
-  const [isModalReportVisible, setModalReportVisible] = useState(false);
+  const [isModalReportVisible, setModalReportVisible] = useState(false)
   // info modal usestate
-  const [isInfoModalVisible, setInfoModalVisible] = useState(false);
+  const [isInfoModalVisible, setInfoModalVisible] = useState(false)
   //toggle showing modal
   const toggleReportModal = () => {
-    setModalReportVisible(!isModalReportVisible);
-  };
+    setModalReportVisible(!isModalReportVisible)
+  }
   // toggle info modal
   const toggleInfoModal = () => {
-    setInfoModalVisible(!isInfoModalVisible);
-  };
+    setInfoModalVisible(!isInfoModalVisible)
+  }
   const updateEvents = [
     {
       creatorName: "John Doe",
@@ -51,7 +57,7 @@ const EventPage = ({ route, navigation }) => {
       description:
         "All gear nessecary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
-  ];
+  ]
 
   const handleEventUpdate = (updatedEvent) => {
     // Handle the updated event in your state or data structure
@@ -60,8 +66,8 @@ const EventPage = ({ route, navigation }) => {
     // For simplicity, let's assume events is a state in EventPage
     setEvents((prevEvents) =>
       prevEvents.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-    );
-  };
+    )
+  }
 
   //function to navigate to the previous page
 
@@ -82,8 +88,7 @@ const EventPage = ({ route, navigation }) => {
         {/* report button with icon */}
         <TouchableOpacity
           onPress={toggleReportModal}
-          style={styles.reportButton}
-        >
+          style={styles.reportButton}>
           <Icon
             name="alert-circle-outline"
             type="ionicon"
@@ -104,8 +109,7 @@ const EventPage = ({ route, navigation }) => {
                 event: event,
                 onEventUpdate: handleEventUpdate,
               })
-            }
-          >
+            }>
             {/* Your UI component for editing event */}
             <Image
               source={require("../assets/icons/fi-br-edit.png")}
@@ -145,7 +149,7 @@ const EventPage = ({ route, navigation }) => {
         <Pressable onPress={handleBookmarkToggle} style={styles.bookmarkButton}>
           <View style={styles.bookmarkBox}>
             <Ionicon
-              name={isBookmarked ? "bookmark" : "bookmark-o"}
+              name={status == "saved" ? "bookmark" : "bookmark-o"}
               size={25}
               color="#FFC60A"
             />
@@ -156,10 +160,11 @@ const EventPage = ({ route, navigation }) => {
 
         <Pressable
           onPress={handleAttendToggle}
-          style={isAttending ? styles.attendingButton : styles.attendButton}
-        >
+          style={
+            status == "attending" ? styles.attendingButton : styles.attendButton
+          }>
           <Text style={[styles.attendButtonText]}>
-            {isAttending ? "Attending" : "Attend"}
+            {status == "attending" ? "Attending" : "Attend"}
           </Text>
         </Pressable>
       </View>
@@ -177,8 +182,7 @@ const EventPage = ({ route, navigation }) => {
           style={[
             { textDecorationLine: "underline" },
             appStyles.fonts.paragraph,
-          ]}
-        >
+          ]}>
           signuphereucf.com
         </Text>
       </View>
@@ -193,8 +197,7 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
           <Text style={styles.modalAlert}>
@@ -206,14 +209,12 @@ const EventPage = ({ route, navigation }) => {
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalOption, styles.modalOption1]}
-            >
+              style={[styles.modalOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalOption, styles.modalOption2]}
-            >
+              style={[styles.modalOption, styles.modalOption2]}>
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
@@ -222,8 +223,7 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Submitted!</Text>
           <Text style={styles.modalAlert}>
@@ -233,8 +233,7 @@ const EventPage = ({ route, navigation }) => {
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalReportOption, styles.modalOption1]}
-            >
+              style={[styles.modalReportOption, styles.modalOption1]}>
               <Text style={styles.modalOptionText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -245,8 +244,7 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isInfoModalVisible}
         onBackdropPress={toggleInfoModal}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Disclaimer</Text>
           <Text style={styles.modalAlert}>
@@ -257,8 +255,8 @@ const EventPage = ({ route, navigation }) => {
         </View>
       </Modal>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -470,6 +468,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 5,
   },
-});
+})
 
-export default EventPage;
+export default EventPage
