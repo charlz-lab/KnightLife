@@ -30,15 +30,15 @@ const EventPage = ({ route, navigation }) => {
 
   // check if the current user is the creator of the event
   const [isCreator, setIsCreator] = useState(true)
-  const checkCreator = async () => {
+  const checkCreator = async (setIsCreator) => {
     // get the logged in user's id
     const {
       data: { user },
     } = await supabase.auth.getUser()
-    return user.id == event.creator_id
+    setIsCreator(user.id == event.creator_id)
   }
   useEffect(() => {
-    setIsCreator(checkCreator())
+    checkCreator(setIsCreator)
   }, [])
 
   // get the event status for the logged in user
