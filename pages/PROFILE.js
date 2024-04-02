@@ -41,66 +41,70 @@ let defaultCreator = {
   followersNum: 1746,
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
-};
+}
 //fetch personal user data
 const fetchPersonalProfile = async () => {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     const { data, error, status } = await supabase
       .from("personal_users")
       .select("*")
-      .eq("id", user.id); // Use user.id to get the user's ID
+      .eq("id", user.id) // Use user.id to get the user's ID
 
     if (error && status !== 406) {
-      throw error;
+      throw error
     } else {
-      return data[0];
+      return data[0]
     }
   } catch (error) {
-    console.error("Error fetching personal user data:", error.message);
-    return null;
+    console.error("Error fetching personal user data:", error.message)
+    return null
   }
-};
+}
 //fetch creator profile data
 const fetchCreatorProfile = async () => {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     const { data, error, status } = await supabase
       .from("creator_users")
       .select("*")
-      .eq("id", user.id); // Use user.id to get the user's ID
+      .eq("id", user.id) // Use user.id to get the user's ID
 
     if (error && status !== 406) {
-      throw error;
+      throw error
     } else {
-      return data[0];
+      return data[0]
     }
   } catch (error) {
-    console.error("Error fetching creator user data:", error.message);
-    return null;
+    console.error("Error fetching creator user data:", error.message)
+    return null
   }
-};
+}
 // fetch events from database
 const fetchEvents = async (creatorId) => {
-  let eventsListQuery = supabase.from("events").select("*");
+  let eventsListQuery = supabase.from("events").select("*")
   if (creatorId) {
-    eventsListQuery = eventsListQuery.eq("creator_id", creatorId);
+    eventsListQuery = eventsListQuery.eq("creator_id", creatorId)
   }
-  eventsListQuery = eventsListQuery.order("date", { ascending: true });
-  const { data, error, status } = await eventsListQuery;
+  eventsListQuery = eventsListQuery.order("date", { ascending: true })
+  const { data, error, status } = await eventsListQuery
   if (error && status !== 406) {
-    throw error;
+    throw error
   } else {
-    return data;
+    return data
   }
-};
+}
 
 const subscribeToEvents = (creatorId, setEvents) => {
   const eventsListQuery = supabase
     .from("events")
     .select("*")
     .eq("creator_id", creatorId)
-    .order("date", { ascending: true });
+    .order("date", { ascending: true })
 
   const subscription = supabase
     .channel("event_changes")
@@ -110,32 +114,32 @@ const subscribeToEvents = (creatorId, setEvents) => {
       (payload) => {
         if (payload.eventType === "INSERT") {
           // Handle new event insertion
-          const newEvent = payload.new;
+          const newEvent = payload.new
           // Update events list
-          setEvents((prevEvents) => [...prevEvents, newEvent]);
+          setEvents((prevEvents) => [...prevEvents, newEvent])
         } else if (payload.eventType === "UPDATE") {
           // Handle event update
-          const updatedEvent = payload.new;
+          const updatedEvent = payload.new
           // Update events list
           setEvents((prevEvents) =>
             prevEvents.map((event) =>
               event.id === updatedEvent.id ? updatedEvent : event
             )
-          );
+          )
         } else if (payload.eventType === "DELETE") {
           // Handle event deletion
-          const deletedEventId = payload.old.id;
+          const deletedEventId = payload.old.id
           // Update events list
           setEvents((prevEvents) =>
             prevEvents.filter((event) => event.id !== deletedEventId)
-          );
+          )
         }
       }
     )
-    .subscribe();
+    .subscribe()
 
-  return subscription;
-};
+  return subscription
+}
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
@@ -156,9 +160,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       return
     }
 
-    setImage({ localUri: pickerResult.assets[0].uri });
-    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } });
-  };
+    setImage({ localUri: pickerResult.assets[0].uri })
+    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } })
+  }
 
   const saveAlert = () => {
     Alert.alert(
@@ -174,7 +178,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           text: "Save",
           onPress: async () => {
             try {
-              const { data: { user } } = await supabase.auth.getUser();
+              const {
+                data: { user },
+              } = await supabase.auth.getUser()
               if (profile.isCreator) {
                 // Update the creator_users table
                 const { error } = await supabase
@@ -185,10 +191,10 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                     campus_location: profile.campus_location,
                     bio: profile.bio,
                   })
-                  .eq("id", user.id);
+                  .eq("id", user.id)
 
                 if (error) {
-                  throw error;
+                  throw error
                 }
               } else {
                 // Update the personal_users table
@@ -200,27 +206,26 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                     campus_location: profile.campus_location,
                     school_year: profile.school_year,
                     major: profile.major,
-
                   })
-                  .eq("id", user.id);
+                  .eq("id", user.id)
 
                 if (error) {
-                  throw error;
+                  throw error
                 }
               }
 
               // navigate to the respective profile page after successful update
               profile.isCreator
                 ? navigation.navigate("Creator Profile", { profile })
-                : navigation.navigate("Personal Profile", { profile });
+                : navigation.navigate("Personal Profile", { profile })
             } catch (error) {
-              console.error("Error updating profile:", error.message);
+              console.error("Error updating profile:", error.message)
             }
           },
         },
       ]
-    );
-  };
+    )
+  }
   return (
     <>
       <View style={styles.editContainer}>
@@ -348,38 +353,27 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultProfile)
   const [savedEvents, setSavedEvents] = useState([])
-  const [events, setEvents] = useState([])
   const [attendingEvents, setAttendingEvents] = useState([])
   const [selection, setSelection] = useState("upcoming")
 
   // fetch events from database
   useEffect(() => {
-    const fetchEventsData = async () => {
-      const eventsData = await fetchEvents();
-      setEvents(eventsData);
-    };
-
-    const subscription = subscribeToEvents(setEvents);
-
-    fetchEventsData();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    handleEventList(setSavedEvents, "saved")
+    handleEventList(setAttendingEvents, "attending")
+  }, [])
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         // Fetch user's profile data
-        const userData = await fetchPersonalProfile(); // Remove route.params.userId from here
-        setProfile(userData);
+        const userData = await fetchPersonalProfile() // Remove route.params.userId from here
+        setProfile(userData)
       } catch (error) {
-        console.error("Error fetching user data:", error.message);
+        console.error("Error fetching user data:", error.message)
       }
-    };
+    }
 
-    fetchUserData();
-  }, []);
+    fetchUserData()
+  }, [])
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
@@ -441,39 +435,27 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
 }
 
 export const CREATOR_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultCreator);
-  const [selection, setSelection] = useState("upcoming");
-  const [events, setEvents] = useState([]);
-
+  const [profile, setProfile] = useState(route.params || defaultCreator)
+  const [selection, setSelection] = useState("upcoming")
+  const [events, setEvents] = useState([])
 
   // fetch events from database
   useEffect(() => {
-    const fetchEventsData = async () => {
-      const eventsData = await fetchEvents();
-      setEvents(eventsData);
-    };
-
-    const subscription = subscribeToEvents(setEvents);
-
-    fetchEventsData();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    handleEventList(setEvents, "creator")
+  }, [])
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         // Fetch user's profile data
-        const userData = await fetchCreatorProfile(); // Remove route.params.userId from here
-        setProfile(userData);
+        const userData = await fetchCreatorProfile() // Remove route.params.userId from here
+        setProfile(userData)
       } catch (error) {
-        console.error("Error fetching user data:", error.message);
+        console.error("Error fetching user data:", error.message)
       }
-    };
+    }
 
-    fetchUserData();
-  }, []);
+    fetchUserData()
+  }, [])
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
