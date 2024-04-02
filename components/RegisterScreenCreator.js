@@ -52,7 +52,6 @@ const RegisterScreenCreator = (props) => {
               id: session.user.id,
               email: userEmail,
               account_type: "creator",
-              // Add other necessary fields here
             })
             .then(({ data: userData, error: userInsertError }) => {
               if (userInsertError) {

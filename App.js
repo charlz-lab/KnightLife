@@ -26,9 +26,7 @@ import EditEvents from "./pages/settings_folder/Link pages/EditEvent"
 const Stack = createNativeStackNavigator();
 import EventList from "./components/EventList";
 import EventPage from "./pages/EVENT";
-import HOME from "./pages/HOME";
-import SavedEventList from "./components/SavedEventList";
-import AttendingEventList from "./components/AttendingEventList";
+
 import CustomizeProfilePersonal from "./components/CustomizeProfilePersonal";
 import CustomizeProfileCreator from "./components/CustomizeProfileCreator";
 

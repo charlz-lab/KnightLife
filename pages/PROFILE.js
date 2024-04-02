@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import { ScrollView } from "react-native-virtualized-view"
+import supabase from "../lib/supabase"
 import appStyles from "../styles"
 import ProfileCard from "../components/ProfileCard"
 import ToggleBar from "../components/ToggleBar"
@@ -347,6 +348,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [profile, setProfile] = useState(route.params || defaultProfile)
   const [savedEvents, setSavedEvents] = useState([])
+  const [events, setEvents] = useState([])
   const [attendingEvents, setAttendingEvents] = useState([])
   const [selection, setSelection] = useState("upcoming")
 

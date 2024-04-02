@@ -17,7 +17,7 @@ function NavBar({ route }) {
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
-      headerBackVisible: false,
+
     }
   }, []) // Empty dependency array ensures it runs only once
 
