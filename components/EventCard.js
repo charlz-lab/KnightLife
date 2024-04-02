@@ -59,7 +59,7 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
             style={styles.imageBanner}>
             <View style={styles.buttonContainer}>
               {/* bookmark toggle saved events, using ionicons */}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={handleBookmarkToggle}
                 style={styles.bookmarkButton}>
                 <Ionicon
@@ -68,7 +68,7 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
                   color="#FFC60A"
                   style={styles.bookmark}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </ImageBackground>
           <View style={styles.textContainer}>
