@@ -45,7 +45,7 @@ const ProfileCard = (props) => {
         ) : (
           // Show a placeholder or loading indicator if imageData is not available
           <Image
-            source={require("../images/janeDoeProfile.png")}
+            source={require("../images/profilePic_placeholder.png")}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
           />
         )}
