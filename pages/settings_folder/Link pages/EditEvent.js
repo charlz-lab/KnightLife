@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,54 +13,62 @@ import {
 import appStyles from "../../../styles";
 import * as ImagePicker from "expo-image-picker";
 import LocationDropdown from "../../../components/LocationDropdown";
+import supabase from "../../../lib/supabase";
 
 const EditEvents = ({ route, navigation }) => {
-  const { event, onEventUpdate } = route.params;
-  const [image, setImage] = useState(null);
+  const { event } = route.params;
+  const [name, setName] = useState(event.name);
+  const [location, setLocation] = useState(event.location);
+  const [description, setDescription] = useState(event.description);
+  const [roomNumber, setRoomNumber] = useState(event.room_number);
+  const [date, setDate] = useState(event.date);
+  const [image, setImage] = useState(event.image);
+  // Add more state variables as needed for other event properties
 
-  const [updatedEventDetails, setUpdatedEventDetails] = useState({
-    name: event.name,
-    location: event.location,
-    buildingRoomNum: event.buildingRoomNum,
-    dateTime: event.dateTime,
-    description: event.description,
-  });
+  useEffect(() => {
+    // Fetch the event data when the component mounts
+    fetchEventData();
+  }, []);
 
-  const handleChange = (field, value) => {
-    setUpdatedEventDetails((prevDetails) => ({
-      ...prevDetails,
-      [field]: value,
-    }));
+  const fetchEventData = async () => {
+    // Fetch the event data from Supabase
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('id', event.id)
+      .single();
+
+    if (data) {
+      setName(data.name);
+      setLocation(data.location);
+      setDescription(data.description);
+      setRoomNumber(data.room_number);
+      setDate(data.date);
+      setImage(data.image);
+      // Update other state variables as needed
+    } else {
+      console.error(error);
+    }
   };
+  const handleSave = async () => {
+    console.log('Updating event...');
 
-  const saveAlert = () =>
-    Alert.alert(
-      "Save Changes",
-      "Are you sure you would like to save your changes?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        {
-          text: "Save",
-          onPress: () => {
-            const updatedEvent = {
-              ...event,
-              name: updatedEventDetails.name,
-              location: updatedEventDetails.location,
-              buildingRoomNum: event.buildingRoomNum,
-              dateTime: updatedEventDetails.dateTime,
-              description: updatedEventDetails.description,
-            };
+    // Update the event in the Supabase table
+    const { data, error } = await supabase
+      .from('events')
+      .update({
+        name,
+        location,
+        description,
+        date,
+        room_number: roomNumber,
+        image
+      })
+      .eq('id', event.id);
+    console.log('Update operation completed.');
 
-            onEventUpdate(updatedEvent);
-            navigation.goBack();
-          },
-        },
-      ]
-    );
+    navigation.navigate("EventPage", { event })
+  };
 
   // handle image upload
   let openImagePickerAsync = async () => {
@@ -75,7 +83,7 @@ const EditEvents = ({ route, navigation }) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [0, 0],
+      aspect: [1, 1],
     });
 
     if (pickerResult.canceled === true) {
@@ -104,7 +112,7 @@ const EditEvents = ({ route, navigation }) => {
               No image uploaded
             </Text>
           ) : (
-            <Image source={image} style={styles.imageUpload} />
+            <Image source={{ uri: image }} style={styles.imageUpload} />
           )}
         </View>
         <TouchableOpacity onPress={openImagePickerAsync}>
@@ -120,8 +128,8 @@ const EditEvents = ({ route, navigation }) => {
         <Text style={appStyles.fonts.subHeading}>Name:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput
-            value={updatedEventDetails.name}
-            onChangeText={(value) => handleChange("name", value)}
+            value={name}
+            onChangeText={setName}
             style={[appStyles.fonts.paragraph, appStyles.textInput]}
             placeholder="Event Name"
             placeholderTextColor={"black"}
@@ -129,12 +137,12 @@ const EditEvents = ({ route, navigation }) => {
         </View>
 
         <Text style={appStyles.fonts.subHeading}>Location:</Text>
-        <LocationDropdown></LocationDropdown>
+        <LocationDropdown onLocationSelect={(selectedLocation) => setLocation(selectedLocation)} />
         <Text style={appStyles.fonts.subHeading}>Building & Room Number:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput
-            value={updatedEventDetails.buildingRoomNum}
-            onChangeText={(value) => handleChange("buildingRoomNum", value)}
+            value={roomNumber}
+            onChangeText={setRoomNumber}
             style={[appStyles.fonts.paragraph, appStyles.textInput]}
             placeholder="Building & Room Number"
             placeholderTextColor={"black"}
@@ -144,8 +152,8 @@ const EditEvents = ({ route, navigation }) => {
         <Text style={appStyles.fonts.subHeading}>Date and Time:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput
-            value={updatedEventDetails.dateTime}
-            onChangeText={(value) => handleChange("dateTime", value)}
+            value={date}
+            onChangeText={setDate}
             style={[appStyles.fonts.paragraph, appStyles.textInput]}
             placeholder="Date & Time"
             placeholderTextColor={"black"}
@@ -155,8 +163,8 @@ const EditEvents = ({ route, navigation }) => {
         <Text style={appStyles.fonts.subHeading}>Description:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput
-            value={updatedEventDetails.description}
-            onChangeText={(value) => handleChange("description", value)}
+            value={description}
+            onChangeText={setDescription}
             style={[appStyles.fonts.paragraph, appStyles.textInput]}
             multiline
             placeholder="Description"
@@ -168,13 +176,13 @@ const EditEvents = ({ route, navigation }) => {
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
             style={[appStyles.buttons.yellow, appStyles.shadow]}
-            onPress={saveAlert}
+            onPress={handleSave}
           >
             <Text style={appStyles.fonts.paragraph}>Save</Text>
           </Pressable>
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.goBack(updatedEvent)}
           >
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               {" "}

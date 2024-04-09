@@ -23,19 +23,20 @@ import {
 import supabase from "../lib/supabase"
 
 const EventPage = ({ route, navigation }) => {
+
   const { event } = route.params
   const handleBack = () => {
     navigation.goBack()
   }
 
   // check if the current user is the creator of the event
-  const [isCreator, setIsCreator] = useState(true)
+  const [isCreator, setIsCreator] = useState(false)
   const checkCreator = async (setIsCreator) => {
     // get the logged in user's id
     const {
       data: { user },
     } = await supabase.auth.getUser()
-    setIsCreator(user.id == event.creator_id)
+    setIsCreator(user?.id === event.creator_id)
   }
   useEffect(() => {
     checkCreator(setIsCreator)
@@ -145,7 +146,7 @@ const EventPage = ({ route, navigation }) => {
         </Text>
       </View>
       <View style={styles.detailsContainer}>
-        <View style={{ flexDirection: "row", columnGap: "280%" }}>
+        <View style={{ flexDirection: "row", columnGap: "170%", marginTop: 10 }}>
           <Text style={styles.name}>{event.name}</Text>
           {/* edit event need to make it so only creator accounts have it description.*/}
           <Pressable

@@ -12,6 +12,7 @@ import Ionicon from "react-native-vector-icons/FontAwesome"
 import BookmarkButton from "./BookmarkButton"
 import * as Font from "expo-font"
 import { useNavigation } from "@react-navigation/native"
+import supabase from "../lib/supabase"
 
 const EventCard = ({ event, navigation, onBookmarkToggle }) => {
   const handlePress = () => {
@@ -45,7 +46,15 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
   if (!fontLoaded) {
     return <Text>Loading...</Text>
   }
-
+  async function getImageData() {
+    const { data, error } = await supabase
+      .from("event").download("image")
+    if (error) {
+      console.log("Error downloading image: ", error)
+    } else {
+      console.log("Image downloaded successfully")
+    }
+  }
   //building card w props
 
   return (
@@ -54,7 +63,7 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
       <View style={styles.container}>
         <View style={[styles.cardContainer, styles.shadow]}>
           <ImageBackground
-            source={event.image}
+            source={{ uri: event.image }}
             imageStyle={{ borderRadius: 14, width: 290 }}
             style={styles.imageBanner}>
             <View style={styles.buttonContainer}>
