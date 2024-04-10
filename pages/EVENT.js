@@ -109,10 +109,11 @@ const EventPage = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       const fetchEvent = async () => {
+
         const { data, error } = await supabase
           .from('events')
           .select('*')
-          .eq('id', event.id) // replace eventId with the id of the event
+          .eq('id', event.id)
           .single();
 
         if (data) {
@@ -128,9 +129,8 @@ const EventPage = ({ route, navigation }) => {
   const handleEventUpdate = (updatedEvent) => {
     setEventData(updatedEvent);
   };
-  // ...
 
-  //function to navigate to the previous page
+
 
   return (
     <ScrollView style={styles.container}>

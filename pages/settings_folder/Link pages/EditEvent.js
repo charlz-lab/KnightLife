@@ -24,15 +24,13 @@ const EditEvents = ({ route, navigation }) => {
   const [roomNumber, setRoomNumber] = useState(event.room_number);
   const [date, setDate] = useState(event.date);
   const [image, setImage] = useState(event.image);
-  // Add more state variables as needed for other event properties
 
   useEffect(() => {
-    // Fetch the event data when the component mounts
     fetchEventData();
   }, []);
 
   const fetchEventData = async () => {
-    // Fetch the event data from Supabase
+    // fetch the event data from Supabase
     const { data, error } = await supabase
       .from('events')
       .select('*')
@@ -46,7 +44,6 @@ const EditEvents = ({ route, navigation }) => {
       setRoomNumber(data.room_number);
       setDate(data.date);
       setImage(data.image);
-      // Update other state variables as needed
     } else {
       console.error(error);
     }
@@ -54,7 +51,7 @@ const EditEvents = ({ route, navigation }) => {
   const handleSave = async () => {
     console.log('Updating event...');
 
-    // Update the event in the Supabase table
+    // update the event in the Supabase table
     const { error } = await supabase
       .from('events')
       .update({
@@ -74,8 +71,8 @@ const EditEvents = ({ route, navigation }) => {
       Alert.alert("Error updating event");
       return;
     }
+    //if update was successful navigate back to home
     navigation.navigate('NavBar', { isCreator: true });
-    // If the update was successful, navigate back to the EventPage
   };
 
   // handle image upload
