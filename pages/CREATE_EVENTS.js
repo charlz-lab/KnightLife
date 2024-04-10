@@ -24,7 +24,7 @@ const CREATE_EVENTS = () => {
     setModalVisible(!isModalVisible);
   };
   const [eventLocation, setEventLocation] = useState("");
-  const [eventBuilding, setEventBuilding] = useState("");
+  const [eventRoomNumber, setEventRoomNumber] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventTime, setEventTime] = useState("");
   const [eventDescription, setEventDescription] = useState("");
@@ -58,9 +58,11 @@ const CREATE_EVENTS = () => {
     supabase
       .from("events")
       .insert({
+        image: image,
         name: eventName,
         date: new Date(eventDate + " " + eventTime),
         location: eventLocation,
+        room_number: eventRoomNumber,
         description: eventDescription,
         creator_id: user.id, // This would be the logged in user's ID
       })
@@ -76,7 +78,7 @@ const CREATE_EVENTS = () => {
 
           // Clear input fields after successful event creation
           setEventName("");
-          setEventLocation("");
+          setEventRoomNumber("");
           setEventDate("");
           setEventTime("");
           setEventDescription("");
@@ -154,11 +156,11 @@ const CREATE_EVENTS = () => {
               value={eventName}
             />
           </View>
-          <LocationDropdown></LocationDropdown>
+          <LocationDropdown onLocationSelect={setEventLocation}></LocationDropdown>
           <View style={appStyles.sectionStyle}>
             <TextInput
               style={[appStyles.textInput, appStyles.fonts.paragraph]}
-              onChangeText={(text) => setEventLocation(text)}
+              onChangeText={(text) => setEventRoomNumber(text)}
               placeholder="Building & Room Number"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="words"
@@ -168,7 +170,7 @@ const CREATE_EVENTS = () => {
                 dateInputRef.current && dateInputRef.current.focus()
               }
               blurOnSubmit={false}
-              value={eventLocation}
+              value={eventRoomNumber}
             />
           </View>
           <View style={appStyles.sectionStyle}>

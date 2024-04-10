@@ -57,6 +57,7 @@ const fetchPersonalProfile = async () => {
       throw error
     } else {
       return data[0]
+      setIsCreator(false)
     }
   } catch (error) {
     console.error("Error fetching personal user data:", error.message)
@@ -78,6 +79,8 @@ const fetchCreatorProfile = async () => {
       throw error
     } else {
       return data[0]
+      setIsCreator(true)
+
     }
   } catch (error) {
     console.error("Error fetching creator user data:", error.message)
@@ -89,7 +92,9 @@ const fetchCreatorProfile = async () => {
 export const EDIT_PROFILE = ({ navigation, route }) => {
   let [profile, setProfile] = useState(route.params)
   const [image, setImage] = useState(null)
-
+  const { user } = supabase.auth.getUser()
+  console.log(user)
+  console.log(profile.isCreator)
   let openImagePickerAsync = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync()

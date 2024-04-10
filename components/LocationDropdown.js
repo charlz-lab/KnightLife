@@ -3,13 +3,15 @@ import { StyleSheet, View, Text } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function LocationDropdown() {
+export default function LocationDropdown(props) {
   const items = ["Main Campus", "Downtown", "Rosen College", "Cocoa Beach"];
   return (
     <SelectDropdown
       data={items}
       onSelect={(selectedItem, index) => {
         console.log(selectedItem, index);
+        props.onLocationSelect(selectedItem);
+
       }}
       renderButton={(selectedItem, isOpened) => {
         return (

@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { ScrollView } from "react-native-virtualized-view"
 import { Card, Icon } from "react-native-elements"
 import appStyles from "../styles"
@@ -24,18 +25,20 @@ import supabase from "../lib/supabase"
 
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params
+  const [eventData, setEventData] = useState(event)
+
   const handleBack = () => {
     navigation.goBack()
   }
 
   // check if the current user is the creator of the event
-  const [isCreator, setIsCreator] = useState(true)
+  const [isCreator, setIsCreator] = useState(false)
   const checkCreator = async (setIsCreator) => {
     // get the logged in user's id
     const {
       data: { user },
     } = await supabase.auth.getUser()
-    setIsCreator(user.id == event.creator_id)
+    setIsCreator(user?.id === event.creator_id)
   }
   useEffect(() => {
     checkCreator(setIsCreator)
@@ -102,17 +105,28 @@ const EventPage = ({ route, navigation }) => {
     },
   ]
 
-  const handleEventUpdate = (updatedEvent) => {
-    // Handle the updated event in your state or data structure
-    // Update the state or data structure containing events
-    // You might want to use a state management solution for this
-    // For simplicity, let's assume events is a state in EventPage
-    setEvents((prevEvents) =>
-      prevEvents.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-    )
-  }
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchEvent = async () => {
+        const { data, error } = await supabase
+          .from("events")
+          .select("*")
+          .eq("id", event.id)
+          .single()
 
-  //function to navigate to the previous page
+        if (data) {
+          setEventData(data)
+        } else {
+          console.error(error)
+        }
+      }
+
+      fetchEvent()
+    }, [event.id])
+  )
+  const handleEventUpdate = (updatedEvent) => {
+    setEventData(updatedEvent)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -145,7 +159,8 @@ const EventPage = ({ route, navigation }) => {
         </Text>
       </View>
       <View style={styles.detailsContainer}>
-        <View style={{ flexDirection: "row", columnGap: "280%" }}>
+        <View
+          style={{ flexDirection: "row", columnGap: "170%", marginTop: 10 }}>
           <Text style={styles.name}>{event.name}</Text>
           {/* edit event need to make it so only creator accounts have it description.*/}
           {isCreator ? (
@@ -177,6 +192,7 @@ const EventPage = ({ route, navigation }) => {
             style={styles.locationIcon}
           />
           <Text style={styles.locationText}>{event.location}</Text>
+          <Text style={styles.locationText}> - {event.room_number}</Text>
         </View>
 
         <Pressable onPress={() => navigation.navigate("MembersGoing")}>
