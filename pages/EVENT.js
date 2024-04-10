@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native"
+import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView } from "react-native-virtualized-view"
 import { Card, Icon } from "react-native-elements"
 import appStyles from "../styles"
@@ -25,6 +26,8 @@ import supabase from "../lib/supabase"
 const EventPage = ({ route, navigation }) => {
 
   const { event } = route.params
+  const [eventData, setEventData] = useState(event);
+
   const handleBack = () => {
     navigation.goBack()
   }
@@ -103,15 +106,29 @@ const EventPage = ({ route, navigation }) => {
     },
   ]
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchEvent = async () => {
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .eq('id', event.id) // replace eventId with the id of the event
+          .single();
+
+        if (data) {
+          setEventData(data);
+        } else {
+          console.error(error);
+        }
+      };
+
+      fetchEvent();
+    }, [event.id])
+  );
   const handleEventUpdate = (updatedEvent) => {
-    // Handle the updated event in your state or data structure
-    // Update the state or data structure containing events
-    // You might want to use a state management solution for this
-    // For simplicity, let's assume events is a state in EventPage
-    setEvents((prevEvents) =>
-      prevEvents.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-    )
-  }
+    setEventData(updatedEvent);
+  };
+  // ...
 
   //function to navigate to the previous page
 
@@ -152,8 +169,8 @@ const EventPage = ({ route, navigation }) => {
           <Pressable
             onPress={() =>
               navigation.navigate("EditEvents", {
-                event: event,
-                onEventUpdate: handleEventUpdate,
+                event: eventData,
+                handleEventUpdate: handleEventUpdate,
               })
             }>
             {/* Your UI component for editing event */}
@@ -174,6 +191,7 @@ const EventPage = ({ route, navigation }) => {
             style={styles.locationIcon}
           />
           <Text style={styles.locationText}>{event.location}</Text>
+          <Text style={styles.locationText}> - {event.room_number}</Text>
         </View>
 
         <Pressable onPress={() => navigation.navigate("MembersGoing")}>

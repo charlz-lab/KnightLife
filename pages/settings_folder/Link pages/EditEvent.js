@@ -16,7 +16,8 @@ import LocationDropdown from "../../../components/LocationDropdown";
 import supabase from "../../../lib/supabase";
 
 const EditEvents = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event, onEventUpdate } = route.params;
+
   const [name, setName] = useState(event.name);
   const [location, setLocation] = useState(event.location);
   const [description, setDescription] = useState(event.description);
@@ -54,7 +55,7 @@ const EditEvents = ({ route, navigation }) => {
     console.log('Updating event...');
 
     // Update the event in the Supabase table
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('events')
       .update({
         name,
@@ -65,9 +66,16 @@ const EditEvents = ({ route, navigation }) => {
         image
       })
       .eq('id', event.id);
-    console.log('Update operation completed.');
 
-    navigation.navigate("EventPage", { event })
+    console.log('Update operation completed');
+
+    if (error) {
+      console.error(error);
+      Alert.alert("Error updating event");
+      return;
+    }
+    navigation.navigate('NavBar', { isCreator: true });
+    // If the update was successful, navigate back to the EventPage
   };
 
   // handle image upload
