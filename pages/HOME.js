@@ -4,12 +4,12 @@ import { useFonts } from "expo-font"
 import {
   StyleSheet,
   Text,
-  ScrollView,
   SafeAreaView,
   View,
   Pressable,
   Image,
 } from "react-native"
+import { ScrollView } from "react-native-virtualized-view"
 import Modal from "react-native-modal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
