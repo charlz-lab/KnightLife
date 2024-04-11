@@ -22,23 +22,23 @@ import * as ImagePicker from "expo-image-picker"
 
 // jane doe's profile
 let defaultProfile = {
-  name: "Jane Doe",
-  username: "@janedoe",
-  year: "Senior",
-  major: "Marine Biology",
-  location: "UCF Downtown, Orlando",
+  name: "",
+  username: "",
+  year: "",
+  major: "",
+  location: "",
   pic: require("../images/janeDoeProfile.png"),
   isCreator: false,
 }
 
 // creator profile
 let defaultCreator = {
-  name: "UCF Chess Club",
-  username: "@chessclub",
-  location: "UCF Downtown, Orlando",
-  bio: "Community for students to keep up with existing chess skills and meet others with similar interests. Beginners welcome!",
-  eventsNum: 14,
-  followersNum: 1746,
+  name: "",
+  username: "",
+  location: "",
+  bio: "",
+  eventsNum: "",
+  followersNum: "",
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
 }
@@ -56,8 +56,9 @@ const fetchPersonalProfile = async () => {
     if (error && status !== 406) {
       throw error
     } else {
+
       return data[0]
-      setIsCreator(false)
+
     }
   } catch (error) {
     console.error("Error fetching personal user data:", error.message)
@@ -78,9 +79,8 @@ const fetchCreatorProfile = async () => {
     if (error && status !== 406) {
       throw error
     } else {
-      return data[0]
-      setIsCreator(true)
 
+      return data[0]
     }
   } catch (error) {
     console.error("Error fetching creator user data:", error.message)
@@ -220,9 +220,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               }
 
               // navigate to the respective profile page after successful update
-              profile.isCreator
-                ? navigation.navigate("Creator Profile", { profile })
-                : navigation.navigate("Personal Profile", { profile })
+              navigation.goBack()
             } catch (error) {
               console.error("Error updating profile:", error.message)
             }

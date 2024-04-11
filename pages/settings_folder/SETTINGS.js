@@ -37,8 +37,8 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={appStyles.fonts.headingTwo}>Settings</Text>
+      <View >
+        <Text style={[appStyles.fonts.headingTwo, { marginTop: 20 }]}>Settings</Text>
       </View>
       <View style={{ width: "100%", alignItems: "center" }}>
         <TouchableOpacity

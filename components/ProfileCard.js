@@ -35,15 +35,12 @@ const ProfileCard = (props) => {
         </Pressable>
       </View>
       <View style={appStyles.profileCard}>
-        {props.profile.image ? (
-          // Display the image if imageData is available
+        {props.profile && props.profile.image ? (
           <Image
             source={{ uri: `data:image/png;base64,${props.profile.image}` }}
             style={{ width: 125, height: 125, borderRadius: 125 / 2, resizeMode: 'cover' }}
           />
-
         ) : (
-          // Show a placeholder or loading indicator if imageData is not available
           <Image
             source={require("../images/profilePic_placeholder.png")}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}

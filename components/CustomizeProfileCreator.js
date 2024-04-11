@@ -142,7 +142,7 @@ function CustomizeProfileCreator({ navigation, route, session }) {
                         style={styles.inputStyle}
                         onChangeText={(name) => setName(name)}
                         underlineColorAndroid="#f000"
-                        placeholder="Name"
+                        placeholder="Organization Name"
                         placeholderTextColor="#8b9cb5"
                         autoCapitalize="sentences"
                         returnKeyType="next"
@@ -155,7 +155,7 @@ function CustomizeProfileCreator({ navigation, route, session }) {
                         style={styles.inputStyle}
                         onChangeText={(userName) => setUserName(userName)}
                         underlineColorAndroid="#f000"
-                        placeholder="UserName"
+                        placeholder="Organization Username"
                         placeholderTextColor="#8b9cb5"
                         autoCapitalize="sentences"
                         returnKeyType="next"

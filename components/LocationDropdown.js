@@ -23,7 +23,7 @@ export default function LocationDropdown(props) {
                   : styles.dropdownButtonTxtStyle
               }
             >
-              {selectedItem || "Location"}
+              {selectedItem || props.location || "Location"}
             </Text>
             <Icon
               name={isOpened ? "chevron-up" : "chevron-down"}

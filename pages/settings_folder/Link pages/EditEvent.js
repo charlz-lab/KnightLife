@@ -97,7 +97,9 @@ const EditEvents = ({ route, navigation }) => {
 
     setImage({ uri: pickerResult.assets[0].uri });
   };
-
+  const handleLocationSelect = (selectedLocation) => {
+    setLocation(selectedLocation);
+  };
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 500, backgroundColor: "white" }}
@@ -142,7 +144,7 @@ const EditEvents = ({ route, navigation }) => {
         </View>
 
         <Text style={appStyles.fonts.subHeading}>Location:</Text>
-        <LocationDropdown onLocationSelect={(selectedLocation) => setLocation(selectedLocation)} />
+        <LocationDropdown location={location} onLocationSelect={handleLocationSelect} />
         <Text style={appStyles.fonts.subHeading}>Building & Room Number:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput

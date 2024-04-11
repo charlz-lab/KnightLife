@@ -163,22 +163,30 @@ const EventPage = ({ route, navigation }) => {
         </Text>
       </View>
       <View style={styles.detailsContainer}>
-        <View style={{ flexDirection: "row", columnGap: "170%", marginTop: 10 }}>
-          <Text style={styles.name}>{event.name}</Text>
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Text style={[styles.name, { flex: 1 }]}>{event.name}</Text>
           {/* edit event need to make it so only creator accounts have it description.*/}
-          <Pressable
-            onPress={() =>
-              navigation.navigate("EditEvents", {
-                event: eventData,
-                handleEventUpdate: handleEventUpdate,
-              })
-            }>
-            {/* Your UI component for editing event */}
-            <Image
-              source={require("../assets/icons/fi-br-edit.png")}
-              style={{ width: 20, height: 20, marginTop: 5 }}
-            />
-          </Pressable>
+          {isCreator && (
+            <Pressable
+              onPress={() =>
+                navigation.navigate("EditEvents", {
+                  event: eventData,
+                  handleEventUpdate: handleEventUpdate,
+                })
+              }>
+              {/* Your UI component for editing event */}
+              <Image
+                source={require("../assets/icons/fi-br-edit.png")}
+                style={{
+                  width: 20,
+                  height: 20,
+                  position: 'absolute',
+                  right: 16,
+                  top: 10,
+                }}
+              />
+            </Pressable>
+          )}
         </View>
         <Text style={styles.creator}>{event.creator_name}</Text>
         {/* location pin icon*/}

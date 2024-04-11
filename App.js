@@ -184,11 +184,11 @@ export default function App() {
         <Stack.Screen
           name="EDIT_PROFILE"
           component={EDIT_PROFILE}
-          options={{ title: "" }}></Stack.Screen>
+          options={{ title: "", headerStyle: styles.header, headerBackVisible: false }}></Stack.Screen>
         <Stack.Screen
           name="Settings"
           component={Settings}
-          options={{ title: "" }}></Stack.Screen>
+          options={{ title: "", headerStyle: styles.header }}></Stack.Screen>
 
         <Stack.Screen name="Privacy" component={Privacy} />
         <Stack.Screen name="AddSwitchAccounts" component={AddSwitchAccounts} />
@@ -197,7 +197,7 @@ export default function App() {
         <Stack.Screen
           name="EditEvents"
           component={EditEvents}
-          options={{ title: "", headerStyle: styles.header }}
+          options={{ title: "", headerStyle: styles.header, headerBackVisible: false, }}
         />
         <Stack.Screen name="MembersGoing" component={MembersGoing} />
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
