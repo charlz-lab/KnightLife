@@ -8,7 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native"
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native"
 import { ScrollView } from "react-native-virtualized-view"
 import { Card, Icon } from "react-native-elements"
 import appStyles from "../styles"
@@ -24,9 +24,8 @@ import {
 import supabase from "../lib/supabase"
 
 const EventPage = ({ route, navigation }) => {
-
   const { event } = route.params
-  const [eventData, setEventData] = useState(event);
+  const [eventData, setEventData] = useState(event)
 
   const handleBack = () => {
     navigation.goBack()
@@ -109,28 +108,25 @@ const EventPage = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       const fetchEvent = async () => {
-
         const { data, error } = await supabase
-          .from('events')
-          .select('*')
-          .eq('id', event.id)
-          .single();
+          .from("events")
+          .select("*")
+          .eq("id", event.id)
+          .single()
 
         if (data) {
-          setEventData(data);
+          setEventData(data)
         } else {
-          console.error(error);
+          console.error(error)
         }
-      };
+      }
 
-      fetchEvent();
+      fetchEvent()
     }, [event.id])
-  );
+  )
   const handleEventUpdate = (updatedEvent) => {
-    setEventData(updatedEvent);
-  };
-
-
+    setEventData(updatedEvent)
+  }
 
   return (
     <ScrollView style={styles.container}>
