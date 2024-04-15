@@ -11,19 +11,16 @@ import { Card, Icon } from "react-native-elements"
 import searchIcon from "../assets/icons/fi-br-search.png"
 import appStyles from "../styles"
 
-const SearchBar = ({ onSearch }) => {
-  const [searchText, setSearchText] = useState("")
-
-  const handleSearch = () => {
-    // Search logic goes here
-
-    // For now, I'm just passing the search text to the parent component
-    onSearch(searchText)
-  }
-
+const SearchBar = ({
+  searchText,
+  setSearchText,
+  events,
+  setFilteredEvents,
+}) => {
+  // clear search text
   const handleClear = () => {
     setSearchText("")
-    onSearch("")
+    console.log("Clearing search text...")
   }
 
   return (
@@ -36,9 +33,17 @@ const SearchBar = ({ onSearch }) => {
         <Image source={searchIcon} style={{ height: 20, width: 20 }} />
         <TextInput
           style={styles.input}
-          placeholder="Search for events or creator accounts"
-          onChangeText={(text) => setSearchText(text)}
-          onSubmitEditing={handleSearch}
+          placeholder="Search for events..."
+          onChangeText={(text) => {
+            setSearchText(text)
+            const lowercasedSearchText = text.toLowerCase()
+            const filtered = events.filter(
+              (event) =>
+                event.name.toLowerCase().includes(lowercasedSearchText) ||
+                event.description.toLowerCase().includes(lowercasedSearchText)
+            )
+            setFilteredEvents(filtered)
+          }}
           value={searchText}
         />
       </View>

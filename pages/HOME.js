@@ -20,8 +20,9 @@ import SearchBar from "../components/SearchBar"
 import { handleEventList } from "../lib/utils"
 
 const HOME = ({ navigation }) => {
-  // list events
   const [events, setEvents] = React.useState([])
+  const [filteredEvents, setFilteredEvents] = React.useState([])
+  const [searchText, setSearchText] = React.useState("")
 
   // fetch events from database
   React.useEffect(() => {
@@ -34,11 +35,6 @@ const HOME = ({ navigation }) => {
     setModalVisible(!isModalVisible)
   }
 
-  const handleSearch = (searchText) => {
-    // Implement your search logic using searchText
-    console.log("Search Text:", searchText)
-  }
-
   return (
     <>
       <ScrollView>
@@ -49,7 +45,12 @@ const HOME = ({ navigation }) => {
               appStyles.layout.horizontal,
               { paddingHorizontal: 10, width: "100%" },
             ]}>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar
+              searchText={searchText}
+              setSearchText={setSearchText}
+              events={events}
+              setFilteredEvents={setFilteredEvents}
+            />
             {/* note: "pressable" is more customizable than "button" */}
             <Pressable
               onPress={toggleModal}
@@ -59,7 +60,11 @@ const HOME = ({ navigation }) => {
           </View>
 
           {/* List of event cards */}
-          <EventList events={events} navigation={navigation} />
+          {filteredEvents.length > 0 ? (
+            <EventList events={filteredEvents} />
+          ) : (
+            <EventList events={events} />
+          )}
 
           {/* Filter modal */}
           <Modal
