@@ -15,6 +15,7 @@ import appStyles from "../styles"
 import Modal from "react-native-modal"
 import Ionicon from "react-native-vector-icons/FontAwesome"
 import UpdateList from "../components/UpdateList"
+import AnnoucementsPost from "../components/AnnouncementsPost"
 import {
   getEventStatus,
   addEventStatus,
@@ -127,7 +128,7 @@ const EventPage = ({ route, navigation }) => {
   const handleEventUpdate = (updatedEvent) => {
     setEventData(updatedEvent)
   }
-
+//edit
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -204,6 +205,8 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Pressable>
 
+       
+
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
         <Card borderRadius={12} style={[styles.shadow, styles.card]}>
@@ -211,6 +214,8 @@ const EventPage = ({ route, navigation }) => {
             {event.description}
           </Text>
         </Card>
+
+        
         {/* </View> */}
       </View>
       {isCreator ? (
@@ -262,13 +267,21 @@ const EventPage = ({ route, navigation }) => {
         </Text>
       </View>
       <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
-        Event Updates:
+        Annoucements:
       </Text>
+      
+      {/* AnnoucementPost only for creators */}
+      <View style={styles.anouncementPostContainer}>
+          {isCreator && (
+            <AnnoucementsPost/>
+          )}
+        </View>
+  
       <View style={styles.updateEventListContainer}>
         <UpdateList updateEvents={updateEvents} />
       </View>
 
-      {/* modal for report button */}
+      {/* modal for report button gear */}
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
@@ -524,6 +537,14 @@ const styles = StyleSheet.create({
   toggleContainer: {
     // Add any styles for the toggle container here
   },
+  anouncementPostContainer: {
+    justifyContent: "center",
+    backgroundColor: "white",
+    paddingBottom: 20,
+    marginBottom: 5,
+    borderRadius: 30,
+  },
+
   updateEventListContainer: {
     // Add any styles for the update event list container here
     justifyContent: "center",
