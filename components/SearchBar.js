@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   Text,
+  Platform,
 } from "react-native"
 import { Card, Icon } from "react-native-elements"
 import searchIcon from "../assets/icons/fi-br-search.png"
@@ -37,6 +38,7 @@ const SearchBar = ({
           onChangeText={(text) => {
             setSearchText(text)
             const lowercasedSearchText = text.toLowerCase()
+
             // filter events by beginning of words
             const filtered = events.filter((event) => {
               eventName = " " + event.name.toLowerCase()
@@ -45,9 +47,10 @@ const SearchBar = ({
             setFilteredEvents(filtered)
           }}
           value={searchText}
+          clearButtonMode="while-editing"
         />
       </View>
-      {searchText.length > 0 && (
+      {searchText.length > 0 && Platform.OS !== "ios" && (
         <Pressable style={styles.clearButton} onPress={handleClear}>
           <Icon
             name="close"
