@@ -20,7 +20,7 @@ const SearchBar = ({
   // clear search text
   const handleClear = () => {
     setSearchText("")
-    console.log("Clearing search text...")
+    setFilteredEvents(events)
   }
 
   return (
