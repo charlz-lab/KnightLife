@@ -37,11 +37,11 @@ const SearchBar = ({
           onChangeText={(text) => {
             setSearchText(text)
             const lowercasedSearchText = text.toLowerCase()
-            const filtered = events.filter(
-              (event) =>
-                event.name.toLowerCase().includes(lowercasedSearchText) ||
-                event.description.toLowerCase().includes(lowercasedSearchText)
-            )
+            // filter events by beginning of words
+            const filtered = events.filter((event) => {
+              eventName = " " + event.name.toLowerCase()
+              return eventName.includes(" " + lowercasedSearchText)
+            })
             setFilteredEvents(filtered)
           }}
           value={searchText}
