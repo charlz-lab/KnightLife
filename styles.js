@@ -52,6 +52,15 @@ const appStyles = {
       backgroundColor: "#FFC60A",
       alignItems: "center",
     },
+    blackNoWidth: {
+      marginTop: 20,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 20,
+      padding: 10,
+      backgroundColor: "black",
+      alignItems: "center",
+    },
     buttonClick: {
       backgroundColor: "black",
       width: "85%",
@@ -188,5 +197,5 @@ const appStyles = {
     marginLeft: 35,
     marginRight: 35,
   },
-}
-export default appStyles
+};
+export default appStyles;

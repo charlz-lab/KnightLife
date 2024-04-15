@@ -14,6 +14,8 @@ import appStyles from "../../../styles";
 import * as ImagePicker from "expo-image-picker";
 import LocationDropdown from "../../../components/LocationDropdown";
 import supabase from "../../../lib/supabase";
+import DateTime from "../../../components/DateTime";
+import DateTimeEdit from "../../../components/DateTimeEdit";
 
 const EditEvents = ({ route, navigation }) => {
   const { event, onEventUpdate } = route.params;
@@ -23,6 +25,7 @@ const EditEvents = ({ route, navigation }) => {
   const [description, setDescription] = useState(event.description);
   const [roomNumber, setRoomNumber] = useState(event.room_number);
   const [date, setDate] = useState(event.date);
+  const [time, setTime] = useState(event.date);
   const [image, setImage] = useState(event.image);
 
   useEffect(() => {
@@ -32,9 +35,9 @@ const EditEvents = ({ route, navigation }) => {
   const fetchEventData = async () => {
     // fetch the event data from Supabase
     const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('id', event.id)
+      .from("events")
+      .select("*")
+      .eq("id", event.id)
       .single();
 
     if (data) {
@@ -49,22 +52,22 @@ const EditEvents = ({ route, navigation }) => {
     }
   };
   const handleSave = async () => {
-    console.log('Updating event...');
+    console.log("Updating event...");
 
     // update the event in the Supabase table
     const { error } = await supabase
-      .from('events')
+      .from("events")
       .update({
         name,
         location,
         description,
         date,
         room_number: roomNumber,
-        image
+        image,
       })
-      .eq('id', event.id);
+      .eq("id", event.id);
 
-    console.log('Update operation completed');
+    console.log("Update operation completed");
 
     if (error) {
       console.error(error);
@@ -72,7 +75,7 @@ const EditEvents = ({ route, navigation }) => {
       return;
     }
     //if update was successful navigate back to home
-    navigation.navigate('NavBar', { isCreator: true });
+    navigation.navigate("NavBar", { isCreator: true });
   };
 
   // handle image upload
@@ -144,28 +147,26 @@ const EditEvents = ({ route, navigation }) => {
         </View>
 
         <Text style={appStyles.fonts.subHeading}>Location:</Text>
-        <LocationDropdown location={location} onLocationSelect={handleLocationSelect} />
+        <LocationDropdown
+          location={location}
+          onLocationSelect={handleLocationSelect}
+        />
         <Text style={appStyles.fonts.subHeading}>Building & Room Number:</Text>
         <View style={appStyles.sectionStyle}>
           <TextInput
             value={roomNumber}
             onChangeText={setRoomNumber}
             style={[appStyles.fonts.paragraph, appStyles.textInput]}
-            placeholder="Building & Room Number"
+            placeholder="None"
             placeholderTextColor={"black"}
           />
         </View>
 
-        <Text style={appStyles.fonts.subHeading}>Date and Time:</Text>
-        <View style={appStyles.sectionStyle}>
-          <TextInput
-            value={date}
-            onChangeText={setDate}
-            style={[appStyles.fonts.paragraph, appStyles.textInput]}
-            placeholder="Date & Time"
-            placeholderTextColor={"black"}
-          />
-        </View>
+        <DateTimeEdit
+          date={date}
+          time={time}
+          onDateTimeUpdate={setDate}
+        ></DateTimeEdit>
 
         <Text style={appStyles.fonts.subHeading}>Description:</Text>
         <View style={appStyles.sectionStyle}>
@@ -189,7 +190,7 @@ const EditEvents = ({ route, navigation }) => {
           </Pressable>
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
-            onPress={() => navigation.goBack(updatedEvent)}
+            onPress={() => navigation.goBack()}
           >
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               {" "}

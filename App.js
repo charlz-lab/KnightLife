@@ -124,15 +124,19 @@ const Auth = () => {
         name="CustomizeProfileCreator"
         component={CustomizeProfileCreator}
         options={{
-          title: "", //Set Header Title
+          title: "Customize Your Profile", //Set Header Title
           headerStyle: {
             backgroundColor: appStyles.colors.accent2,
             //Set Header color
           },
           headerTintColor: appStyles.colors.mainBackground, //Set Header text color
-          headerTitleStyle: {
-            fontWeight: "bold", //Set Header text style
-          },
+          headerTitleStyle: [
+            appStyles.fonts.headingTwo,
+            {
+              fontWeight: "bold", //Set Header text style
+              fontSize: 20,
+            },
+          ],
         }}
       />
     </Stack.Navigator>

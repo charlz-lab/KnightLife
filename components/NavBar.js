@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react"
-import { Image } from "react-native-elements"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import CREATE_EVENTS from "../pages/CREATE_EVENTS"
-import HOME from "../pages/HOME"
-import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE"
-import appStyles from "../styles"
-import { StyleSheet, View, Platform } from "react-native"
-import supabase from "../lib/supabase"
-const Tab = createBottomTabNavigator()
+import React, { useEffect, useState } from "react";
+import { Image } from "react-native-elements";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CREATE_EVENTS from "../pages/CREATE_EVENTS";
+import HOME from "../pages/HOME";
+import { PERSONAL_PROFILE, CREATOR_PROFILE } from "../pages/PROFILE";
+import appStyles from "../styles";
+import { StyleSheet, View, Platform } from "react-native";
+import supabase from "../lib/supabase";
+const Tab = createBottomTabNavigator();
 
 function NavBar({ route }) {
-  const { isCreator } = route.params
+  const { isCreator } = route.params;
 
   useEffect(() => {
     // This effect runs once when the component mounts
     // Define your navigation options here
     HOME.navigationOptions = {
       headerLeft: null,
-
-    }
-  }, []) // Empty dependency array ensures it runs only once
+    };
+  }, []); // Empty dependency array ensures it runs only once
 
   return (
     <Tab.Navigator
@@ -30,7 +29,8 @@ function NavBar({ route }) {
           backgroundColor: appStyles.colors.mainBackground,
           height: 90, // Adjust the height as needed
         },
-      }}>
+      }}
+    >
       {isCreator ? (
         <>
           <Tab.Screen
@@ -87,7 +87,6 @@ function NavBar({ route }) {
               tabBarIcon: ({ size, focused, color }) => (
                 <TabIcon
                   focused={focused}
-
                   icon={require("../assets/icons/fi-bs-profile.png")}
                   selectedIcon={require("../assets/icons/fi-bs-profileYellow.png")}
                 />
@@ -97,7 +96,7 @@ function NavBar({ route }) {
         </>
       )}
     </Tab.Navigator>
-  )
+  );
 }
 
 const TabIcon = ({ focused, icon, selectedIcon }) => (
@@ -107,7 +106,7 @@ const TabIcon = ({ focused, icon, selectedIcon }) => (
       source={focused ? selectedIcon : icon}
     />
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   tabIconContainer: {
@@ -148,6 +147,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-})
+});
 
-export default NavBar
+export default NavBar;

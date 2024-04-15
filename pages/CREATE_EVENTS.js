@@ -16,6 +16,7 @@ import Modal from "react-native-modal";
 import supabase from "../lib/supabase";
 import * as ImagePicker from "expo-image-picker";
 import LocationDropdown from "../components/LocationDropdown";
+import DateTime from "../components/DateTime";
 
 const CREATE_EVENTS = () => {
   const [eventName, setEventName] = useState("");
@@ -25,9 +26,11 @@ const CREATE_EVENTS = () => {
   };
   const [eventLocation, setEventLocation] = useState("");
   const [eventRoomNumber, setEventRoomNumber] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventTime, setEventTime] = useState("");
+  const [eventDate, setDate] = useState("");
+  const [eventTime, setTime] = useState("");
+  const [eventDateTime, setDateTime] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+  const [signUp, setSignUp] = useState("");
   const locationInputRef = createRef();
   const buildingInputRef = createRef();
   const dateInputRef = createRef();
@@ -35,14 +38,9 @@ const CREATE_EVENTS = () => {
   const descriptionInputRef = createRef();
 
   const handleSubmitPress = async () => {
+    console.log("Event date + time" + eventDateTime);
     // Check if all fields are filled out
-    if (
-      !eventName ||
-      !eventLocation ||
-      !eventDate ||
-      !eventTime ||
-      !eventDescription
-    ) {
+    if (!eventName || !eventLocation || !eventDateTime || !eventDescription) {
       Alert.alert("Please fill out all fields");
       return;
     }
@@ -60,11 +58,12 @@ const CREATE_EVENTS = () => {
       .insert({
         image: image,
         name: eventName,
-        date: new Date(eventDate + " " + eventTime),
+        date: new Date(eventDateTime),
         location: eventLocation,
         room_number: eventRoomNumber,
         description: eventDescription,
         creator_id: user.id, // This would be the logged in user's ID
+        link: signUp,
       })
       .then((data, error) => {
         console.log(data, error);
@@ -82,6 +81,7 @@ const CREATE_EVENTS = () => {
           setEventDate("");
           setEventTime("");
           setEventDescription("");
+          setSignUp("");
         }
       });
   };
@@ -145,7 +145,7 @@ const CREATE_EVENTS = () => {
             <TextInput
               style={[appStyles.textInput, appStyles.fonts.paragraph]}
               onChangeText={(text) => setEventName(text)}
-              placeholder="Name"
+              placeholder="Event Title"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="words"
               returnKeyType="next"
@@ -156,12 +156,14 @@ const CREATE_EVENTS = () => {
               value={eventName}
             />
           </View>
-          <LocationDropdown onLocationSelect={setEventLocation}></LocationDropdown>
+          <LocationDropdown
+            onLocationSelect={setEventLocation}
+          ></LocationDropdown>
           <View style={appStyles.sectionStyle}>
             <TextInput
               style={[appStyles.textInput, appStyles.fonts.paragraph]}
               onChangeText={(text) => setEventRoomNumber(text)}
-              placeholder="Building & Room Number"
+              placeholder="Building & Room Number (Optional)"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="words"
               returnKeyType="next"
@@ -173,37 +175,7 @@ const CREATE_EVENTS = () => {
               value={eventRoomNumber}
             />
           </View>
-          <View style={appStyles.sectionStyle}>
-            <TextInput
-              style={[appStyles.textInput, appStyles.fonts.paragraph]}
-              onChangeText={(text) => setEventDate(text)}
-              placeholder="Date (YYYY-MM-DD)"
-              placeholderTextColor="#8b9cb5"
-              returnKeyType="next"
-              ref={dateInputRef}
-              onSubmitEditing={() =>
-                timeInputRef.current && timeInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-              value={eventDate}
-            />
-          </View>
-          <View style={appStyles.sectionStyle}>
-            <TextInput
-              style={[appStyles.textInput, appStyles.fonts.paragraph]}
-              onChangeText={(text) => setEventTime(text)}
-              placeholder="Time (HH:MM:SS)"
-              placeholderTextColor="#8b9cb5"
-              returnKeyType="next"
-              ref={timeInputRef}
-              onSubmitEditing={() =>
-                descriptionInputRef.current &&
-                descriptionInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-              value={eventTime}
-            />
-          </View>
+          <DateTime onDateTimeSelect={setDateTime}></DateTime>
           <View style={appStyles.sectionStyle}>
             <TextInput
               style={[appStyles.textInput, appStyles.fonts.paragraph]}
@@ -212,6 +184,16 @@ const CREATE_EVENTS = () => {
               placeholderTextColor="#8b9cb5"
               returnKeyType="done"
               value={eventDescription}
+            />
+          </View>
+          <View style={appStyles.sectionStyle}>
+            <TextInput
+              style={[appStyles.textInput, appStyles.fonts.paragraph]}
+              onChangeText={(text) => setSignUp(text)}
+              placeholder="External Sign-Up Link (Optional)"
+              placeholderTextColor="#8b9cb5"
+              returnKeyType="done"
+              value={signUp}
             />
           </View>
         </View>
