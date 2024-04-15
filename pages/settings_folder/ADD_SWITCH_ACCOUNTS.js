@@ -20,13 +20,6 @@ const AddSwitchAccounts = ({ navigation }) => {
   const [activeAccount, setActiveAccount] = useState(1);
   const [accountCount, setAccountCount] = useState(2);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: "", // Remove the title from the header
-      headerTintColor: "#000",
-    });
-  }, [navigation]);
-
   const switchAccount = (index) => {
     setActiveAccount(index);
   };
@@ -41,8 +34,6 @@ const AddSwitchAccounts = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={appStyles.fonts.heading}>Add/Switch Accounts</Text>
-
       {userAccounts.map((_, index) => (
         <TouchableOpacity
           key={index}

@@ -38,16 +38,16 @@ const RegisterScreenCreator = (props) => {
     if (signUpError) {
       alert(`Registration failed: ${signUpError.message}`); //alert the user if there is an error
     } else {
-      //if there is no error, the user is signed up 
+      //if there is no error, the user is signed up
 
-      alert('Registration successful! Check your email for verification.');
+      alert("Registration successful! Check your email for verification.");
 
       // Listen for the user.registered event
       supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN') {
+        if (event === "SIGNED_IN") {
           // Insert the user into the users table
           supabase
-            .from('users')
+            .from("users")
             .insert({
               id: session.user.id,
               email: userEmail,
@@ -55,7 +55,10 @@ const RegisterScreenCreator = (props) => {
             })
             .then(({ data: userData, error: userInsertError }) => {
               if (userInsertError) {
-                console.error('Error inserting into users:', userInsertError.message);
+                console.error(
+                  "Error inserting into users:",
+                  userInsertError.message
+                );
               }
             });
         }
@@ -75,9 +78,6 @@ const RegisterScreenCreator = (props) => {
           rowGap: 60,
         }}
       >
-        <View style={{ alignItems: "center", paddingTop: 40 }}>
-          <Text style={appStyles.fonts.headingTwo}>Sign Up</Text>
-        </View>
         <KeyboardAvoidingView enabled>
           <View style={{ marginTop: 55 }}>
             {/* <View style={styles.SectionStyle}>

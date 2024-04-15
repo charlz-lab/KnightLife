@@ -22,16 +22,6 @@ const AccountType = ({ navigation }) => {
         alignContent: "center",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          backgroundColor: "#FFFFFF",
-          paddingTop: 30,
-        }}
-      >
-        <Text style={appStyles.fonts.headingTwo}>Account Types</Text>
-      </View>
-
       <View style={styles.mainBody}>
         <View style={[appStyles.layout.section, { marginTop: -40 }]}>
           <TouchableOpacity

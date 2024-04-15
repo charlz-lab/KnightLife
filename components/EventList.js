@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { StyleSheet, SafeAreaView, View, FlatList } from "react-native"
-import EventCard from "../components/EventCard"
-import supabase from "../lib/supabase"
+import React, { useState, useEffect } from "react";
+import { StyleSheet, SafeAreaView, View, FlatList, Text } from "react-native";
+import EventCard from "../components/EventCard";
+import supabase from "../lib/supabase";
+import appStyles from "../styles";
 
 const EventList = ({ events, navigation }) => {
-  const [eventData, setEventData] = useState([])
+  const [eventData, setEventData] = useState([]);
 
   // update the event list with the creator's name
   const fetchEventCreatorNames = async (events) => {
@@ -13,53 +14,65 @@ const EventList = ({ events, navigation }) => {
         let eventCreatorQuery = supabase
           .from("users")
           .select("name")
-          .eq("id", event.creator_id)
-        const { data, error, status } = await eventCreatorQuery
+          .eq("id", event.creator_id);
+        const { data, error, status } = await eventCreatorQuery;
         if (error && status !== 406) {
-          throw error
+          throw error;
         } else {
           // console.log(data)
-          return { ...event, creator_name: data[0].name }
+          return { ...event, creator_name: data[0].name };
         }
       })
-    )
-    return updatedEvents
-  }
+    );
+    return updatedEvents;
+  };
 
   useEffect(() => {
     if (supabase) {
       fetchEventCreatorNames(events).then((updatedEvents) => {
-        setEventData(updatedEvents)
-      })
+        setEventData(updatedEvents);
+      });
     }
-  }, [events])
+  }, [events]);
 
   /*toggle the bookmarked events*/
   const handleBookmarkToggle = (eventId, isBookmarked) => {
     const updatedData = eventData.map((event) =>
       event.id === eventId ? { ...event, isBookmarked } : event
-    )
-    setEventData(updatedData)
-  }
+    );
+    setEventData(updatedData);
+  };
   // console.log(eventData)
 
   return (
     <SafeAreaView style={styles.container}>
-      {/*flatlist to render the event cards*/}
-      <FlatList
-        data={eventData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <EventCard
-            event={item}
-            navigation={navigation}
-            onBookmarkToggle={handleBookmarkToggle}
-          />
-        )}
-      />
+      {eventData.length === 0 ? (
+        <View>
+          <Text
+            style={[
+              appStyles.fonts.paragraph,
+              { marginTop: 10, paddingBottom: 100 },
+            ]}
+          >
+            There are currently no events
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={eventData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <EventCard
+              event={item}
+              navigation={navigation}
+              onBookmarkToggle={handleBookmarkToggle}
+            />
+          )}
+        />
+      )}
     </SafeAreaView>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -80,5 +93,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
-})
-export default EventList
+});
+export default EventList;

@@ -13,34 +13,32 @@ import {
 import appStyles from "../styles";
 import supabase from "../lib/supabase";
 const RegisterScreenPersonal = (props) => {
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [userPassword, setUserPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [errortext, setErrortext] = useState("")
-
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
 
   async function handleCreateAccButton() {
     //subabase.auth.signUp is a function that creates a new user in the database
     const { error: signUpError } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
-
     });
 
     if (signUpError) {
       alert(`Registration failed: ${signUpError.message}`); //alert the user if there is an error
     } else {
-      //if there is no error, the user is signed up 
+      //if there is no error, the user is signed up
 
-      alert('Registration successful! Check your email for verification.');
+      alert("Registration successful! Check your email for verification.");
 
       // Listen for the user.registered event
       supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN') {
+        if (event === "SIGNED_IN") {
           // Insert the user into the users table
           supabase
-            .from('users')
+            .from("users")
             .insert({
               id: session.user.id,
               email: userEmail,
@@ -48,7 +46,10 @@ const RegisterScreenPersonal = (props) => {
             })
             .then(({ data: userData, error: userInsertError }) => {
               if (userInsertError) {
-                console.error('Error inserting into users:', userInsertError.message);
+                console.error(
+                  "Error inserting into users:",
+                  userInsertError.message
+                );
               }
             });
         }
@@ -72,9 +73,6 @@ const RegisterScreenPersonal = (props) => {
           rowGap: 60,
         }}
       >
-        <View style={{ alignItems: "center", paddingTop: 40 }}>
-          <Text style={appStyles.fonts.headingTwo}>Sign Up</Text>
-        </View>
         <KeyboardAvoidingView enabled>
           <View style={{ marginTop: 55 }}>
             {/* <View style={styles.SectionStyle}>
@@ -98,7 +96,6 @@ const RegisterScreenPersonal = (props) => {
                 placeholderTextColor="#8b9cb5"
                 keyboardType="email-address"
                 returnKeyType="next"
-
                 blurOnSubmit={false}
               />
             </View>
@@ -109,7 +106,6 @@ const RegisterScreenPersonal = (props) => {
                 underlineColorAndroid="#f000"
                 placeholder="Password"
                 placeholderTextColor="#8b9cb5"
-
                 returnKeyType="next"
                 secureTextEntry={true}
                 onSubmitEditing={Keyboard.dismiss}

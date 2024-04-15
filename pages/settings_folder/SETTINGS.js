@@ -37,10 +37,10 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <View >
+      {/* <View >
         <Text style={[appStyles.fonts.headingTwo, { marginTop: 20 }]}>Settings</Text>
-      </View>
-      <View style={{ width: "100%", alignItems: "center" }}>
+      </View> */}
+      <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
         <TouchableOpacity
           style={[appStyles.profileCard, appStyles.shadowInput]}
           onPress={navigateToPrivacy}

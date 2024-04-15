@@ -8,13 +8,6 @@ const Accessibility = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: "", // Remove the title from the header
-      headerTintColor: "#000",
-    });
-  }, [navigation]);
-
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
     console.log("Dark Mode:", isDarkMode);
@@ -22,9 +15,6 @@ const Accessibility = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[appStyles.fonts.heading, styles.margin]}>
-        Accessibility
-      </Text>
       <TouchableOpacity
         style={[
           styles.darkModeButton,
