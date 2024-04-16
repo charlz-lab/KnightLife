@@ -11,7 +11,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-
+import LocationDropdown from "./LocationDropdown";
 import supabase from "../lib/supabase";
 import * as ImagePicker from "expo-image-picker";
 
@@ -138,10 +138,10 @@ function CustomizeProfileCreator({ navigation, route, session }) {
           )}
         </TouchableOpacity>
       </View>
-      <View>
-        <View style={styles.SectionStyle}>
+      <View style={{ flexDirection: "column", rowGap: 15 }}>
+        <View style={appStyles.sectionStyle}>
           <TextInput
-            style={styles.inputStyle}
+            style={[styles.inputStyle, appStyles.fonts.paragraph]}
             onChangeText={(name) => setName(name)}
             underlineColorAndroid="#f000"
             placeholder="Organization Name"
@@ -152,9 +152,9 @@ function CustomizeProfileCreator({ navigation, route, session }) {
             blurOnSubmit={false}
           />
         </View>
-        <View style={styles.SectionStyle}>
+        <View style={appStyles.sectionStyle}>
           <TextInput
-            style={styles.inputStyle}
+            style={[styles.inputStyle, appStyles.fonts.paragraph]}
             onChangeText={(userName) => setUserName(userName)}
             underlineColorAndroid="#f000"
             placeholder="Organization Username"
@@ -165,22 +165,10 @@ function CustomizeProfileCreator({ navigation, route, session }) {
             blurOnSubmit={false}
           />
         </View>
-        <View style={styles.SectionStyle}>
+        <LocationDropdown onLocationSelect={setCampus}></LocationDropdown>
+        <View style={appStyles.sectionStyle}>
           <TextInput
-            style={styles.inputStyle}
-            onChangeText={(campus) => setCampus(campus)}
-            underlineColorAndroid="#f000"
-            placeholder="Campus Location"
-            placeholderTextColor="#8b9cb5"
-            autoCapitalize="sentences"
-            returnKeyType="next"
-            onSubmitEditing={Keyboard.dismiss}
-            blurOnSubmit={false}
-          />
-        </View>
-        <View style={styles.SectionStyle}>
-          <TextInput
-            style={styles.inputStyle}
+            style={[styles.inputStyle, appStyles.fonts.paragraph]}
             onChangeText={(bio) => setBio(bio)}
             underlineColorAndroid="#f000"
             placeholder="Bio"

@@ -150,7 +150,6 @@ const EditEvents = ({ route, navigation }) => {
         <LocationDropdown
           location={location}
           onLocationSelect={handleLocationSelect}
-          placeholderTextColor={"black"}
         />
         <Text style={appStyles.fonts.subHeading}>Building & Room Number:</Text>
         <View style={appStyles.sectionStyle}>

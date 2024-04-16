@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react"
+import { React, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,15 +10,16 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-} from "react-native"
-import { ScrollView } from "react-native-virtualized-view"
-import supabase from "../lib/supabase"
-import appStyles from "../styles"
-import ProfileCard from "../components/ProfileCard"
-import ToggleBar from "../components/ToggleBar"
-import EventList from "../components/EventList"
-import { handleEventList } from "../lib/utils"
-import * as ImagePicker from "expo-image-picker"
+} from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import supabase from "../lib/supabase";
+import appStyles from "../styles";
+import ProfileCard from "../components/ProfileCard";
+import ToggleBar from "../components/ToggleBar";
+import EventList from "../components/EventList";
+import { handleEventList } from "../lib/utils";
+import * as ImagePicker from "expo-image-picker";
+import LocationDropdown from "../components/LocationDropdown";
 
 // jane doe's profile
 let defaultProfile = {
@@ -29,7 +30,7 @@ let defaultProfile = {
   location: "",
   pic: require("../images/janeDoeProfile.png"),
   isCreator: false,
-}
+};
 
 // creator profile
 let defaultCreator = {
@@ -41,77 +42,75 @@ let defaultCreator = {
   followersNum: "",
   pic: require("../images/chessClubPic.png"),
   isCreator: true,
-}
+};
 //fetch personal user data
 const fetchPersonalProfile = async () => {
   try {
     const {
       data: { user },
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
     const { data, error, status } = await supabase
       .from("personal_users")
       .select("*")
-      .eq("id", user.id) // Use user.id to get the user's ID
+      .eq("id", user.id); // Use user.id to get the user's ID
 
     if (error && status !== 406) {
-      throw error
+      throw error;
     } else {
-
-      return data[0]
-
+      return data[0];
     }
   } catch (error) {
-    console.error("Error fetching personal user data:", error.message)
-    return null
+    console.error("Error fetching personal user data:", error.message);
+    return null;
   }
-}
+};
 //fetch creator profile data
 const fetchCreatorProfile = async () => {
   try {
     const {
       data: { user },
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
     const { data, error, status } = await supabase
       .from("creator_users")
       .select("*")
-      .eq("id", user.id) // Use user.id to get the user's ID
+      .eq("id", user.id); // Use user.id to get the user's ID
 
     if (error && status !== 406) {
-      throw error
+      throw error;
     } else {
-
-      return data[0]
+      return data[0];
     }
   } catch (error) {
-    console.error("Error fetching creator user data:", error.message)
-    return null
+    console.error("Error fetching creator user data:", error.message);
+    return null;
   }
-}
+};
 
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
-  let [profile, setProfile] = useState(route.params)
-  const [image, setImage] = useState(null)
-  const { user } = supabase.auth.getUser()
-  console.log(user)
-  console.log(profile.isCreator)
+  let [profile, setProfile] = useState(route.params);
+  let [campus, setCampus] = useState("");
+  const [image, setImage] = useState(null);
+  const { user } = supabase.auth.getUser();
+  console.log(user);
+  console.log(profile.isCreator);
   let openImagePickerAsync = async () => {
     let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync()
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!")
-      return
+      alert("Permission to access camera roll is required!");
+      return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync()
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
     if (pickerResult.canceled === true) {
-      return
+      return;
     }
 
-    setImage({ localUri: pickerResult.assets[0].uri })
-    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } })
-  }
+    setImage({ localUri: pickerResult.assets[0].uri });
+    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } });
+  };
 
   const saveAlert = () => {
     Alert.alert(
@@ -120,7 +119,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => navigation.navigate(goBack),
           style: "cancel",
         },
         {
@@ -129,7 +128,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             try {
               const {
                 data: { user },
-              } = await supabase.auth.getUser()
+              } = await supabase.auth.getUser();
               if (profile.isCreator) {
                 // Update the creator_users table
                 const { error } = await supabase
@@ -137,13 +136,13 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                   .update({
                     name: profile.name,
                     username: profile.username,
-                    campus_location: profile.campus_location,
+                    campus_location: campus,
                     bio: profile.bio,
                   })
-                  .eq("id", user.id)
+                  .eq("id", user.id);
 
                 if (error) {
-                  throw error
+                  throw error;
                 }
               } else {
                 // Update the personal_users table
@@ -152,27 +151,27 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                   .update({
                     name: profile.name,
                     username: profile.username,
-                    campus_location: profile.campus_location,
+                    campus_location: campus,
                     school_year: profile.school_year,
                     major: profile.major,
                   })
-                  .eq("id", user.id)
+                  .eq("id", user.id);
 
                 if (error) {
-                  throw error
+                  throw error;
                 }
               }
 
               // navigate to the respective profile page after successful update
-              navigation.goBack()
+              navigation.goBack();
             } catch (error) {
-              console.error("Error updating profile:", error.message)
+              console.error("Error updating profile:", error.message);
             }
           },
         },
       ]
-    )
-  }
+    );
+  };
   return (
     <>
       <View style={styles.editContainer}>
@@ -182,7 +181,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             rowGap: 5,
             alignItems: "center",
             marginTop: 25,
-          }}>
+          }}
+        >
           <Image
             source={profile.image}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
@@ -193,7 +193,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               style={[
                 appStyles.fonts.paragraph,
                 { textDecorationLine: "underline" },
-              ]}>
+              ]}
+            >
               Change photo
             </Text>
           </TouchableOpacity>
@@ -204,7 +205,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             width: "90%",
             alignItems: "center",
             rowGap: 5,
-          }}>
+          }}
+        >
           <Text style={appStyles.fonts.subHeading}>Profile Name:</Text>
           <View style={appStyles.sectionStyle}>
             <TextInput
@@ -226,15 +228,10 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             />
           </View>
           <Text style={appStyles.fonts.subHeading}>Campus Location:</Text>
-          <View style={appStyles.sectionStyle}>
-            <TextInput
-              value={profile.campus_location}
-              onChangeText={(value) =>
-                setProfile({ ...profile, campus_location: value })
-              }
-              style={[appStyles.fonts.paragraph, appStyles.textInput]}
-            />
-          </View>
+          <LocationDropdown
+            onLocationSelect={setCampus}
+            location={profile.campus_location}
+          ></LocationDropdown>
           {profile.isCreator ? (
             <>
               <Text style={appStyles.fonts.subHeading}>Bio:</Text>
@@ -276,7 +273,8 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
             style={[appStyles.buttons.yellow, appStyles.shadow]}
-            onPress={saveAlert}>
+            onPress={saveAlert}
+          >
             <Text style={appStyles.fonts.paragraph}>Save</Text>
           </Pressable>
           <Pressable
@@ -284,8 +282,9 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
             onPress={() => {
               profile.isCreator
                 ? navigation.navigate("Creator Profile")
-                : navigation.navigate("Personal Profile")
-            }}>
+                : navigation.navigate("Personal Profile");
+            }}
+          >
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               Cancel
             </Text>
@@ -293,41 +292,41 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
         </View>
       </View>
     </>
-  )
-}
+  );
+};
 
 // profile
 export const PERSONAL_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultProfile)
-  const [savedEvents, setSavedEvents] = useState([])
-  const [attendingEvents, setAttendingEvents] = useState([])
-  const [selection, setSelection] = useState("upcoming")
+  const [profile, setProfile] = useState(route.params || defaultProfile);
+  const [savedEvents, setSavedEvents] = useState([]);
+  const [attendingEvents, setAttendingEvents] = useState([]);
+  const [selection, setSelection] = useState("upcoming");
 
   // fetch events from database
   useEffect(() => {
-    handleEventList(setSavedEvents, "saved")
-    handleEventList(setAttendingEvents, "attending")
-  }, [])
+    handleEventList(setSavedEvents, "saved");
+    handleEventList(setAttendingEvents, "attending");
+  }, []);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         // Fetch user's profile data
-        const userData = await fetchPersonalProfile() // Remove route.params.userId from here
-        setProfile(userData)
+        const userData = await fetchPersonalProfile(); // Remove route.params.userId from here
+        setProfile(userData);
       } catch (error) {
-        console.error("Error fetching user data:", error.message)
+        console.error("Error fetching user data:", error.message);
       }
-    }
+    };
 
-    fetchUserData()
-  }, [])
+    fetchUserData();
+  }, []);
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile)
-      console.log("profile changed")
+      setProfile(route.params.profile);
+      console.log("profile changed");
     }
-  }, [route.params?.profile])
+  }, [route.params?.profile]);
 
   return (
     <>
@@ -355,7 +354,8 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                   (event) => new Date(event.date) > new Date()
                 )
               }
-              navigation={navigation}></EventList>
+              navigation={navigation}
+            ></EventList>
           ) : selection === "saved" ? (
             <EventList
               events={savedEvents.filter(
@@ -371,44 +371,45 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
                   (event) => new Date(event.date) < new Date()
                 )
               }
-              navigation={navigation}></EventList>
+              navigation={navigation}
+            ></EventList>
           )}
         </View>
 
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  )
-}
+  );
+};
 
 export const CREATOR_PROFILE = ({ navigation, route }) => {
-  const [profile, setProfile] = useState(route.params || defaultCreator)
-  const [selection, setSelection] = useState("upcoming")
-  const [events, setEvents] = useState([])
+  const [profile, setProfile] = useState(route.params || defaultCreator);
+  const [selection, setSelection] = useState("upcoming");
+  const [events, setEvents] = useState([]);
 
   // fetch events from database
   useEffect(() => {
-    handleEventList(setEvents, "creator")
-  }, [])
+    handleEventList(setEvents, "creator");
+  }, []);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         // Fetch user's profile data
-        const userData = await fetchCreatorProfile() // Remove route.params.userId from here
-        setProfile(userData)
+        const userData = await fetchCreatorProfile(); // Remove route.params.userId from here
+        setProfile(userData);
       } catch (error) {
-        console.error("Error fetching user data:", error.message)
+        console.error("Error fetching user data:", error.message);
       }
-    }
+    };
 
-    fetchUserData()
-  }, [])
+    fetchUserData();
+  }, []);
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
-      setProfile(route.params.profile)
+      setProfile(route.params.profile);
     }
-  }, [route.params?.profile])
+  }, [route.params?.profile]);
 
   return (
     <>
@@ -433,22 +434,24 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
                 // filter upcoming events
                 events.filter((event) => new Date(event.date) > new Date())
               }
-              navigation={navigation}></EventList>
+              navigation={navigation}
+            ></EventList>
           ) : (
             <EventList
               events={
                 // filter past events
                 events.filter((event) => new Date(event.date) < new Date())
               }
-              navigation={navigation}></EventList>
+              navigation={navigation}
+            ></EventList>
           )}
           {/* navigate to edit profile */}
         </View>
         <StatusBar style="auto" />
       </ScrollView>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   editContainer: {
@@ -468,4 +471,4 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingHorizontal: 20,
   },
-})
+});

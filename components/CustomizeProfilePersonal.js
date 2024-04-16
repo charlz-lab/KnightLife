@@ -14,6 +14,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+import LocationDropdown from "./LocationDropdown";
 
 import supabase from "../lib/supabase";
 import * as ImagePicker from "expo-image-picker";
@@ -129,17 +130,9 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
             backgroundColor: appStyles.colors.background,
             justifyContent: "center",
             flexDirection: "column",
-            rowGap: 15,
+            rowGap: 35,
           }}
         >
-          {/* <Text
-            style={[
-              appStyles.fonts.headingTwo,
-              { textAlign: "center", marginTop: 20 },
-            ]}
-          >
-            Customize your {"\n"}Profile
-          </Text> */}
           <View>
             <TouchableOpacity
               style={{ alignItems: "center", marginTop: 40 }}
@@ -170,10 +163,10 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
               </Text>
             </TouchableOpacity>
           </View>
-          <View>
-            <View style={styles.SectionStyle}>
+          <View style={{ flexDirection: "column", rowGap: 15 }}>
+            <View style={appStyles.sectionStyle}>
               <TextInput
-                style={styles.inputStyle}
+                style={[styles.inputStyle, appStyles.fonts.paragraph]}
                 onChangeText={(userName) => setUserName(userName)}
                 underlineColorAndroid="#f000"
                 placeholder="Username"
@@ -184,9 +177,9 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
                 blurOnSubmit={false}
               />
             </View>
-            <View style={styles.SectionStyle}>
+            <View style={appStyles.sectionStyle}>
               <TextInput
-                style={styles.inputStyle}
+                style={[styles.inputStyle, appStyles.fonts.paragraph]}
                 onChangeText={(name) => setName(name)}
                 underlineColorAndroid="#f000"
                 placeholder="Name"
@@ -197,9 +190,9 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
                 blurOnSubmit={false}
               />
             </View>
-            <View style={styles.SectionStyle}>
+            <View style={appStyles.sectionStyle}>
               <TextInput
-                style={styles.inputStyle}
+                style={[styles.inputStyle, appStyles.fonts.paragraph]}
                 onChangeText={(school_year) => setYear(school_year)}
                 underlineColorAndroid="#f000"
                 placeholder="School year"
@@ -210,9 +203,9 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
                 blurOnSubmit={false}
               />
             </View>
-            <View style={styles.SectionStyle}>
+            <View style={appStyles.sectionStyle}>
               <TextInput
-                style={styles.inputStyle}
+                style={[styles.inputStyle, appStyles.fonts.paragraph]}
                 onChangeText={(major) => setMajor(major)}
                 underlineColorAndroid="#f000"
                 placeholder="Major"
@@ -223,19 +216,7 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
                 blurOnSubmit={false}
               />
             </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(campus) => setCampus(campus)}
-                underlineColorAndroid="#f000"
-                placeholder="Campus Location"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="sentences"
-                returnKeyType="next"
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-              />
-            </View>
+            <LocationDropdown onLocationSelect={setCampus}></LocationDropdown>
           </View>
           <View
             style={[

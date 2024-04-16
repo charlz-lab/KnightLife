@@ -1,5 +1,5 @@
 import appStyles from "../styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -14,6 +14,12 @@ export default function LocationDropdown(props) {
   ];
   const [showInput, setShowInput] = useState(false);
   const [otherLocation, setOtherLocation] = useState("");
+
+  useEffect(() => {
+    if (showInput) {
+      props.onLocationSelect(otherLocation);
+    }
+  }, [otherLocation]);
   return (
     <>
       <SelectDropdown
@@ -21,9 +27,9 @@ export default function LocationDropdown(props) {
         onSelect={(selectedItem, index) => {
           console.log(selectedItem, index);
           setShowInput(selectedItem === "Other");
-          selectedItem === "Other"
-            ? console.log("Other location selected" + otherLocation)
-            : props.onLocationSelect(selectedItem);
+          if (selectedItem !== "Other") {
+            props.onLocationSelect(selectedItem);
+          }
         }}
         renderButton={(selectedItem, isOpened) => {
           return (
@@ -66,7 +72,7 @@ export default function LocationDropdown(props) {
             placeholderTextColor="#8b9cb5"
             placeholder="Please specify"
             onChangeText={(text) => {
-              setOtherLocation(text), props.onLocationSelect(otherLocation);
+              setOtherLocation(text);
             }}
             value={otherLocation}
           />
