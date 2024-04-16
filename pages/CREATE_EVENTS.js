@@ -26,19 +26,15 @@ const CREATE_EVENTS = () => {
   };
   const [eventLocation, setEventLocation] = useState("");
   const [eventRoomNumber, setEventRoomNumber] = useState("");
-  const [eventDate, setDate] = useState("");
-  const [eventTime, setTime] = useState("");
   const [eventDateTime, setDateTime] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [signUp, setSignUp] = useState("");
   const locationInputRef = createRef();
   const buildingInputRef = createRef();
   const dateInputRef = createRef();
-  const timeInputRef = createRef();
   const descriptionInputRef = createRef();
 
   const handleSubmitPress = async () => {
-    console.log("Event date + time" + eventDateTime);
     // Check if all fields are filled out
     if (!eventName || !eventLocation || !eventDateTime || !eventDescription) {
       Alert.alert("Please fill out all fields");
@@ -78,8 +74,6 @@ const CREATE_EVENTS = () => {
           // Clear input fields after successful event creation
           setEventName("");
           setEventRoomNumber("");
-          setEventDate("");
-          setEventTime("");
           setEventDescription("");
           setSignUp("");
         }

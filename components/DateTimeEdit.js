@@ -18,12 +18,6 @@ export default function DateTimeEdit(props) {
     setDatePickerVisible(false);
   };
 
-  const handleDateConfirm = (date) => {
-    setDate(date);
-    props.onDateTimeUpdate(date);
-    hideDatePicker();
-  };
-
   const showTimePicker = () => {
     setTimePickerVisible(true);
   };
@@ -32,9 +26,23 @@ export default function DateTimeEdit(props) {
     setTimePickerVisible(false);
   };
 
-  const handleTimeConfirm = (time) => {
-    setTime(time);
-    props.onDateTimeUpdate(time);
+  const handleDateConfirm = (selectedDate) => {
+    const updatedDate = new Date(selectedDate);
+    updatedDate.setHours(time.getHours());
+    updatedDate.setMinutes(time.getMinutes());
+
+    setDate(updatedDate);
+    props.onDateTimeUpdate(updatedDate);
+    hideDatePicker();
+  };
+
+  const handleTimeConfirm = (selectedTime) => {
+    const updatedTime = new Date(date);
+    updatedTime.setHours(selectedTime.getHours());
+    updatedTime.setMinutes(selectedTime.getMinutes());
+
+    setTime(updatedTime);
+    props.onDateTimeUpdate(updatedTime);
     hideTimePicker();
   };
 
@@ -61,12 +69,13 @@ export default function DateTimeEdit(props) {
           onPress={showDatePicker}
         >
           <Text style={[appStyles.fonts.paragraph, { color: "white" }]}>
-            Set Date
+            Change Date
           </Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
+          date={date} // Pass the current date to the picker
           onConfirm={handleDateConfirm}
           onCancel={hideDatePicker}
         />
@@ -80,12 +89,13 @@ export default function DateTimeEdit(props) {
           onPress={showTimePicker}
         >
           <Text style={[appStyles.fonts.paragraph, { color: "white" }]}>
-            Set Time
+            Change Time
           </Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isTimePickerVisible}
           mode="time"
+          date={time} // Pass the current time to the picker
           onConfirm={handleTimeConfirm}
           onCancel={hideTimePicker}
         />
