@@ -22,7 +22,6 @@ import { handleEventList } from "../lib/utils"
 const HOME = ({ navigation }) => {
   const [events, setEvents] = React.useState([])
   const [filteredEvents, setFilteredEvents] = React.useState([])
-  const [searchText, setSearchText] = React.useState("")
 
   // fetch events from database
   React.useEffect(() => {
@@ -35,6 +34,27 @@ const HOME = ({ navigation }) => {
     setModalVisible(!isModalVisible)
   }
 
+  // search logic
+  const searchEvents = (text) => {
+    if (typeof text !== "string") {
+      setFilteredEvents(events)
+    } else {
+      const lowercasedSearchText = text.toLowerCase()
+
+      // filter events by beginning of words
+      const filtered = events.filter((event) => {
+        const eventName = " " + event.name.toLowerCase()
+        return eventName.includes(" " + lowercasedSearchText)
+      })
+      setFilteredEvents(filtered)
+    }
+  }
+
+  // clear search results
+  const clearEvents = () => {
+    setFilteredEvents([])
+  }
+
   return (
     <>
       <ScrollView>
@@ -45,12 +65,7 @@ const HOME = ({ navigation }) => {
               appStyles.layout.horizontal,
               { paddingHorizontal: 10, width: "100%" },
             ]}>
-            <SearchBar
-              searchText={searchText}
-              setSearchText={setSearchText}
-              events={events}
-              setFilteredEvents={setFilteredEvents}
-            />
+            <SearchBar handleSearch={searchEvents} clearEvents={clearEvents} />
             {/* note: "pressable" is more customizable than "button" */}
             <Pressable
               onPress={toggleModal}

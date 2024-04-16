@@ -12,16 +12,13 @@ import { Card, Icon } from "react-native-elements"
 import searchIcon from "../assets/icons/fi-br-search.png"
 import appStyles from "../styles"
 
-const SearchBar = ({
-  searchText,
-  setSearchText,
-  events,
-  setFilteredEvents,
-}) => {
+const SearchBar = ({ handleSearch, clearEvents }) => {
+  const [searchText, setSearchText] = useState("")
+
   // clear search text
   const handleClear = () => {
     setSearchText("")
-    setFilteredEvents(events)
+    clearEvents()
   }
 
   return (
@@ -37,29 +34,20 @@ const SearchBar = ({
           placeholder="Search for events..."
           onChangeText={(text) => {
             setSearchText(text)
-            const lowercasedSearchText = text.toLowerCase()
-
-            // filter events by beginning of words
-            const filtered = events.filter((event) => {
-              eventName = " " + event.name.toLowerCase()
-              return eventName.includes(" " + lowercasedSearchText)
-            })
-            setFilteredEvents(filtered)
           }}
+          onEndEditing={() => handleSearch(searchText)}
           value={searchText}
-          clearButtonMode="while-editing"
+          returnKeyType="search"
         />
       </View>
-      {searchText.length > 0 && Platform.OS !== "ios" && (
-        <Pressable style={styles.clearButton} onPress={handleClear}>
-          <Icon
-            name="close"
-            type="ionicon"
-            size={25}
-            color={appStyles.colors.accent1}
-          />
-        </Pressable>
-      )}
+      <Pressable style={styles.clearButton} onPress={handleClear}>
+        <Icon
+          name="close"
+          type="ionicon"
+          size={25}
+          color={appStyles.colors.accent1}
+        />
+      </Pressable>
     </View>
   )
 }
