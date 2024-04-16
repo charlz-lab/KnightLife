@@ -88,7 +88,7 @@ const Settings = () => {
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalAlert}>
-              Are you sure you would like to sing out?
+              Are you sure you would like to sign out?
             </Text>
             <View style={styles.modalOptionsContainer}>
               <TouchableOpacity

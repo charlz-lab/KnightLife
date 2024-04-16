@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,95 +7,95 @@ import {
   ImageBackground,
   Image,
   Pressable,
-} from "react-native"
-import { useFocusEffect } from "@react-navigation/native"
-import { ScrollView } from "react-native-virtualized-view"
-import { Card, Icon } from "react-native-elements"
-import appStyles from "../styles"
-import Modal from "react-native-modal"
-import Ionicon from "react-native-vector-icons/FontAwesome"
-import UpdateList from "../components/UpdateList"
-import AnnoucementsPost from "../components/AnnouncementsPost"
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { ScrollView } from "react-native-virtualized-view";
+import { Card, Icon } from "react-native-elements";
+import appStyles from "../styles";
+import Modal from "react-native-modal";
+import Ionicon from "react-native-vector-icons/FontAwesome";
+import UpdateList from "../components/UpdateList";
+import AnnoucementsPost from "../components/AnnouncementsPost";
 import {
   getEventStatus,
   addEventStatus,
   deleteEventStatus,
   updateEventStatus,
-} from "../lib/utils"
-import supabase from "../lib/supabase"
+} from "../lib/utils";
+import supabase from "../lib/supabase";
 
 const EventPage = ({ route, navigation }) => {
-  const { event } = route.params
-  const [eventData, setEventData] = useState(event)
+  const { event } = route.params;
+  const [eventData, setEventData] = useState(event);
 
   const handleBack = () => {
-    navigation.goBack()
-  }
+    navigation.goBack();
+  };
 
   // check if the current user is the creator of the event
-  const [isCreator, setIsCreator] = useState(false)
+  const [isCreator, setIsCreator] = useState(false);
   const checkCreator = async (setIsCreator) => {
     // get the logged in user's id
     const {
       data: { user },
-    } = await supabase.auth.getUser()
-    setIsCreator(user?.id === event.creator_id)
-  }
+    } = await supabase.auth.getUser();
+    setIsCreator(user?.id === event.creator_id);
+  };
   useEffect(() => {
-    checkCreator(setIsCreator)
-  }, [])
+    checkCreator(setIsCreator);
+  }, []);
 
   // get the event status for the logged in user
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
   useEffect(() => {
-    getEventStatus(setStatus, event.id)
-  }, [])
+    getEventStatus(setStatus, event.id);
+  }, []);
 
   // function to toggle the bookmark status
   const handleBookmarkToggle = () => {
     if (status == "saved") {
       // if the user previously bookmarked the event, remove the status
-      setStatus("")
-      deleteEventStatus(event.id)
+      setStatus("");
+      deleteEventStatus(event.id);
     } else if (status == "attending") {
       // if the user was previously attending the event, update the status to saved
-      setStatus("saved")
-      updateEventStatus(event.id, "saved")
+      setStatus("saved");
+      updateEventStatus(event.id, "saved");
     } else {
       // if the user did not have a previous status, add the status to the database
-      setStatus("saved")
-      addEventStatus(event.id, "saved")
+      setStatus("saved");
+      addEventStatus(event.id, "saved");
     }
-  }
+  };
   // function to toggle the attending status
   const handleAttendToggle = () => {
     if (status == "attending") {
       // if the user was previously attending the event, remove the status
-      setStatus("")
-      deleteEventStatus(event.id)
+      setStatus("");
+      deleteEventStatus(event.id);
     } else if (status == "saved") {
       // if the user previously bookmarked the event, update the status to attending
-      setStatus("attending")
-      updateEventStatus(event.id, "attending")
+      setStatus("attending");
+      updateEventStatus(event.id, "attending");
     } else {
       // if the user did not have a previous status, add the status to the database
-      setStatus("attending")
-      addEventStatus(event.id, "attending")
+      setStatus("attending");
+      addEventStatus(event.id, "attending");
     }
-  }
+  };
 
   //report modal usestate
-  const [isModalReportVisible, setModalReportVisible] = useState(false)
+  const [isModalReportVisible, setModalReportVisible] = useState(false);
   // info modal usestate
-  const [isInfoModalVisible, setInfoModalVisible] = useState(false)
+  const [isInfoModalVisible, setInfoModalVisible] = useState(false);
   //toggle showing modal
   const toggleReportModal = () => {
-    setModalReportVisible(!isModalReportVisible)
-  }
+    setModalReportVisible(!isModalReportVisible);
+  };
   // toggle info modal
   const toggleInfoModal = () => {
-    setInfoModalVisible(!isInfoModalVisible)
-  }
+    setInfoModalVisible(!isInfoModalVisible);
+  };
   const updateEvents = [
     {
       creatorName: "John Doe",
@@ -104,7 +104,7 @@ const EventPage = ({ route, navigation }) => {
       description:
         "All gear necessary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
     },
-  ]
+  ];
 
   useFocusEffect(
     React.useCallback(() => {
@@ -113,22 +113,22 @@ const EventPage = ({ route, navigation }) => {
           .from("events")
           .select("*")
           .eq("id", event.id)
-          .single()
+          .single();
 
         if (data) {
-          setEventData(data)
+          setEventData(data);
         } else {
-          console.error(error)
+          console.error(error);
         }
-      }
+      };
 
-      fetchEvent()
+      fetchEvent();
     }, [event.id])
-  )
+  );
   const handleEventUpdate = (updatedEvent) => {
-    setEventData(updatedEvent)
-  }
-//edit
+    setEventData(updatedEvent);
+  };
+  //edit
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -143,18 +143,40 @@ const EventPage = ({ route, navigation }) => {
             style={styles.close}
           />
         </TouchableOpacity>
-        {/* report button with icon */}
-        <TouchableOpacity
-          onPress={toggleReportModal}
-          style={styles.reportButton}>
-          <Icon
-            name="alert-circle-outline"
-            type="ionicon"
-            size={25}
-            color="#FFC60A"
-            style={styles.report}
-          />
-        </TouchableOpacity>
+        {isCreator ? (
+          <Pressable
+            onPress={() =>
+              navigation.navigate("EditEvents", {
+                event: eventData,
+                handleEventUpdate: handleEventUpdate,
+              })
+            }
+            style={styles.editButton}
+          >
+            {/* Your UI component for editing event */}
+            <Image
+              source={require("../assets/icons/fi-br-edit.png")}
+              style={{
+                width: 20,
+                height: 20,
+              }}
+            />
+          </Pressable>
+        ) : (
+          /* report button with icon */
+          <TouchableOpacity
+            onPress={toggleReportModal}
+            style={styles.reportButton}
+          >
+            <Icon
+              name="alert-circle-outline"
+              type="ionicon"
+              size={25}
+              color="#FFC60A"
+              style={styles.report}
+            />
+          </TouchableOpacity>
+        )}
         <Text style={styles.dateTime}>
           {new Date(event.date).toLocaleString()}
         </Text>
@@ -163,27 +185,6 @@ const EventPage = ({ route, navigation }) => {
         <View style={{ flexDirection: "row", marginTop: 10 }}>
           <Text style={[styles.name, { flex: 1 }]}>{event.name}</Text>
           {/* edit event need to make it so only creator accounts have it description.*/}
-          {isCreator && (
-            <Pressable
-              onPress={() =>
-                navigation.navigate("EditEvents", {
-                  event: eventData,
-                  handleEventUpdate: handleEventUpdate,
-                })
-              }>
-              {/* Your UI component for editing event */}
-              <Image
-                source={require("../assets/icons/fi-br-edit.png")}
-                style={{
-                  width: 20,
-                  height: 20,
-                  position: 'absolute',
-                  right: 16,
-                  top: 10,
-                }}
-              />
-            </Pressable>
-          )}
         </View>
         <Text style={styles.creator}>{event.creator_name}</Text>
         {/* location pin icon*/}
@@ -196,7 +197,9 @@ const EventPage = ({ route, navigation }) => {
             style={styles.locationIcon}
           />
           <Text style={styles.locationText}>{event.location}</Text>
-          <Text style={styles.locationText}> - {event.room_number}</Text>
+          {event.room_number !== "" ? (
+            <Text style={styles.locationText}> - {event.room_number}</Text>
+          ) : null}
         </View>
 
         <Pressable onPress={() => navigation.navigate("MembersGoing")}>
@@ -204,8 +207,6 @@ const EventPage = ({ route, navigation }) => {
             {event.membersGoing} Members Going{" "}
           </Text>
         </Pressable>
-
-       
 
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
@@ -215,7 +216,6 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Card>
 
-        
         {/* </View> */}
       </View>
       {isCreator ? (
@@ -225,7 +225,8 @@ const EventPage = ({ route, navigation }) => {
         <View style={styles.buttonContainer}>
           <Pressable
             onPress={handleBookmarkToggle}
-            style={styles.bookmarkButton}>
+            style={styles.bookmarkButton}
+          >
             <View style={styles.bookmarkBox}>
               <Ionicon
                 name={status == "saved" ? "bookmark" : "bookmark-o"}
@@ -241,42 +242,49 @@ const EventPage = ({ route, navigation }) => {
               status == "attending"
                 ? styles.attendingButton
                 : styles.attendButton
-            }>
+            }
+          >
             <Text style={[styles.attendButtonText]}>
               {status == "attending" ? "Attending" : "Attend"}
             </Text>
           </Pressable>
         </View>
       )}
-      <View style={styles.signUpContainer}>
-        <View style={{ flexDirection: "row", columnGap: 10 }}>
-          <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
-          <TouchableOpacity onPress={toggleInfoModal}>
-            <Image
-              source={require("../assets/icons/infoIcon.png")}
-              style={{ marginTop: 1, width: 20, height: 20 }}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text
-          style={[
-            { textDecorationLine: "underline" },
-            appStyles.fonts.paragraph,
-          ]}>
-          signuphereucf.com
-        </Text>
-      </View>
+      {event.link !== ""
+        ? (console.log(event.link),
+          (
+            <>
+              <View style={styles.signUpContainer}>
+                <View style={{ flexDirection: "row", columnGap: 10 }}>
+                  <Text style={appStyles.fonts.paragraph}>Sign up link:</Text>
+                  <TouchableOpacity onPress={toggleInfoModal}>
+                    <Image
+                      source={require("../assets/icons/infoIcon.png")}
+                      style={{ marginTop: 1, width: 20, height: 20 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text
+                  style={[
+                    { textDecorationLine: "underline" },
+                    appStyles.fonts.paragraph,
+                  ]}
+                >
+                  {event.link}
+                </Text>
+              </View>
+            </>
+          ))
+        : null}
       <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
         Annoucements:
       </Text>
-      
+
       {/* AnnoucementPost only for creators */}
       <View style={styles.anouncementPostContainer}>
-          {isCreator && (
-            <AnnoucementsPost/>
-          )}
-        </View>
-  
+        {isCreator && <AnnoucementsPost />}
+      </View>
+
       <View style={styles.updateEventListContainer}>
         <UpdateList updateEvents={updateEvents} />
       </View>
@@ -285,7 +293,8 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Event</Text>
           <Text style={styles.modalAlert}>
@@ -297,12 +306,14 @@ const EventPage = ({ route, navigation }) => {
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalOption, styles.modalOption1]}>
+              style={[styles.modalOption, styles.modalOption1]}
+            >
               <Text style={styles.modalOptionText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalOption, styles.modalOption2]}>
+              style={[styles.modalOption, styles.modalOption2]}
+            >
               <Text style={styles.modalOptionText}>Report</Text>
             </TouchableOpacity>
           </View>
@@ -311,7 +322,8 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isModalReportVisible}
         onBackdropPress={toggleReportModal}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Report Submitted!</Text>
           <Text style={styles.modalAlert}>
@@ -321,7 +333,8 @@ const EventPage = ({ route, navigation }) => {
           <View style={styles.modalOptionsContainer}>
             <TouchableOpacity
               onPress={toggleReportModal}
-              style={[styles.modalReportOption, styles.modalOption1]}>
+              style={[styles.modalReportOption, styles.modalOption1]}
+            >
               <Text style={styles.modalOptionText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -332,7 +345,8 @@ const EventPage = ({ route, navigation }) => {
       <Modal
         isVisible={isInfoModalVisible}
         onBackdropPress={toggleInfoModal}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Disclaimer</Text>
           <Text style={styles.modalAlert}>
@@ -343,8 +357,8 @@ const EventPage = ({ route, navigation }) => {
         </View>
       </Modal>
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -367,6 +381,14 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 8,
     backgroundColor: "#080808",
+    borderRadius: 8,
+  },
+  editButton: {
+    position: "absolute",
+    top: 300,
+    right: 10,
+    padding: 8,
+    backgroundColor: "#FFC60A",
     borderRadius: 8,
   },
   name: {
@@ -564,6 +586,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 5,
   },
-})
+});
 
-export default EventPage
+export default EventPage;

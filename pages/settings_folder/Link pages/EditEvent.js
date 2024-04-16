@@ -27,6 +27,7 @@ const EditEvents = ({ route, navigation }) => {
   const [date, setDate] = useState(event.date);
   const [time, setTime] = useState(event.date);
   const [image, setImage] = useState(event.image);
+  const [signUp, setSignUp] = useState(event.signUp);
 
   useEffect(() => {
     fetchEventData();
@@ -47,6 +48,7 @@ const EditEvents = ({ route, navigation }) => {
       setRoomNumber(data.room_number);
       setDate(data.date);
       setImage(data.image);
+      setSignUp(data.link);
     } else {
       console.error(error);
     }
@@ -64,6 +66,7 @@ const EditEvents = ({ route, navigation }) => {
         date,
         room_number: roomNumber,
         image,
+        link: signUp,
       })
       .eq("id", event.id);
 
@@ -179,7 +182,16 @@ const EditEvents = ({ route, navigation }) => {
             placeholderTextColor={"black"}
           />
         </View>
-
+        <View style={appStyles.sectionStyle}>
+          <TextInput
+            style={[appStyles.textInput, appStyles.fonts.paragraph]}
+            onChangeText={(text) => setSignUp(text)}
+            placeholder="External Sign-Up Link (Optional)"
+            placeholderTextColor="#8b9cb5"
+            returnKeyType="done"
+            value={signUp}
+          />
+        </View>
         {/* Button to update the event and close the screen */}
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
