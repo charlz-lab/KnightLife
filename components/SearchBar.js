@@ -1,24 +1,19 @@
-import React, { useState } from "react"
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Image,
-  Pressable,
-  Text,
-  Platform,
-} from "react-native"
+import React, { useEffect, useState } from "react"
+import { View, TextInput, StyleSheet, Image, Pressable } from "react-native"
 import { Card, Icon } from "react-native-elements"
 import searchIcon from "../assets/icons/fi-br-search.png"
 import appStyles from "../styles"
 
 const SearchBar = ({ handleSearch, clearEvents }) => {
   const [searchText, setSearchText] = useState("")
+  const placeholder = "Search events"
+  const [isSearching, setIsSearching] = useState(false)
 
   // clear search text
   const handleClear = () => {
     setSearchText("")
     clearEvents()
+    setIsSearching(false)
   }
 
   return (
@@ -31,12 +26,14 @@ const SearchBar = ({ handleSearch, clearEvents }) => {
         <Image source={searchIcon} style={{ height: 20, width: 20 }} />
         <TextInput
           style={styles.input}
-          placeholder="Search for events..."
           onChangeText={(text) => {
             setSearchText(text)
           }}
-          onEndEditing={() => handleSearch(searchText)}
-          value={searchText}
+          onEndEditing={() => {
+            handleSearch(searchText)
+          }}
+          value={isSearching ? searchText : placeholder}
+          onPressIn={() => setIsSearching(true)}
           returnKeyType="search"
         />
       </View>
