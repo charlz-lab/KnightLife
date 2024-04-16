@@ -76,9 +76,9 @@ const HOME = ({ navigation }) => {
 
           {/* List of event cards */}
           {filteredEvents.length > 0 ? (
-            <EventList events={filteredEvents} />
+            <EventList events={filteredEvents} navigation={navigation} />
           ) : (
-            <EventList events={events} />
+            <EventList events={events} navigation={navigation} />
           )}
 
           {/* Filter modal */}
