@@ -51,22 +51,6 @@ const EventPage = ({ route, navigation }) => {
     getEventStatus(setStatus, event.id)
   }, [])
 
-  // function to toggle the bookmark status
-  const handleBookmarkToggle = () => {
-    if (status == "saved") {
-      // if the user previously bookmarked the event, remove the status
-      setStatus("")
-      deleteEventStatus(event.id)
-    } else if (status == "attending") {
-      // if the user was previously attending the event, update the status to saved
-      setStatus("saved")
-      updateEventStatus(event.id, "saved")
-    } else {
-      // if the user did not have a previous status, add the status to the database
-      setStatus("saved")
-      addEventStatus(event.id, "saved")
-    }
-  }
   // function to toggle the attending status
   const handleAttendToggle = () => {
     if (status == "attending") {
