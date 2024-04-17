@@ -103,6 +103,15 @@ function CustomizeProfileCreator({ navigation, route, session }) {
   }
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      
+    >
+      <ScrollView
+        style={{ flex: 1, backgroundColor: appStyles.colors.background }}
+        contentContainerStyle={{ height: 700 }}
+      >
     <View
       style={{
         flex: 1,
@@ -206,6 +215,8 @@ function CustomizeProfileCreator({ navigation, route, session }) {
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

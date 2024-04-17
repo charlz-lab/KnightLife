@@ -123,12 +123,13 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
     >
       <ScrollView
         style={{ flex: 1, backgroundColor: appStyles.colors.background }}
+        contentContainerStyle={{ height: 700 }}
       >
         <View
           style={{
             flex: 1,
             backgroundColor: appStyles.colors.background,
-            justifyContent: "center",
+            justifyContent: "top",
             flexDirection: "column",
             rowGap: 35,
           }}
