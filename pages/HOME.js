@@ -1,19 +1,11 @@
 import React from "react"
 import { StatusBar } from "expo-status-bar"
 import { useFonts } from "expo-font"
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  Pressable,
-  Image,
-} from "react-native"
+import { StyleSheet, Text, View, Pressable, Image } from "react-native"
 import { ScrollView } from "react-native-virtualized-view"
 import Modal from "react-native-modal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
-import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
 import FilterSection from "../components/FilterSection"
 import SearchBar from "../components/SearchBar"
@@ -65,7 +57,11 @@ const HOME = ({ navigation }) => {
               appStyles.layout.horizontal,
               { paddingHorizontal: 10, width: "100%" },
             ]}>
-            <SearchBar handleSearch={searchEvents} clearEvents={clearEvents} />
+            <SearchBar
+              handleSearch={searchEvents}
+              clearEvents={clearEvents}
+              hasFilter={filteredEvents.length > 0}
+            />
             {/* note: "pressable" is more customizable than "button" */}
             <Pressable
               onPress={toggleModal}
