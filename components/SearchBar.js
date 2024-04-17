@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   View,
   TextInput,
@@ -11,48 +11,71 @@ import { Card, Icon } from "react-native-elements"
 import searchIcon from "../assets/icons/fi-br-search.png"
 import appStyles from "../styles"
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ handleSearch, clearEvents, hasFilter }) => {
   const [searchText, setSearchText] = useState("")
+  const [isSearching, setIsSearching] = useState(false)
+  const placeholder = "Search events"
 
-  const handleSearch = () => {
-    // Search logic goes here
-
-    // For now, I'm just passing the search text to the parent component
-    onSearch(searchText)
-  }
-
+  // clear search text
   const handleClear = () => {
     setSearchText("")
-    onSearch("")
+    clearEvents()
+    setIsSearching(false)
   }
 
   return (
-    <View style={styles.container}>
-      <View
-        style={[
-          appStyles.layout.horizontal,
-          { flex: 5, justifyContent: "flex-start" },
-        ]}>
-        <Image source={searchIcon} style={{ height: 20, width: 20 }} />
-        <TextInput
-          style={styles.input}
-          placeholder="Search for events or creator accounts"
-          onChangeText={(text) => setSearchText(text)}
-          onSubmitEditing={handleSearch}
-          value={searchText}
-        />
-      </View>
-      {searchText.length > 0 && (
-        <Pressable style={styles.clearButton} onPress={handleClear}>
-          <Icon
-            name="close"
-            type="ionicon"
-            size={25}
-            color={appStyles.colors.accent1}
-          />
+    <>
+      {hasFilter ? (
+        // show clear search button if search results are displayed
+        <Pressable style={styles.clearSearch} onPress={handleClear}>
+          <View style={styles.clearSearchBtn}>
+            <Icon name="close" type="ionicon" size={25} color="#ffffff" />
+          </View>
+          <Text style={styles.clearSearchText}>Clear Search</Text>
         </Pressable>
+      ) : (
+        // otherwise, show search bar
+        <View style={styles.container}>
+          <View
+            style={[
+              appStyles.layout.horizontal,
+              { flex: 5, justifyContent: "flex-start" },
+            ]}>
+            <Image source={searchIcon} style={{ height: 20, width: 20 }} />
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => {
+                // update search text
+                setSearchText(text)
+              }}
+              onEndEditing={() => {
+                // search events if search text is not empty
+                if (searchText.length > 0) {
+                  handleSearch(searchText)
+                } else {
+                  setIsSearching(false)
+                }
+              }}
+              // show placeholder text when not searching
+              value={isSearching ? searchText : placeholder}
+              onPressIn={() => setIsSearching(true)}
+              returnKeyType="search"
+            />
+          </View>
+          {/* show clear text button when search text is not empty */}
+          {searchText.length > 0 && (
+            <Pressable style={styles.clearTextBtn} onPress={handleClear}>
+              <Icon
+                name="close"
+                type="ionicon"
+                size={25}
+                color={appStyles.colors.accent1}
+              />
+            </Pressable>
+          )}
+        </View>
       )}
-    </View>
+    </>
   )
 }
 
@@ -66,19 +89,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 3,
     marginVertical: 8,
+    marginLeft: 10,
     justifyContent: "space-between",
   },
   input: {
     height: 40,
-    paddingLeft: 10,
     marginRight: 8,
     flex: 1,
+    fontSize: 16,
     textAlign: "left",
   },
-  clearButton: {
+  clearTextBtn: {
     marginLeft: 8,
     flex: 0.5,
     backgroundColor: "#f0f0f0",
+  },
+  clearSearch: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginVertical: 8,
+    marginHorizontal: 12,
+    borderRadius: 100,
+    backgroundColor: appStyles.colors.mainBackground,
+  },
+  clearSearchText: {
+    color: appStyles.colors.background,
+    fontSize: 16,
+  },
+  clearSearchBtn: {
+    marginRight: 8,
   },
 })
 

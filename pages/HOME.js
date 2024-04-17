@@ -1,27 +1,20 @@
 import React from "react"
 import { StatusBar } from "expo-status-bar"
 import { useFonts } from "expo-font"
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  Pressable,
-  Image,
-} from "react-native"
+import { StyleSheet, Text, View, Pressable, Image } from "react-native"
 import { ScrollView } from "react-native-virtualized-view"
 import Modal from "react-native-modal"
 import appStyles from "../styles"
 import filterIcon from "../assets/icons/fi-filter.png"
-import EventCard from "../components/EventCard"
 import EventList from "../components/EventList"
 import FilterSection from "../components/FilterSection"
 import SearchBar from "../components/SearchBar"
 import { handleEventList } from "../lib/utils"
 
 const HOME = ({ navigation }) => {
-  // list events
   const [events, setEvents] = React.useState([])
+  const [filteredEvents, setFilteredEvents] = React.useState([])
+  const [hasSearched, setHasSearched] = React.useState(false)
 
   // fetch events from database
   React.useEffect(() => {
@@ -34,9 +27,25 @@ const HOME = ({ navigation }) => {
     setModalVisible(!isModalVisible)
   }
 
-  const handleSearch = (searchText) => {
-    // Implement your search logic using searchText
-    console.log("Search Text:", searchText)
+  // search logic
+  const searchEvents = (text) => {
+    if (typeof text === "string") {
+      const lowercasedSearchText = text.toLowerCase()
+
+      // filter events by beginning of words
+      const filtered = events.filter((event) => {
+        const eventName = " " + event.name.toLowerCase()
+        return eventName.includes(" " + lowercasedSearchText)
+      })
+      setFilteredEvents(filtered)
+      setHasSearched(true)
+    }
+  }
+
+  // clear search results
+  const clearEvents = () => {
+    setFilteredEvents([])
+    setHasSearched(false)
   }
 
   return (
@@ -49,7 +58,11 @@ const HOME = ({ navigation }) => {
               appStyles.layout.horizontal,
               { paddingHorizontal: 10, width: "100%" },
             ]}>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar
+              handleSearch={searchEvents}
+              clearEvents={clearEvents}
+              hasFilter={hasSearched}
+            />
             {/* note: "pressable" is more customizable than "button" */}
             <Pressable
               onPress={toggleModal}
@@ -59,7 +72,11 @@ const HOME = ({ navigation }) => {
           </View>
 
           {/* List of event cards */}
-          <EventList events={events} navigation={navigation} />
+          {hasSearched ? (
+            <EventList events={filteredEvents} navigation={navigation} />
+          ) : (
+            <EventList events={events} navigation={navigation} />
+          )}
 
           {/* Filter modal */}
           <Modal
