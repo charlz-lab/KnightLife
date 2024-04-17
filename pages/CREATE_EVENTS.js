@@ -108,7 +108,7 @@ const CREATE_EVENTS = () => {
     <ScrollView
       keyboardShouldPersistTaps="handled"
       style={{ backgroundColor: "white" }}
-      contentContainerStyle={{ height: 1020 }}
+      contentContainerStyle={{ height: 1100 }}
     >
       <KeyboardAvoidingView enabled>
         <Text style={[appStyles.fonts.heading, { marginTop: 16 }]}>

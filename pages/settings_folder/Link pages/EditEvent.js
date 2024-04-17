@@ -108,7 +108,7 @@ const EditEvents = ({ route, navigation }) => {
   };
   return (
     <ScrollView
-      contentContainerStyle={{ paddingBottom: 500, backgroundColor: "white" }}
+      contentContainerStyle={{ height: 1350, paddingBottom: 500, backgroundColor: "white" }}
     >
       <View style={styles.container}>
         <View style={styles.imageBanner}>
