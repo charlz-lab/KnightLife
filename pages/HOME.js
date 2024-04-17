@@ -14,6 +14,7 @@ import { handleEventList } from "../lib/utils"
 const HOME = ({ navigation }) => {
   const [events, setEvents] = React.useState([])
   const [filteredEvents, setFilteredEvents] = React.useState([])
+  const [hasSearched, setHasSearched] = React.useState(false)
 
   // fetch events from database
   React.useEffect(() => {
@@ -28,9 +29,7 @@ const HOME = ({ navigation }) => {
 
   // search logic
   const searchEvents = (text) => {
-    if (typeof text !== "string") {
-      setFilteredEvents(events)
-    } else {
+    if (typeof text === "string") {
       const lowercasedSearchText = text.toLowerCase()
 
       // filter events by beginning of words
@@ -39,12 +38,14 @@ const HOME = ({ navigation }) => {
         return eventName.includes(" " + lowercasedSearchText)
       })
       setFilteredEvents(filtered)
+      setHasSearched(true)
     }
   }
 
   // clear search results
   const clearEvents = () => {
     setFilteredEvents([])
+    setHasSearched(false)
   }
 
   return (
@@ -60,7 +61,7 @@ const HOME = ({ navigation }) => {
             <SearchBar
               handleSearch={searchEvents}
               clearEvents={clearEvents}
-              hasFilter={filteredEvents.length > 0}
+              hasFilter={hasSearched}
             />
             {/* note: "pressable" is more customizable than "button" */}
             <Pressable
@@ -71,7 +72,7 @@ const HOME = ({ navigation }) => {
           </View>
 
           {/* List of event cards */}
-          {filteredEvents.length > 0 ? (
+          {hasSearched ? (
             <EventList events={filteredEvents} navigation={navigation} />
           ) : (
             <EventList events={events} navigation={navigation} />

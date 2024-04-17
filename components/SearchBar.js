@@ -49,8 +49,12 @@ const SearchBar = ({ handleSearch, clearEvents, hasFilter }) => {
                 setSearchText(text)
               }}
               onEndEditing={() => {
-                // search events
-                handleSearch(searchText)
+                // search events if search text is not empty
+                if (searchText.length > 0) {
+                  handleSearch(searchText)
+                } else {
+                  setIsSearching(false)
+                }
               }}
               // show placeholder text when not searching
               value={isSearching ? searchText : placeholder}
@@ -85,11 +89,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 3,
     marginVertical: 8,
+    marginLeft: 10,
     justifyContent: "space-between",
   },
   input: {
     height: 40,
-    paddingLeft: 10,
     marginRight: 8,
     flex: 1,
     fontSize: 16,
