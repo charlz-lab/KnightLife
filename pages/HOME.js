@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
     width: "100%",
-    maxHeight: "80%",
-    gap: 5,
+    maxHeight: "85%",
+    gap: 30,
   },
 })
 export default HOME

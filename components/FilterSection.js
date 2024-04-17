@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { View, Text, Pressable, StyleSheet, FlatList } from "react-native";
-import appStyles from "../styles";
-import Tag from "./Tag";
+import React, { useState } from "react"
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
+import appStyles from "../styles"
+import Tag from "./Tag"
 
 const FilterSection = (props) => {
   // Manage tag states
-  const [tagStates, setTagStates] = useState({});
+  const [tagStates, setTagStates] = useState({})
 
   // Function to toggle tag state
   const toggleTag = (tag) => {
     setTagStates((prevStates) => ({
       ...prevStates,
       [tag]: !prevStates[tag],
-    }));
-  };
+    }))
+  }
 
   // Function to clear all filter tags
-  const clearList = () => setTagStates({});
+  const clearList = () => setTagStates({})
 
   return (
     <View style={styles.listContainer}>
@@ -25,8 +25,7 @@ const FilterSection = (props) => {
         style={[
           appStyles.layout.horizontal,
           { width: "100%", marginBottom: 8 },
-        ]}
-      >
+        ]}>
         <Text style={appStyles.fonts.heading2}>{props.title}</Text>
         <Pressable onPress={clearList}>
           <Text style={appStyles.fonts.actionText}>Clear</Text>
@@ -46,20 +45,20 @@ const FilterSection = (props) => {
             />
           )}
           contentContainerStyle={styles.listContainer}
+          scrollEnabled={false}
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   listContainer: {
     gap: 8,
-    marginBottom: 16,
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
   },
-});
+})
 
-export default FilterSection;
+export default FilterSection
