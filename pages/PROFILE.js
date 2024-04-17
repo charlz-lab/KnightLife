@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react"
+import { React, useState, useEffect, useCallback } from "react"
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { ScrollView } from "react-native-virtualized-view"
 import supabase from "../lib/supabase"
 import appStyles from "../styles"
@@ -297,10 +298,18 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
   const [selection, setSelection] = useState("upcoming")
 
   // fetch events from database
-  useEffect(() => {
-    handleEventList(setSavedEvents, "saved")
-    handleEventList(setAttendingEvents, "attending")
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      handleEventList(setSavedEvents, "saved")
+      handleEventList(setAttendingEvents, "attending")
+      return () => {
+        setSavedEvents([])
+        setAttendingEvents([])
+      }
+    }, [])
+  )
+
+  // fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -311,9 +320,9 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
         console.error("Error fetching user data:", error.message)
       }
     }
-
     fetchUserData()
   }, [])
+
   // changes profile if changes where made in EDIT_PROFILE
   useEffect(() => {
     if (route.params?.profile) {
@@ -332,6 +341,7 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
             accountType="personal"
             navigation={navigation}
           />
+
           {/* Upcoming / attended / saved toggle*/}
           <ToggleBar
             tabs={["upcoming", "attended"]}
@@ -360,7 +370,6 @@ export const PERSONAL_PROFILE = ({ navigation, route }) => {
               navigation={navigation}></EventList>
           )}
         </View>
-
         <StatusBar style="auto" />
       </ScrollView>
     </>
@@ -406,12 +415,14 @@ export const CREATOR_PROFILE = ({ navigation, route }) => {
             accountType="creator"
             navigation={navigation}
           />
+
           {/* Upcoming / attended / saved toggle*/}
           <ToggleBar
             tabs={["upcoming", "past"]}
             selection={selection}
             setSelection={setSelection}
           />
+
           {/* display event cards */}
           {selection === "upcoming" ? (
             <EventList
