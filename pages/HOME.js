@@ -13,7 +13,7 @@ import { handleEventList } from "../lib/utils"
 
 const HOME = ({ navigation }) => {
   const [events, setEvents] = React.useState([])
-  const [filteredEvents, setFilteredEvents] = React.useState([])
+  const [searchedEvents, setSearchedEvents] = React.useState([])
   const [hasSearched, setHasSearched] = React.useState(false)
 
   // fetch events from database
@@ -37,14 +37,14 @@ const HOME = ({ navigation }) => {
         const eventName = " " + event.name.toLowerCase()
         return eventName.includes(" " + lowercasedSearchText)
       })
-      setFilteredEvents(filtered)
+      setSearchedEvents(filtered)
       setHasSearched(true)
     }
   }
 
   // clear search results
   const clearEvents = () => {
-    setFilteredEvents([])
+    setSearchedEvents([])
     setHasSearched(false)
   }
 
@@ -73,7 +73,7 @@ const HOME = ({ navigation }) => {
 
           {/* List of event cards */}
           {hasSearched ? (
-            <EventList events={filteredEvents} navigation={navigation} />
+            <EventList events={searchedEvents} navigation={navigation} />
           ) : (
             <EventList events={events} navigation={navigation} />
           )}
