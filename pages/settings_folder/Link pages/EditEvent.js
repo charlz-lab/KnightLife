@@ -128,19 +128,14 @@ const EditEvents = ({ route, navigation }) => {
       }}>
       <View style={styles.container}>
         <View style={styles.imageBanner}>
-          {image === null ? (
-            <Text
-              style={[
-                appStyles.fonts.paragraph,
-                {
-                  textAlign: "center",
-                  color: "#8b9cb5",
-                },
-              ]}>
-              No image uploaded
-            </Text>
+          {selectedImage ? (
+            <Image
+              source={{ uri: selectedImage.uri }}
+              style={styles.imageUpload}
+
+            />
           ) : (
-            <Image source={selectedImage} style={styles.imageUpload} />
+            <Image source={{ uri: event.image }} style={styles.imageUpload} />
           )}
         </View>
         <TouchableOpacity onPress={selectEventImage}>

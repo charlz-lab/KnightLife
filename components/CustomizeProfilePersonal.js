@@ -158,7 +158,7 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
               style={{ alignItems: "center", marginTop: 40 }}
               onPress={selectProfileImage}
             >
-              {image ? (
+              {selectedImage ? (
                 <Image
                   source={selectedImage}
                   style={{ width: 100, height: 100 }}

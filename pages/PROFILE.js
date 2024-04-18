@@ -179,7 +179,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               }
 
               // Update the profile state variable
-              setProfile({
+              let newProfile = {
                 ...profile,
                 name: profile.name,
                 username: profile.username,
@@ -187,12 +187,13 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                 bio: profile.bio,
                 major: profile.major,
                 school_year: profile.school_year,
-                image: profile.image,
-              });
+                image: newImageUrl,
+              };
 
+              setProfile(newProfile);
               // Navigate back to the respective profile page
-              profile.isCreator
-                ? navigation.navigate("Creator Profile", { profile: { ...profile, campus_location: campus } })
+              newProfile.isCreator
+                ? navigation.navigate("Creator Profile", { profile: { ...profile, campus_location: campus, image: newImageUrl } })
                 : navigation.navigate("Personal Profile", { profile: { ...profile, campus_location: campus } });
             } catch (error) {
               console.error("Error updating profile:", error.message)

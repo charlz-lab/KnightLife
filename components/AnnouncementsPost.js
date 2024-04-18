@@ -44,6 +44,7 @@ const AnnouncementsPost = ({ fetchAnnouncements, event }) => {
           style={[
             appStyles.textInput,
             appStyles.fonts.paragraph,
+            appStyles.shadow,
             styles.textInput,
           ]}
           placeholder="Create Announcement..."

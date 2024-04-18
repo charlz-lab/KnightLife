@@ -41,6 +41,7 @@ const ProfileCard = (props) => {
       <View style={appStyles.profileCard}>
         {props.profile && props.profile.image ? (
           <Image
+            key={props.profile.image}
             source={{ uri: props.profile.image }}
             style={{ width: 125, height: 125, borderRadius: 125 / 2, resizeMode: 'cover' }}
           />

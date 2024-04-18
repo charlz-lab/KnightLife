@@ -114,15 +114,6 @@ const EventPage = ({ route, navigation }) => {
   const toggleInfoModal = () => {
     setInfoModalVisible(!isInfoModalVisible)
   }
-  const updateEvents = [
-    {
-      creatorName: "John Doe",
-      profileImage: "https://example.com/profile.jpg",
-      dateTime: "Jan 01",
-      description:
-        "All gear necessary will be provided for this event! Make sure you sign up with the sign up link since there are limited spots.",
-    },
-  ]
 
   useFocusEffect(
     React.useCallback(() => {
@@ -166,7 +157,6 @@ const EventPage = ({ route, navigation }) => {
             onPress={() =>
               navigation.navigate("EditEvents", {
                 event: eventData,
-                handleEventUpdate: handleEventUpdate,
               })
             }
             style={styles.editButton}>
@@ -224,11 +214,7 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Pressable>
 
-<<<<<<<<< Temporary merge branch 1
-=========
 
-
->>>>>>>>> Temporary merge branch 2
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
         <Card borderRadius={12} style={[styles.shadow, styles.card]}>
@@ -237,10 +223,6 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Card>
 
-<<<<<<<<< Temporary merge branch 1
-=========
-
->>>>>>>>> Temporary merge branch 2
         {/* </View> */}
       </View>
       {isCreator ? (
@@ -308,6 +290,7 @@ const EventPage = ({ route, navigation }) => {
       </View>
 
       <View style={styles.updateEventListContainer}>
+
         <FlatList
           data={announcements}
           keyExtractor={(item) => item.id.toString()}
@@ -320,11 +303,13 @@ const EventPage = ({ route, navigation }) => {
 
             return (
               <Card borderRadius={12} style={[styles.shadow, styles.card]}>
-                <View>
-                  {item.timestamp && <Text>{formattedDate}</Text>}
-                  <Text>{item.update_text}</Text>
-                  {/* Display the formatted date */}
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <Text style={[appStyles.fonts.paragraph, { marginBottom: 10 }]}>{event.creator_name}</Text>
+
+                  {item.timestamp && <Text styles={appStyles.fonts.paragraph}>{formattedDate}</Text>}
+
                 </View>
+                <Text>{item.update_text}</Text>
               </Card>
             )
           }}
