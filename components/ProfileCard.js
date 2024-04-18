@@ -5,7 +5,7 @@ import appStyles from "../styles";
 import supabase from "../lib/supabase";
 const ProfileCard = (props) => {
   const [imageData, setImageData] = useState(""); // state to hold the image data
-
+  const [isCreator, setIsCreator] = useState(false); // state to hold the account type
   // run whenever the profile prop changes
 
   return (
@@ -37,7 +37,7 @@ const ProfileCard = (props) => {
       <View style={appStyles.profileCard}>
         {props.profile && props.profile.image ? (
           <Image
-            source={{ uri: `data:image/png;base64,${props.profile.image}` }}
+            source={{ uri: props.profile.image }}
             style={{ width: 125, height: 125, borderRadius: 125 / 2, resizeMode: 'cover' }}
           />
         ) : (

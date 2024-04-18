@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import LocationDropdown from "../components/LocationDropdown";
 import DateTime from "../components/DateTime";
 
-const CREATE_EVENTS = () => {
+const CREATE_EVENTS = ({ size = 150 }) => {
   const [eventName, setEventName] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -33,26 +33,44 @@ const CREATE_EVENTS = () => {
   const buildingInputRef = createRef();
   const dateInputRef = createRef();
   const descriptionInputRef = createRef();
+  const [uploading, setUploading] = useState(false)
+  const [eventUrl, setEventUrl] = useState(null)
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSubmitPress = async () => {
     // Check if all fields are filled out
+
     if (!eventName || !eventLocation || !eventDateTime || !eventDescription) {
       Alert.alert("Please fill out all fields");
       return;
     }
+    let newImageUrl = null;
+    if (selectedImage && selectedImage.uri) {
+      const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
+      const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
+      const path = `${Date.now()}.${fileExt}`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('event-image-banners')
+        .upload(path, arraybuffer, {
+          contentType: selectedImage.mimeType ?? 'image/jpeg',
+        });
 
-    // Perform any other necessary validation before creating the event
-
+      if (uploadError) {
+        Alert.alert("Error uploading image");
+        return;
+      }
+      //set newImageUrl 
+      newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/event-image-banners/${data.path}`;
+    }
     // Get user ID from the logged in user
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    // Add the event to the database
+    console.log("eventUrl", newImageUrl)
+    // add event to database
     supabase
       .from("events")
       .insert({
-        image: image,
         name: eventName,
         date: new Date(eventDateTime),
         location: eventLocation,
@@ -60,6 +78,7 @@ const CREATE_EVENTS = () => {
         description: eventDescription,
         creator_id: user.id, // This would be the logged in user's ID
         link: signUp,
+        image: newImageUrl, // image url from storage
       })
       .then((data, error) => {
         console.log(data, error);
@@ -76,34 +95,30 @@ const CREATE_EVENTS = () => {
           setEventRoomNumber("");
           setEventDescription("");
           setSignUp("");
+          setEventLocation("");
+          setEventUrl(null);
         }
       });
   };
 
   //image upload
-  const [image, setImage] = useState(null);
 
-  let openImagePickerAsync = async () => {
-    let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //select image 
+  const selectEventImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
       allowsEditing: true,
-      aspect: [0, 0],
+      quality: 1,
+      exif: false,
     });
-
-    if (pickerResult.canceled === true) {
-      return;
+    console.log(result);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0]);
     }
-
-    setImage({ uri: pickerResult.assets[0].uri });
   };
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -117,9 +132,12 @@ const CREATE_EVENTS = () => {
         <View style={{ flexDirection: "column", rowGap: 30 }}>
           <TouchableOpacity
             style={styles.imageBanner}
-            onPress={openImagePickerAsync}
+            //selects image but does not input to supabase
+            onPress={selectEventImage}
+            disabled={uploading}
+
           >
-            {image === null ? (
+            {selectedImage === null ? (
               <Text
                 style={[
                   appStyles.fonts.paragraph,
@@ -132,7 +150,8 @@ const CREATE_EVENTS = () => {
                 Add Image Banner
               </Text>
             ) : (
-              <Image source={image} style={styles.imageUpload} />
+              //show selected image
+              <Image source={selectedImage} style={styles.imageUpload} />
             )}
           </TouchableOpacity>
           <View style={appStyles.sectionStyle}>
@@ -336,7 +355,7 @@ const styles = StyleSheet.create({
   },
   imageBanner: {
     marginTop: 20,
-    width: "80%%",
+    width: "80%",
     height: "25%",
     alignItems: "center",
     alignSelf: "center",
@@ -346,7 +365,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   imageUpload: {
-    width: "100%%",
+    width: "100%",
     height: "100%",
     borderRadius: 30,
   },

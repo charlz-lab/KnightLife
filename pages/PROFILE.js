@@ -91,9 +91,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
   let [profile, setProfile] = useState(route.params);
   let [campus, setCampus] = useState("");
   const [image, setImage] = useState(null);
-  const { user } = supabase.auth.getUser();
-  console.log(user);
-  console.log(profile.isCreator);
+
   let openImagePickerAsync = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -119,7 +117,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       [
         {
           text: "Cancel",
-          onPress: () => navigation.navigate(goBack),
+          onPress: () => navigation.goBack(),
           style: "cancel",
         },
         {
@@ -129,6 +127,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
               const {
                 data: { user },
               } = await supabase.auth.getUser();
+              console.log(user);
               if (profile.isCreator) {
                 // Update the creator_users table
                 const { error } = await supabase
@@ -154,6 +153,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                     campus_location: campus,
                     school_year: profile.school_year,
                     major: profile.major,
+
                   })
                   .eq("id", user.id);
 
