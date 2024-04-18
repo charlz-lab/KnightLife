@@ -297,9 +297,9 @@ const EventPage = ({ route, navigation }) => {
           renderItem={({ item }) => {
             let formattedDate = ""
             if (item.timestamp) {
-              const date = new Date(item.timestamp) // Convert the timestamp to a Date object
+              const date = new Date(item.timestamp)
               formattedDate = date.toLocaleDateString() // Format the date
-            } // Format the date
+            }
 
             return (
               <Card borderRadius={12} style={[styles.shadow, styles.card]}>
