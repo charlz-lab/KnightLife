@@ -57,7 +57,7 @@ const fetchPersonalProfile = async () => {
     if (error && status !== 406) {
       throw error;
     } else {
-      return data[0];
+      return { ...data[0], isCreator: false };
     }
   } catch (error) {
     console.error("Error fetching personal user data:", error.message);
@@ -78,7 +78,7 @@ const fetchCreatorProfile = async () => {
     if (error && status !== 406) {
       throw error;
     } else {
-      return data[0];
+      return { ...data[0], isCreator: true };
     }
   } catch (error) {
     console.error("Error fetching creator user data:", error.message);
@@ -89,25 +89,22 @@ const fetchCreatorProfile = async () => {
 // edit profile page
 export const EDIT_PROFILE = ({ navigation, route }) => {
   let [profile, setProfile] = useState(route.params);
-  let [campus, setCampus] = useState("");
+  let [campus, setCampus] = useState(profile.campus_location);
   const [image, setImage] = useState(null);
-
-  let openImagePickerAsync = async () => {
-    let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
+  const [selectedImage, setSelectedImage] = useState(null);
+  let newImageUrl = null;
+  const selectProfileImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      quality: 1,
+      exif: false,
+    });
+    console.log(result);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0]);
     }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.canceled === true) {
-      return;
-    }
-
-    setImage({ localUri: pickerResult.assets[0].uri });
-    setProfile({ ...profile, image: { uri: pickerResult.assets[0].uri } });
   };
 
   const saveAlert = () => {
@@ -115,19 +112,34 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       "Save Changes",
       "Are you sure you would like to save your changes?",
       [
-        {
-          text: "Cancel",
-          onPress: () => navigation.goBack(),
-          style: "cancel",
-        },
+        // ...
         {
           text: "Save",
           onPress: async () => {
+            const {
+              data: { user },
+            } = await supabase.auth.getUser()
+            console.log("user", user)
             try {
-              const {
-                data: { user },
-              } = await supabase.auth.getUser();
-              console.log(user);
+              // ...
+              if (selectedImage && selectedImage.uri) {
+                const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
+                const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
+                const path = `${Date.now()}.${fileExt}`;
+                const { data, error: uploadError } = await supabase.storage
+                  .from('profile-pics')
+                  .upload(path, arraybuffer, {
+                    contentType: selectedImage.mimeType ?? 'image/jpeg',
+                  });
+
+                if (uploadError) {
+                  console.log("Error uploading image", uploadError);
+                  return;
+                }
+                //set newImageUrl 
+                newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/profile-pics/${data.path}`;
+              }
+              // Update the profile in the database
               if (profile.isCreator) {
                 // Update the creator_users table
                 const { error } = await supabase
@@ -136,11 +148,13 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                     name: profile.name,
                     username: profile.username,
                     campus_location: campus,
+                    image: newImageUrl,
                     bio: profile.bio,
                   })
                   .eq("id", user.id);
 
                 if (error) {
+                  console.log("Error updating creator profile:", error.message);
                   throw error;
                 }
               } else {
@@ -152,18 +166,33 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
                     username: profile.username,
                     campus_location: campus,
                     school_year: profile.school_year,
+                    image: newImageUrl,
                     major: profile.major,
-
                   })
                   .eq("id", user.id);
 
                 if (error) {
+                  console.log("Error updating personal profile:", error.message);
                   throw error;
                 }
               }
 
-              // navigate to the respective profile page after successful update
-              navigation.goBack();
+              // Update the profile state variable
+              setProfile({
+                ...profile,
+                name: profile.name,
+                username: profile.username,
+                campus_location: campus,
+                bio: profile.bio,
+                major: profile.major,
+                school_year: profile.school_year,
+                image: profile.image,
+              });
+
+              // Navigate back to the respective profile page
+              profile.isCreator
+                ? navigation.navigate("Creator Profile", { profile: { ...profile, campus_location: campus } })
+                : navigation.navigate("Personal Profile", { profile: { ...profile, campus_location: campus } });
             } catch (error) {
               console.error("Error updating profile:", error.message);
             }
@@ -184,11 +213,11 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
           }}
         >
           <Image
-            source={profile.image}
+            source={{ uri: selectedImage?.uri ?? profile.image ?? "" }}
             style={{ width: 125, height: 125, borderRadius: 125 / 2 }}
           />
 
-          <TouchableOpacity onPress={openImagePickerAsync}>
+          <TouchableOpacity onPress={selectProfileImage}>
             <Text
               style={[
                 appStyles.fonts.paragraph,

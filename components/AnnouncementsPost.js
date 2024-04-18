@@ -4,7 +4,7 @@ import { Card } from "react-native-elements";
 import appStyles from "../styles";
 import supabase from "../lib/supabase";
 
-const AnnouncementsPost = ({ fetchAnnoucements, event }) => {
+const AnnouncementsPost = ({ fetchAnnouncements, event }) => {
   const [announcementText, setAnnouncementText] = useState('');
   const handlePostSubmission = async () => {
     if (!announcementText) {
@@ -19,7 +19,7 @@ const AnnouncementsPost = ({ fetchAnnoucements, event }) => {
       .insert([
         { event_id: event.id, update_text: announcementText, user_id: user.id },
       ]);
-    fetchAnnoucements();
+    fetchAnnouncements();
     if (error) {
       console.error(error);
       Alert.alert("Error posting announcement");

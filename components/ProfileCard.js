@@ -24,9 +24,13 @@ const ProfileCard = (props) => {
           ></Image>
         </Pressable>
         <Pressable
-          onPress={() =>
-            props.navigation.navigate("EDIT_PROFILE", props.profile)
-          }
+          onPress={() => {
+            if (props.profile && typeof props.profile.isCreator !== 'undefined') {
+              props.navigation.navigate("EDIT_PROFILE", props.profile);
+            } else {
+              console.error("Profile is not defined or doesn't have the isCreator field");
+            }
+          }}
         >
           <Image
             source={require("../assets/icons/fi-br-edit.png")}
