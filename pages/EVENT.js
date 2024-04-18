@@ -7,7 +7,7 @@ import {
   ImageBackground,
   Image,
   Pressable,
-  FlatList
+  FlatList,
 } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { ScrollView } from "react-native-virtualized-view"
@@ -29,10 +29,10 @@ import supabase from "../lib/supabase"
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params
   const [eventData, setEventData] = useState(event)
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncements] = useState([])
   useEffect(() => {
-    handleAnnouncementList();
-  }, []);
+    handleAnnouncementList()
+  }, [])
   const handleAnnouncementList = async (setAnnouncements) => {
     // get user ID from the logged in user
 
@@ -91,17 +91,17 @@ const EventPage = ({ route, navigation }) => {
   }
   const fetchAnnouncements = async () => {
     const { data, error } = await supabase
-      .from('event_updates')
-      .select('*')
-      .eq('event_id', event.id);
+      .from("event_updates")
+      .select("*")
+      .eq("event_id", event.id)
 
     if (error) {
-      console.error(error);
-      return;
+      console.error(error)
+      return
     }
 
-    setAnnouncements(data);
-  };
+    setAnnouncements(data)
+  }
   //report modal usestate
   const [isModalReportVisible, setModalReportVisible] = useState(false)
   // info modal usestate
@@ -224,8 +224,11 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Pressable>
 
+<<<<<<<<< Temporary merge branch 1
+=========
 
 
+>>>>>>>>> Temporary merge branch 2
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
         <Card borderRadius={12} style={[styles.shadow, styles.card]}>
@@ -234,7 +237,10 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Card>
 
+<<<<<<<<< Temporary merge branch 1
+=========
 
+>>>>>>>>> Temporary merge branch 2
         {/* </View> */}
       </View>
       {isCreator ? (
@@ -288,26 +294,28 @@ const EventPage = ({ route, navigation }) => {
           ))
         : null}
       <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
-        Annoucements:
+        Announcements:
       </Text>
 
-      {/* AnnoucementPost only for creators */}
+      {/* AnnouncementPost only for creators */}
       <View style={styles.anouncementPostContainer}>
         {isCreator && (
-          <AnnouncementsPost fetchAnnouncements={fetchAnnouncements} event={event} />
+          <AnnouncementsPost
+            fetchAnnouncements={fetchAnnouncements}
+            event={event}
+          />
         )}
       </View>
 
       <View style={styles.updateEventListContainer}>
-
         <FlatList
           data={announcements}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
-            let formattedDate = '';
+            let formattedDate = ""
             if (item.timestamp) {
-              const date = new Date(item.timestamp); // Convert the timestamp to a Date object
-              formattedDate = date.toLocaleDateString(); // Format the date
+              const date = new Date(item.timestamp) // Convert the timestamp to a Date object
+              formattedDate = date.toLocaleDateString() // Format the date
             } // Format the date
 
             return (
@@ -318,10 +326,9 @@ const EventPage = ({ route, navigation }) => {
                   {/* Display the formatted date */}
                 </View>
               </Card>
-            );
+            )
           }}
         />
-
       </View>
 
       {/* modal for report button gear */}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
   View,
   Text,
@@ -9,30 +9,31 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-} from "react-native";
-import appStyles from "../../../styles";
-import * as ImagePicker from "expo-image-picker";
-import LocationDropdown from "../../../components/LocationDropdown";
-import supabase from "../../../lib/supabase";
-import DateTime from "../../../components/DateTime";
-import DateTimeEdit from "../../../components/DateTimeEdit";
+} from "react-native"
+import appStyles from "../../../styles"
+import * as ImagePicker from "expo-image-picker"
+import LocationDropdown from "../../../components/LocationDropdown"
+import supabase from "../../../lib/supabase"
+import DateTime from "../../../components/DateTime"
+import DateTimeEdit from "../../../components/DateTimeEdit"
 
 const EditEvents = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event } = route.params
 
-  const [name, setName] = useState(event.name);
-  const [location, setLocation] = useState(event.location);
-  const [description, setDescription] = useState(event.description);
-  const [roomNumber, setRoomNumber] = useState(event.room_number);
-  const [date, setDate] = useState(event.date);
-  const [time, setTime] = useState(event.date);
-  const [image, setImage] = useState(event.image);
-  const [signUp, setSignUp] = useState(event.signUp);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [eventUrl, setEventUrl] = useState(null);
+  const [name, setName] = useState(event.name)
+  const [location, setLocation] = useState(event.location)
+  const [description, setDescription] = useState(event.description)
+  const [roomNumber, setRoomNumber] = useState(event.room_number)
+  const [date, setDate] = useState(event.date)
+  const [time, setTime] = useState(event.date)
+  const [image, setImage] = useState(event.image)
+  const [signUp, setSignUp] = useState(event.signUp)
+
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [eventUrl, setEventUrl] = useState(null)
   useEffect(() => {
-    fetchEventData();
-  }, []);
+    fetchEventData()
+  }, [])
 
   const fetchEventData = async () => {
     // fetch the event data from Supabase
@@ -40,40 +41,41 @@ const EditEvents = ({ route, navigation }) => {
       .from("events")
       .select("*")
       .eq("id", event.id)
-      .single();
+      .single()
 
     if (data) {
-      setName(data.name);
-      setLocation(data.location);
-      setDescription(data.description);
-      setRoomNumber(data.room_number);
-      setDate(data.date);
-      setImage(data.image);
-      setSignUp(data.link);
+      setName(data.name)
+      setLocation(data.location)
+      setDescription(data.description)
+      setRoomNumber(data.room_number)
+      setDate(data.date)
+      setImage(data.image)
+      setSignUp(data.link)
     } else {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
   const handleSave = async () => {
-    console.log("Updating event...");
-    let newImageUrl = null;
+    console.log("Updating event...")
+    let newImageUrl = null
     if (selectedImage && selectedImage.uri) {
-      const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
-      const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
-      const path = `${Date.now()}.${fileExt}`;
+      const arraybuffer = await fetch(selectedImage.uri).then((res) =>
+        res.arrayBuffer()
+      )
+      const fileExt = selectedImage.uri.split(".").pop().toLowerCase()
+      const path = `${Date.now()}.${fileExt}`
       const { data, error: uploadError } = await supabase.storage
-        .from('event-image-banners')
+        .from("event-image-banners")
         .upload(path, arraybuffer, {
-          contentType: selectedImage.mimeType ?? 'image/jpeg',
-        });
+          contentType: selectedImage.mimeType ?? "image/jpeg",
+        })
 
       if (uploadError) {
-        Alert.alert("Error uploading image");
-        return;
+        Alert.alert("Error uploading image")
+        return
       }
 
-      newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/event-image-banners/${data.path}`;
-
+      newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/event-image-banners/${data.path}`
     }
     console.log("eventUrl", newImageUrl)
     const { error } = await supabase
@@ -88,21 +90,21 @@ const EditEvents = ({ route, navigation }) => {
         link: signUp,
         image: newImageUrl,
       })
-      .eq("id", event.id);
+      .eq("id", event.id)
 
-    console.log("Update operation completed");
+    console.log("Update operation completed")
 
     if (error) {
-      console.error(error);
-      Alert.alert("Error updating event");
-      return;
+      console.error(error)
+      Alert.alert("Error updating event")
+      return
     }
     //if update was successful navigate back to home
-    navigation.navigate("NavBar", { isCreator: true });
-  };
+    navigation.navigate("NavBar", { isCreator: true })
+  }
   const handleLocationSelect = (selectedLocation) => {
-    setLocation(selectedLocation);
-  };
+    setLocation(selectedLocation)
+  }
   // handle image upload
   const selectEventImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -111,16 +113,19 @@ const EditEvents = ({ route, navigation }) => {
       allowsEditing: true,
       quality: 1,
       exif: false,
-    });
-    console.log(result);
+    })
+    console.log(result)
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0]);
+      setSelectedImage(result.assets[0])
     }
-  };
+  }
   return (
     <ScrollView
-      contentContainerStyle={{ height: 1350, paddingBottom: 500, backgroundColor: "white" }}
-    >
+      contentContainerStyle={{
+        height: 1350,
+        paddingBottom: 500,
+        backgroundColor: "white",
+      }}>
       <View style={styles.container}>
         <View style={styles.imageBanner}>
           {image === null ? (
@@ -131,8 +136,7 @@ const EditEvents = ({ route, navigation }) => {
                   textAlign: "center",
                   color: "#8b9cb5",
                 },
-              ]}
-            >
+              ]}>
               No image uploaded
             </Text>
           ) : (
@@ -144,8 +148,7 @@ const EditEvents = ({ route, navigation }) => {
             style={[
               appStyles.fonts.paragraph,
               { textDecorationLine: "underline" },
-            ]}
-          >
+            ]}>
             Click to upload image
           </Text>
         </TouchableOpacity>
@@ -179,8 +182,7 @@ const EditEvents = ({ route, navigation }) => {
         <DateTimeEdit
           date={date}
           time={time}
-          onDateTimeUpdate={setDate}
-        ></DateTimeEdit>
+          onDateTimeUpdate={setDate}></DateTimeEdit>
 
         <Text style={appStyles.fonts.subHeading}>Description:</Text>
         <View style={appStyles.sectionStyle}>
@@ -207,14 +209,12 @@ const EditEvents = ({ route, navigation }) => {
         <View style={{ flexDirection: "row", columnGap: 5, marginTop: 20 }}>
           <Pressable
             style={[appStyles.buttons.yellow, appStyles.shadow]}
-            onPress={handleSave}
-          >
+            onPress={handleSave}>
             <Text style={appStyles.fonts.paragraph}>Save</Text>
           </Pressable>
           <Pressable
             style={[appStyles.buttons.black, appStyles.shadow]}
-            onPress={() => navigation.goBack()}
-          >
+            onPress={() => navigation.goBack()}>
             <Text style={[{ color: "white" }, appStyles.fonts.paragraph]}>
               {" "}
               Cancel{" "}
@@ -223,8 +223,8 @@ const EditEvents = ({ route, navigation }) => {
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -250,6 +250,6 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 30,
   },
-});
+})
 
-export default EditEvents;
+export default EditEvents
