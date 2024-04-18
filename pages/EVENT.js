@@ -224,11 +224,8 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Pressable>
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> charlie
         {/* description card */}
         {/* <View style={styles.toggleContainer}> */}
         <Card borderRadius={12} style={[styles.shadow, styles.card]}>
@@ -237,10 +234,7 @@ const EventPage = ({ route, navigation }) => {
           </Text>
         </Card>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> charlie
         {/* </View> */}
       </View>
       {isCreator ? (
@@ -299,13 +293,9 @@ const EventPage = ({ route, navigation }) => {
 
       {/* AnnoucementPost only for creators */}
       <View style={styles.anouncementPostContainer}>
-<<<<<<< HEAD
-        {isCreator && <AnnoucementsPost />}
-=======
         {isCreator && (
           <AnnouncementsPost fetchAnnouncements={fetchAnnouncements} event={event} />
         )}
->>>>>>> charlie
       </View>
 
       <View style={styles.updateEventListContainer}>
