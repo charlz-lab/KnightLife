@@ -18,7 +18,7 @@ import DateTime from "../../../components/DateTime";
 import DateTimeEdit from "../../../components/DateTimeEdit";
 
 const EditEvents = ({ route, navigation }) => {
-  const { event, onEventUpdate } = route.params;
+  const { event } = route.params;
 
   const [name, setName] = useState(event.name);
   const [location, setLocation] = useState(event.location);
@@ -28,7 +28,8 @@ const EditEvents = ({ route, navigation }) => {
   const [time, setTime] = useState(event.date);
   const [image, setImage] = useState(event.image);
   const [signUp, setSignUp] = useState(event.signUp);
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [eventUrl, setEventUrl] = useState(null);
   useEffect(() => {
     fetchEventData();
   }, []);
@@ -55,8 +56,26 @@ const EditEvents = ({ route, navigation }) => {
   };
   const handleSave = async () => {
     console.log("Updating event...");
+    let newImageUrl = null;
+    if (selectedImage && selectedImage.uri) {
+      const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
+      const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
+      const path = `${Date.now()}.${fileExt}`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('event-image-banners')
+        .upload(path, arraybuffer, {
+          contentType: selectedImage.mimeType ?? 'image/jpeg',
+        });
 
-    // update the event in the Supabase table
+      if (uploadError) {
+        Alert.alert("Error uploading image");
+        return;
+      }
+
+      newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/event-image-banners/${data.path}`;
+
+    }
+    console.log("eventUrl", newImageUrl)
     const { error } = await supabase
       .from("events")
       .update({
@@ -67,6 +86,7 @@ const EditEvents = ({ route, navigation }) => {
         room_number: roomNumber,
         image,
         link: signUp,
+        image: newImageUrl,
       })
       .eq("id", event.id);
 
@@ -80,31 +100,22 @@ const EditEvents = ({ route, navigation }) => {
     //if update was successful navigate back to home
     navigation.navigate("NavBar", { isCreator: true });
   };
-
-  // handle image upload
-  let openImagePickerAsync = async () => {
-    let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
-
-    if (pickerResult.canceled === true) {
-      return;
-    }
-
-    setImage({ uri: pickerResult.assets[0].uri });
-  };
   const handleLocationSelect = (selectedLocation) => {
     setLocation(selectedLocation);
+  };
+  // handle image upload
+  const selectEventImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      quality: 1,
+      exif: false,
+    });
+    console.log(result);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0]);
+    }
   };
   return (
     <ScrollView
@@ -125,10 +136,10 @@ const EditEvents = ({ route, navigation }) => {
               No image uploaded
             </Text>
           ) : (
-            <Image source={{ uri: image }} style={styles.imageUpload} />
+            <Image source={selectedImage} style={styles.imageUpload} />
           )}
         </View>
-        <TouchableOpacity onPress={openImagePickerAsync}>
+        <TouchableOpacity onPress={selectEventImage}>
           <Text
             style={[
               appStyles.fonts.paragraph,

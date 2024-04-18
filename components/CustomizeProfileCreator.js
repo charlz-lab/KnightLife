@@ -23,21 +23,23 @@ function CustomizeProfileCreator({ navigation, route, session }) {
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState(null);
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const [selectedImage, setSelectedImage] = useState(null);
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
 
-    console.log(result);
+  //   console.log(result);
 
-    if (!result.canceled) {
-      setImage(result.uri);
-    }
-  };
+  //   if (!result.canceled) {
+  //     setImage(result.uri);
+  //   }
+  // };
   async function handleCreateProfileButton() {
+    let newImageUrl = null;
     try {
       const {
         data: { user },
@@ -46,14 +48,30 @@ function CustomizeProfileCreator({ navigation, route, session }) {
       if (user) {
         try {
           // Insert into users table
+          if (selectedImage && selectedImage.uri) {
+            const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
+            const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
+            const path = `${Date.now()}.${fileExt}`;
+            const { data, error: uploadError } = await supabase.storage
+              .from('profile-pics')
+              .upload(path, arraybuffer, {
+                contentType: selectedImage.mimeType ?? 'image/jpeg',
+              });
 
+            if (uploadError) {
+              console.log("Error uploading image", uploadError);
+              return;
+            }
+            //set newImageUrl 
+            newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/profile-pics/${data.path}`;
+          }
           console.log("user", user.id);
+          console.log("newImageUrl", newImageUrl)
           const { data: userData, error: userError } = await supabase
             .from("users")
             .update({
               name: name,
               campus_location: campus,
-              image: image,
             })
             .eq("id", user.id)
             .select();
@@ -73,6 +91,7 @@ function CustomizeProfileCreator({ navigation, route, session }) {
               username: userName,
               bio: bio,
               campus_location: campus,
+              image: newImageUrl,
             });
 
           if (creatorError) {
@@ -101,7 +120,19 @@ function CustomizeProfileCreator({ navigation, route, session }) {
       console.error("Error getting user session:", error.message);
     }
   }
-
+  const selectProfileImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      quality: 1,
+      exif: false,
+    });
+    console.log(result);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0]);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -123,13 +154,13 @@ function CustomizeProfileCreator({ navigation, route, session }) {
     >
       <View>
         <TouchableOpacity
-          style={{ alignItems: "center", marginTop: 20 }}
-          onPress={pickImage}
+          style={{ alignItems: "center" }}
+          onPress={selectProfileImage}
         >
-          {image ? (
+          {selectedImage ? (
             <Image
-              source={{ uri: image }}
-              style={{ width: 100, height: 100 }}
+              source={selectedImage}
+              style={{ width: 100, height: 100, borderRadius: 100 }}
             />
           ) : (
             <Text

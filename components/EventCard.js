@@ -64,7 +64,8 @@ const EventCard = ({ event, navigation, onBookmarkToggle }) => {
         <View style={[styles.cardContainer, styles.shadow]}>
           <ImageBackground
             source={{ uri: event.image }}
-            imageStyle={{ borderRadius: 14, width: 290 }}
+            imageStyle={{ borderRadius: 14 }}
+
             style={styles.imageBanner}>
             <View style={styles.buttonContainer}>
               {/* bookmark toggle saved events, using ionicons */}
