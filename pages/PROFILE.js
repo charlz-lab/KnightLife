@@ -120,7 +120,7 @@ export const EDIT_PROFILE = ({ navigation, route }) => {
       [
         {
           text: "Cancel",
-          onPress: () => navigation.navigate(goBack),
+          onPress: () => navigation.goBack(),
           style: "cancel",
         },
         {

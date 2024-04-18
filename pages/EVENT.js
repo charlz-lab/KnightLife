@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Image,
   Pressable,
+  FlatList,
 } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { ScrollView } from "react-native-virtualized-view"
@@ -15,18 +16,39 @@ import appStyles from "../styles"
 import Modal from "react-native-modal"
 import Ionicon from "react-native-vector-icons/FontAwesome"
 import UpdateList from "../components/UpdateList"
-import AnnoucementsPost from "../components/AnnouncementsPost"
+import AnnouncementsPost from "../components/AnnouncementsPost"
 import {
   getEventStatus,
   addEventStatus,
   deleteEventStatus,
   updateEventStatus,
+  subscribeToAnnouncements,
 } from "../lib/utils"
 import supabase from "../lib/supabase"
 
 const EventPage = ({ route, navigation }) => {
   const { event } = route.params
   const [eventData, setEventData] = useState(event)
+  const [announcements, setAnnouncements] = useState([])
+  useEffect(() => {
+    handleAnnouncementList()
+  }, [])
+  const handleAnnouncementList = async (setAnnouncements) => {
+    // get user ID from the logged in user
+
+    // fetch events created by the user
+    const announcementData = await fetchAnnouncements()
+    setAnnouncements(announcementData)
+
+    // subscribe to events for real-time updates
+    const subscription = subscribeToAnnouncements(setAnnouncements)
+
+    // unsubscribe from the event subscription when the component is unmounted
+    return () => {
+      subscription.unsubscribe()
+    }
+  }
+  //fetch announcements in the event_updates table
 
   const handleBack = () => {
     navigation.goBack()
@@ -67,7 +89,19 @@ const EventPage = ({ route, navigation }) => {
       addEventStatus(event.id, "attending")
     }
   }
+  const fetchAnnouncements = async () => {
+    const { data, error } = await supabase
+      .from("event_updates")
+      .select("*")
+      .eq("event_id", event.id)
 
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setAnnouncements(data)
+  }
   //report modal usestate
   const [isModalReportVisible, setModalReportVisible] = useState(false)
   // info modal usestate
@@ -116,7 +150,7 @@ const EventPage = ({ route, navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Image source={event.image} style={styles.image} />
+        <Image source={{ uri: event.image }} style={styles.image} />
         {/* close page button with icon*/}
         <TouchableOpacity onPress={handleBack} style={styles.closeButton}>
           <Icon
@@ -251,16 +285,41 @@ const EventPage = ({ route, navigation }) => {
           ))
         : null}
       <Text style={[styles.updateTitle, appStyles.fonts.subHeadingNoSize]}>
-        Annoucements:
+        Announcements:
       </Text>
 
-      {/* AnnoucementPost only for creators */}
+      {/* AnnouncementPost only for creators */}
       <View style={styles.anouncementPostContainer}>
-        {isCreator && <AnnoucementsPost />}
+        {isCreator && (
+          <AnnouncementsPost
+            fetchAnnouncements={fetchAnnouncements}
+            event={event}
+          />
+        )}
       </View>
 
       <View style={styles.updateEventListContainer}>
-        <UpdateList updateEvents={updateEvents} />
+        <FlatList
+          data={announcements}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            let formattedDate = ""
+            if (item.timestamp) {
+              const date = new Date(item.timestamp) // Convert the timestamp to a Date object
+              formattedDate = date.toLocaleDateString() // Format the date
+            } // Format the date
+
+            return (
+              <Card borderRadius={12} style={[styles.shadow, styles.card]}>
+                <View>
+                  {item.timestamp && <Text>{formattedDate}</Text>}
+                  <Text>{item.update_text}</Text>
+                  {/* Display the formatted date */}
+                </View>
+              </Card>
+            )
+          }}
+        />
       </View>
 
       {/* modal for report button gear */}

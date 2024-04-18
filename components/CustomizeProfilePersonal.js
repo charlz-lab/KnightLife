@@ -28,27 +28,16 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
   const [userName, setUserName] = useState("");
   const [image, setImage] = useState(null);
   const { height } = Dimensions.get("window");
-
+  const [selectedImage, setSelectedImage] = useState(null);
   // Calculate the accessory view height based on the platform
   const accessoryViewHeight = Platform.select({
     ios: height * 0.2,
     android: 0,
   });
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.uri);
-    }
-  };
   async function handleCreateProfileButton() {
+    let newImageUrl = null;
+
     try {
       const {
         data: { user },
@@ -57,15 +46,32 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
       if (user) {
         try {
           // Insert into users table
+          if (selectedImage && selectedImage.uri) {
+            const arraybuffer = await fetch(selectedImage.uri).then((res) => res.arrayBuffer());
+            const fileExt = selectedImage.uri.split('.').pop().toLowerCase();
+            const path = `${Date.now()}.${fileExt}`;
+            const { data, error: uploadError } = await supabase.storage
+              .from('profile-pics')
+              .upload(path, arraybuffer, {
+                contentType: selectedImage.mimeType ?? 'image/jpeg',
+              });
 
+            if (uploadError) {
+              console.log("Error uploading image", uploadError);
+              return;
+            }
+            //set newImageUrl 
+            newImageUrl = `https://dtfxsobdxejzzasfiiwe.supabase.co/storage/v1/object/public/profile-pics/${data.path}`;
+          }
           console.log("user", user.id);
+          console.log("newImageUrl", newImageUrl)
           const { data: userData, error: userError } = await supabase
             .from("users")
             .update({
               name: name,
               username: userName,
               campus_location: campus,
-              image: image,
+
             })
             .eq("id", user.id)
             .select();
@@ -86,6 +92,7 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
               school_year: year,
               major: major,
               campus_location: campus,
+              image: newImageUrl,
             });
 
           if (personalError) {
@@ -114,7 +121,19 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
       console.error("Error getting user session:", error.message);
     }
   }
-
+  const selectProfileImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      quality: 1,
+      exif: false,
+    });
+    console.log(result);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0]);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -137,11 +156,11 @@ function CustomizeProfilePersonal({ navigation, route, session }) {
           <View>
             <TouchableOpacity
               style={{ alignItems: "center", marginTop: 40 }}
-              onPress={pickImage}
+              onPress={selectProfileImage}
             >
               {image ? (
                 <Image
-                  source={{ uri: image }}
+                  source={selectedImage}
                   style={{ width: 100, height: 100 }}
                 />
               ) : (
